@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <style>
+      #userCanvas{
+        width: 100%;
+        height: 50%;
+        background-color: aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="userCanvas"></canvas>
+    <video id="camera" autoplay></video>
+    <video id="videoElement" autoplay>
+      <source id="srcc" src="" type="" media="" />
+    </video>
+    
+    <script>
+      
+      var recordedChunks = [];
+var superBuffer;
+      var video = document.querySelector("#camera");
+      var userCanvas = document.querySelector("#userCanvas");
+      var userCtx = userCanvas.getContext("2d");
+      videoElement = document.querySelector("#videoElement");
+      source = document.querySelector("#videoElement > source");
+      
+if (navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({ video: true, audio : true })
+    .then(function (stream) {
+      video.srcObject = stream;
+      mediaRecorder = new MediaRecorder(stream, {mimeType: "video/webm"});
+      
+      mediaRecorder.ondataavailable = handleDataAvailable;
+mediaRecorder.start(5000);
+
+recStopped=false;
+
+    })
+    .catch(function (err0r) {
+      console.log("Something went wrong!");
+    });
+}
+
+function handleDataAvailable(event) {
+    
+    
+    recordedChunks.push(event.data);
+    if(!recStopped){
+    mediaRecorder.stop();
+    recStopped=true;
+    
+    }else{
+      mediaRecorder.start(5000);
+    recStopped=false;
+  
+    }
+    //alert("started");
+  
+    // ...
+    
+  
+}
+
+video.addEventListener('play', function () {
+    var $this = this; //cache
+    (function loop() {
+        if (!$this.paused && !$this.ended) {
+            //userCtx.drawImage($this, 0, 0);
+            setTimeout(loop, 1000 / 30); // drawing at 30fps
+        }
+    })();
+}, 0);
+
+setTimeout(function(){
+ setInterval(function(){/*
+  mediaRecorder.stop();
+  videoElement.src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";    
+  
+    mediaRecorder.start();*/
+  
+  let superBuffers = new Blob(recordedChunks.slice(2,4),{'type':'video/webm'});
+    
+    //alert(superBuffers.length);
+    videoElement.src = window.URL.createObjectURL(superBuffers);
+    videoElement.load();
+    alert(recordedChunks.length);
+  setTimeout(function(){
+    let superBuffers = new Blob(recordedChunks.slice(2,4),{'type':'video/webm'});
+    
+    //alert(superBuffers.length);
+    videoElement.src = window.URL.createObjectURL(superBuffers);
+    videoElement.load();
+    
+    //alert(recordedChunks.length);
+    if(recordedChunks.length>2){
+      recordedChunks.shift();
+      recordedChunks.shift();
+    }
+  
+  },5000);
+},10000);
+},5000);
+    </script>
+  </body>
+</html>
