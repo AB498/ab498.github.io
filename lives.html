@@ -2,21 +2,24 @@
   <head>
     <style>
       #userCanvas{
-        width: 100%;
-        height: 50%;
+        width: 50vw;
+        height: 30vh;
+        float: left;
         background-color: aqua;
       }
     </style>
   </head>
   <body>
+    <input id="debug"/>Debug
     <canvas id="userCanvas"></canvas>
-    <video id="camera" autoplay></video>
+    <video id="camera" autoplay loop></video>
     <video id="videoElement" autoplay>
       <source id="srcc" src="" type="" media="" />
     </video>
     
     <script>
       
+      p=document.querySelector("#debug");
       var recordedChunks = [];
 var superBuffer;
       var video = document.querySelector("#camera");
@@ -28,17 +31,19 @@ var superBuffer;
 if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices.getUserMedia({ video: true, audio : true })
     .then(function (stream) {
-      video.srcObject = stream;
-      mediaRecorder = new MediaRecorder(stream, {mimeType: "video/webm"});
+      //video.srcObject = stream;
+      video.src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+      vidStream=video.captureStream();
+      mediaRecorder = new MediaRecorder(vidStream, {mimeType: "video/webm"});
       
       mediaRecorder.ondataavailable = handleDataAvailable;
-mediaRecorder.start(5000);
+mediaRecorder.start(1000);
 
 recStopped=false;
 
     })
     .catch(function (err0r) {
-      console.log("Something went wrong!");
+      console.log("Something went wrong!\n"+err0r);
     });
 }
 
@@ -51,7 +56,7 @@ function handleDataAvailable(event) {
     recStopped=true;
     
     }else{
-      mediaRecorder.start(5000);
+      mediaRecorder.start(1000);
     recStopped=false;
   
     }
@@ -62,45 +67,51 @@ function handleDataAvailable(event) {
   
 }
 
-video.addEventListener('play', function () {
+
+
+videoElement.addEventListener('play', function () {
     var $this = this; //cache
     (function loop() {
         if (!$this.paused && !$this.ended) {
-            //userCtx.drawImage($this, 0, 0);
+            userCtx.drawImage($this, 0, 0);
             setTimeout(loop, 1000 / 30); // drawing at 30fps
         }
     })();
 }, 0);
 
 setTimeout(function(){
- setInterval(function(){/*
-  mediaRecorder.stop();
-  videoElement.src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";    
-  
-    mediaRecorder.start();*/
-  
-  let superBuffers = new Blob(recordedChunks.slice(2,4),{'type':'video/webm'});
+ setInterval(function(){
+    superBuffers = new Blob(recordedChunks.slice(2,4),{'type':'video/webm'});
     
     //alert(superBuffers.length);
     videoElement.src = window.URL.createObjectURL(superBuffers);
     videoElement.load();
-    alert(recordedChunks.length);
-  setTimeout(function(){
-    let superBuffers = new Blob(recordedChunks.slice(2,4),{'type':'video/webm'});
-    
-    //alert(superBuffers.length);
-    videoElement.src = window.URL.createObjectURL(superBuffers);
-    videoElement.load();
-    
     //alert(recordedChunks.length);
     if(recordedChunks.length>2){
-      recordedChunks.shift();
-      recordedChunks.shift();
+    recordedChunks.shift();
+    recordedChunks.shift();
     }
+      p.value=recordedChunks.length;
   
-  },5000);
-},10000);
-},5000);
+    //alert(superBuffers.length);
+    
+  setTimeout(function(){
+    superBuffers = new Blob(recordedChunks.slice(2,4),{'type':'video/webm'});
+  
+    videoElement.src = window.URL.createObjectURL(superBuffers);
+    videoElement.load();
+    if(recordedChunks.length>2){
+    recordedChunks.shift();
+    recordedChunks.shift();
+    }
+    
+      p.value=recordedChunks.length;
+  
+    //alert(recordedChunks.length);
+  
+  },1000);
+},2000);
+},4100);
     </script>
   </body>
 </html>

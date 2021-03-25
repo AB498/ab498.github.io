@@ -1,0 +1,496 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuzzball@1.3.1/dist/fuzzball.umd.min.js"></script>
+
+            <!--
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=AM_CHTML"></script>
+                -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+            MathJax.Hub.Register.StartupHook("End",function () {
+            console.log("Mathjax loaded");
+            console.log(typeof MathJax);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "TFS"]);
+            });
+            </script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        
+        <title>Sample CRUD Firebase Javascript - 01 Read Data</title>
+		<style type="text/css">
+		
+		#dbdata {
+			box-sizing:border-box;
+			background-color:aqua;
+			position:absolute;
+			left:0;
+			width:100%;
+			margin:0px;
+			padding:5px;
+			font-size:30px;
+		}
+		@keyframes blink {
+		0%   {background-color:yellow;}
+		20%  {background-color: white;}
+		50%  {background-color:yellow;}
+		70% {background-color:white;}
+		100% {background-color:yellow;}
+		}
+		
+		.item {
+			background-image: linear-gradient(75deg, orange, lightblue, lightblue, gold);
+			box-shadow:teal 5px 5px 7px -3px;
+			border-radius:5px;
+			margin:3px;
+			padding:3px;
+			overflow-x:scroll;
+			overflow-y:hidden;
+		}
+		.new {
+			background-color:yellow;
+			box-shadow:teal 5px 5px 7px -3px;
+			border-radius:5px;
+			margin:3px;
+			animation:blink 1s linear 0s 3;
+			overflow:scroll;
+		}
+		.eqnOn {
+			display:inline;
+		}
+		
+		.glow-on-hover {
+		border: none;
+		outline: none;
+		color: #fff;
+		background: #111;
+		cursor: pointer;
+		position: relative;
+		z-index: 0;
+		border-radius: 10px;
+		padding:15px;
+		}
+		
+		.glow-on-hover:before {
+		content: '';
+		background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+		position: absolute;
+		top: -2px;
+		left:-2px;
+		background-size: 400%;
+		z-index: -1;
+		filter: blur(5px);
+		width: calc(100% + 4px);
+		height: calc(100% + 4px);
+		animation: glowing 20s linear infinite;
+		opacity: 0;
+		transition: opacity .3s ease-in-out;
+		border-radius: 10px;
+		}
+		
+		.glow-on-hover:active {
+		color: #000
+		}
+		
+		.glow-on-hover:active:after {
+		background: transparent;
+		}
+		
+		.glow-on-hover:hover:before {
+		opacity: 1;
+		}
+		
+		.glow-on-hover:after {
+		z-index: -1;
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		border-radius: 10px;
+		}
+		
+		@keyframes glowing {
+		0% { background-position: 0 0; }
+		50% { background-position: 400% 0; }
+		100% { background-position: 0 0; }
+		}
+		input[type="text"]{
+			width:80%;
+			height:35px;
+			margin:5px 0px 5px 0px;
+			border: solid teal 1px;
+			border-bottom: solid red 5px;
+		}
+		input[type="checkbox"]{
+			transform:scale(1.5,1.5);
+		}
+		.assist{
+			background-color:#990000;
+			width:100px;
+			margin:2px;
+			box-shadow:teal 5px 5px 7px -3px;
+			
+		}
+		
+		
+		</style>
+    </head>
+    <body>
+    
+    \(\int\)
+    <input type="text" id="key" placeholder="Title" oninput="checkData(this.value)" />
+    <div>
+    <div class="eqnOn">\(</div>
+    <input type="text" id="value" placeholder="Content" oninput="updatePreview(this.value)"/>
+    <div class="eqnOn">\)</div>
+    </div>
+    <input type="checkbox" checked="checked"  id="eqn" onclick="equationToggle()">Auto equation syntax
+    <input type="checkbox" checked="checked"  id="existings" onclick="chkExistingsToggle()">Auto check existings
+    
+    <br>
+    <input type="text" id="sort" placeholder="Sort" oninput="sortItems(this.value);"/>
+    
+    <br>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\');"> \ </button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'^{}');"> ^ </button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'_{}');"> _ </button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\int{}');"> $\int$</button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\frac{}{}');">Fraction</button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\sqrt{}');"> $\sqrt{}$ </button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\theta');"> $\theta$ </button>
+
+    
+    
+    
+    <br><br>
+    <button class="glow-on-hover assist" style="background-color:#333" onclick="update(null, null);">Update</button>
+    <button class="glow-on-hover assist" style="background-color:#333" onclick="clearInputs();">Clear/New</button>
+    
+    <p id="preview"> Preview will appear here...</p>
+    
+    <div id="dbdata" >Data<br></div>
+    
+    	<!-- The core Firebase JS SDK is always required and must be listed first -->
+    	<script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
+    		
+    		<!-- TODO: Add SDKs for Firebase products that you want to use
+    		https://firebase.google.com/docs/web/setup#available-libraries -->
+    	<script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js"></script>
+    		<script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-auth.js"></script>
+    		<script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-database.js"></script>
+    	<script>
+    		
+    		
+    	
+    		
+    		
+    		dbdata=document.querySelector("#dbdata");
+    		sortI=document.querySelector("#sort");
+    		pushId="";
+    		eqnClass=document.getElementsByClassName("eqnOn");
+    		autoCheck=true;
+    		
+    		function checkData (val) {
+    		
+    			if(autoCheck){
+    				sort.value=val;
+    				sortItems(val);
+    				}
+    		
+    		}
+    		function sortItems(match){
+    			dbdata.innerHTML="";
+    			sortedData = sortJSON(datae,'name','123');
+    			sortedData.forEach(function(item, index) {
+    			if(item.name.toLowerCase().includes(match.toLowerCase())){
+    			//alert(fuzzball.ratio(item.name, match));
+    			if(item.id==pushId){
+    			className="new";
+    			
+    			}else{className="item";}
+    			dbdata.innerHTML+="<div class='"+className+"' id='"+item.id+"' onclick='removeItem(\""+item.id+"\")'>"+q(item.name)+" : "+q(item.content)+"</div>";
+    			}
+    			});
+    			
+    			updatePreview();
+    			
+    		}
+    		
+    		function equationToggle(){
+    		if(checkBox.checked==true){
+    			eqnClass[0].style.display="inline";
+    			eqnClass[1].style.display="inline";
+    			}else{
+    			
+    			eqnClass[0].style.display="none";
+    			eqnClass[1].style.display="none"; 
+    			
+    			}
+    		}
+    		function chkExistingsToggle(){
+    		if(chkExistings.checked==true){
+				autoCheck=true;
+				sort.value=keyI.value;
+				sortItems(sort.value);
+    		}else{
+    			autoCheck=false;
+    			sort.value="";
+    			sortItems(sort.value);
+    		}
+    		}
+    		checkBox=document.getElementById("eqn");
+   			chkExistings=document.getElementById("existings");
+    		preview=document.getElementById("preview");
+    		
+    		// Your web app's Firebase configuration
+    		// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    		var firebaseConfig = {
+    		apiKey: "AIzaSyBUiM_pQL8U_ZC2K438cKkZXxIAkALgeT4",
+    		authDomain: "equations498.firebaseapp.com",
+    		projectId: "equations498",
+    		storageBucket: "equations498.appspot.com",
+    		messagingSenderId: "716116414673",
+    		appId: "1:716116414673:web:50153e57b7f6d25d4f35f0",
+    		measurementId: "G-TFVJQ1QKL1"
+    		};
+    		// Initialize Firebase
+    		firebase.initializeApp(firebaseConfig);
+    		firebase.analytics();
+    		
+    		db=firebase.database();
+    		dbRef = db.ref("equations");
+    		//const usersRef = dbRef.child('equations');
+    		const status = db.ref("onlineStatus");
+    		
+    		randOn=""+Math.random();
+    		status.onDisconnect().set(randOn);
+    		
+    		
+    		// ... sometime later
+    		//status.onDisconnect().cancel();
+    		
+    		status.on('value', function(snap) {
+    		
+    		if(snap.val()==randOn){
+    		
+    		document.querySelector("#dbdata").style.backgroundColor="grey";
+    		//status.onDisconnect().remove();
+    		
+    		}else{
+    		document.querySelector("#dbdata").style.backgroundColor="lightgreen";
+    		
+    		
+    		}
+    		});
+    		
+    		setInterval(function(){
+    		status.once("value", function(data) {
+    		// do some stuff once
+    		/*
+    			data.docChanges().forEach(function(change) {
+    			if (change.type === "added") {
+    			console.log("New city: ", change.doc.data());
+    			}
+    			
+    			var source = snapshot.metadata.fromCache ? "local cache" : "server";
+    			console.log("Data came from " + source);
+    			});*/
+    			//alert('kkkk');
+    		});
+    		},4000);
+    		
+    		document.querySelector("#dbdata").style.backgroundColor="lightgreen";
+    		
+    		dbRef.on('value', function(snap) {
+    		dbdata.innerHTML="";
+  			datae=[];
+    		dat=snap.val();
+    		Object.keys(dat).forEach(function(childSnap) {
+    		//alert(JSON.stringify(childSnap));
+    		dataTmp=dat[childSnap];
+    	
+    		
+    		//alert(JSON.stringify(datae));
+    		var childData2 = dataTmp[Object.keys(dataTmp)[0]];
+    		var childData1 = Object.keys(dataTmp)[0];
+    		
+    		datae.push({id:childSnap,name:childData1,content:childData2});
+    	
+    		//alert(childSnap);
+    		});
+    		sortedData = sortJSON(datae,'name','123');
+    		sortedData.forEach(function(item, index) {
+    			if(item.id==pushId){
+    				className="new";
+    				
+    			}else{className="item";}
+    			dbdata.innerHTML+="<div class='"+className+"' id='"+item.id+"' onclick='removeItem(\""+item.id+"\")'>"+q(item.name)+" : "+q(item.content)+"</div>";
+    		});
+    		
+    		
+    		
+    		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+    		});
+    		
+    		keyI=document.getElementById("key");
+    		valueI=document.getElementById("value");
+    		
+    		function update(key, value){
+    		if(key==null || value==null){
+    		key=keyI.value;
+    		if(checkBox.checked==true){
+    			value="\\("+valueI.value+"\\)";
+    		}else{
+    			value=valueI.value;
+    		}
+    		}
+    		//dbRef.child(key).set(value);
+    		dataToPush={};
+    		dataToPush[key]=value;
+    		
+    		pushId=dbRef.push().getKey();
+    		dbRef.child(pushId).set(dataToPush);
+    		}
+    		
+    		function updatePreview(val){
+    		
+    			preview.textContent="\\("+val+"\\)";
+    			MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+    			
+    		}
+    		function removeItem(id){
+    		options(id);
+    		}
+    		function sortJSON(arr, key, way) {
+    		return arr.sort(function(a, b) {
+    		var x = a[key]; var y = b[key];
+    		if (way === '123') { return ((x < y) ? -1 : ((x > y) ? 1 : 0)); }
+    		if (way === '321') { return ((x > y) ? -1 : ((x < y) ? 1 : 0)); }
+    		});
+    		}
+    		
+    		function clearInputs(){
+    			keyI.value="";
+    			valueI.value="";
+    		}
+    		
+    		function options(id){
+    		swal("Options", {
+    		buttons: {
+    		delete: "Delete!",
+    		archive: {
+    		text: "Archive",
+    		value: "archive",
+    		},
+    		pin: {
+    		text: "Edit",
+    		value: "edit",
+    		}
+    		}
+    		})
+    		.then((value) => {
+    		switch (value) {
+    		
+    		case "delete":
+    		swal("Successfully deleted!");
+    		dbRef.child(id).remove();	
+    		
+    		break;
+    		
+    		case "edit":
+    			el=document.getElementById(id);
+    			var result = datae.find(obj => {
+    			return obj.id == id;
+    			})
+    			el.insertAdjacentHTML("afterend","<div id='edit"+id+"'><input type='text' value='"+result.name+"'/><input type='text' oninput='updatePreview(this.value)' value='"+result.content+"'/><button onclick=updateDB('"+id+"')>Update</button></div>")
+    			
+    			$("input[type=text]").blur(function() {
+    			myField=this;
+    			});
+    			
+    		break;
+    		
+    		default:
+    		}
+    		});
+    		}
+    		
+    		
+    		
+    		/*firebase.child('.info/connected').on('value', function(connectedSnap) {
+    		if (connectedSnap.val() === true) {
+    
+    		
+    		alert(0);
+    		} else {
+   
+    		}
+    		});*/
+    		
+    		
+    		//options();
+    		
+    		function updateDB(id){
+    		
+    		editDiv=document.getElementById("edit"+id);
+    		editDivChilds=editDiv.childNodes;
+    		
+    		ob={};
+    		ob[editDivChilds[0].value]=editDivChilds[1].value;
+    		
+    			dbRef.child(id).set(ob);
+    		}
+    		
+    		
+    		
+    		$("input[type=text]").blur(function() {
+    			myField=this;
+    		});
+    		
+    		function insertAtCursor(myFiel, myValue) {
+    		
+    		//myField=valueI;//document.activeElement;
+    		
+    		
+    		
+    		//alert(myField);
+    		
+    		//MOZILLA and others
+    		if (myField.selectionStart || myField.selectionStart == '0') {
+    		var startPos = myField.selectionStart;
+    		var endPos = myField.selectionEnd;
+    		myField.value = myField.value.substring(0, startPos)
+    		+ myValue
+    		+ myField.value.substring(endPos, myField.value.length);
+    		} else {
+    		myField.value += myValue;
+    		}
+    		
+    		myField.focus();
+    		
+    		cursorPos=startPos+1;
+    		if(myValue.indexOf("{")!=-1)
+    			cursorPos=startPos+myValue.indexOf("{")+1;
+    		myField.selectionStart=cursorPos;
+    		myField.selectionEnd=cursorPos;
+    		updatePreview();
+    		
+    		}
+    		
+    		function q(strrr) {
+    			return strrr.replace("[\"]\g", "\"").replace("[\']\g", "\'");;
+    		} 
+    		
+    	</script> 
+    </body>
+</html>
