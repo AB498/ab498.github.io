@@ -1,0 +1,284 @@
+<html>
+<head>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+  
+  <title>Stock Simulator</title>
+  
+  <style type="text/css">
+  
+  * {
+  	box-sizing:border-box;
+  	transition:linear all 0.05s;
+  }
+  
+  .btn {
+  	width:50%;
+  	height:10%;
+  	float:left;
+  	background-color:blue;
+  	box-shadow:3px 3px 9px 0px;
+  	border:5px outset #999;
+  }
+  #buy:hover,#sell:hover {
+  	background-color:grey;
+  	transform:scale(0.95,0.95);
+  	box-shadow:0px 0px 2px 0px;
+  }
+  
+  #buy {
+  	padding-top:15px;
+ 	padding-bottom:15px;
+	font-size:30px;
+ 	text-align:center;
+  	background-color:green;
+  }
+  
+  #sell {
+  	padding-top:15px;
+  	padding-bottom:15px;
+  	font-size:30px;
+  	text-align:center;
+  	background-color:red;
+  }
+  
+  </style>
+
+</head>
+<body>
+
+  <canvas id="chart" width="100%" height="70%">
+
+  </canvas>
+  
+  <center>
+  <p id="price" >Price
+  </p>
+  <p id="balance" >Balance
+  </p>
+  <p id="profloss" >Profit/Loss
+  </p>
+  Speed: <input type="range" step="1" min="1" max="1000" value="10" class="slider" id="speed" oninput="changeSpeed(this)">
+  
+  <div style="background-color:#aaa; margin:5px; padding:5px;">
+  <p><input id="amount" value="0" ></p>
+  
+  Amount: <input type="range" min="1" max="100" value="50" class="slider" id="amountSlider" oninput="changeAmount(this)">
+  </div>
+  
+  </center>
+  
+  <div id="buy" class="btn" onclick="buy()" >Buy</div>
+  <div id="sell" class="btn" onclick="sell()" >Sell</div>
+  
+  <br><br><br><br>
+  <table id="table"  border="1" width="100%" >
+  <tr id="hdrs" >
+  <th>Serial</th>
+  <th>Type</th>
+  <th>Amount</th>
+  <th>Entry</th>
+  <th>Current P/L</th>
+  <th>Action</th>
+  </tr>
+  </table>
+  
+  <script>
+  
+  dur=100;
+  fee=0.2;
+  prevPrc=0;
+  count = 0;
+  volt=5;
+  prc=10000;
+  
+  orders={};
+  
+    var ctx = document.getElementById('chart').getContext('2d');
+    var price = document.getElementById('price');
+    var balance = document.getElementById('balance');
+    var profloss = document.getElementById('profloss');
+    var amount = document.getElementById('amount');
+    var hdrs = document.getElementById('hdrs');
+    var table = document.getElementById('table');
+    var speedSlider = document.getElementById('speed');
+    var amountSlider = document.getElementById('amountSlider');
+    
+    balance.textContent=10000;
+    amount.value=parseInt(balance.textContent)/10;
+    amountSlider.max=""+balance.textContent;
+    
+    
+    var chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [count],
+        datasets: [{
+          label: 'Chart',
+          data: [prc],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            }
+          }]
+        },
+        animation: {
+        duration: dur*1,
+        easing: 'easeOutExpo'
+        }
+      }
+    });
+	minInChart=0;
+    function addData(chart, label, data) {
+      chart.data.labels.push(label);
+      chart.data.datasets.forEach((dataset) => {
+        dataset.data.push(data);
+        minInChart=(Math.min.apply(Math,dataset.data));
+      });
+      chart.update();
+    }
+
+    function removeData(chart) {
+      chart.data.labels.pop();
+      chart.data.datasets.forEach((dataset) => {
+        dataset.data.splice(0,1);
+      });
+      chart.update();
+    }
+
+    function play() {
+      if(count>50)removeData(chart);
+      prevPrc=prc;
+      prc+=randInt(-volt+randInt(-2,2),volt+randInt(-2,2));
+      change=(prc-prevPrc)/prevPrc*100;
+      profloss.textContent=change;
+      addData(chart, count, prc);
+      count++;
+      price.textContent=prc;
+      
+      for(x in orders){
+      	var type=orders[x].split("-")[1];
+      	
+      	var amt=orders[x].split("-")[2];
+       	var entry=orders[x].split("-")[3];
+       	changeX=((prc-entry)/entry*100).toFixed(2);
+       	if(type=="sell")changeX*=-1;
+       	var profLX=prc-entry;
+       	cellX=document.getElementById(x).cells[4];
+       	cellX.textContent=changeX;
+       	
+       	
+      }
+      
+      chart.options.scales.yAxes[0].ticks.min=minInChart-3*volt;
+      
+      autoPlay();
+      
+    setTimeout(play, dur);	
+    }
+    play();
+    
+    function autoPlay(){
+    	
+    }
+    
+    function randInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+	function buy(){
+	srl=1;
+	randId=""+randInt(1,1000000);
+	randUnique=false;
+	
+	if(!(Object.keys(orders).length === 0 && orders.constructor === Object))while(!randUnique){
+	for(x in orders){
+	if(x==randId){
+	randUnique=false;
+	break;
+	}else{
+	randUnique=true;
+	}
+	
+	}
+	if(!randUnique)randId=""+randInt(1,1000000);
+	//alert(randUnique);
+	}
+		balance.textContent-=amount.value;
+		balance.textContent-=amount.value*fee/100;
+		srl=table.rows.length;
+		hdrs.insertAdjacentHTML("afterend","<tr id='"+randId+"'><th>"+srl+"</th><td>Buy</td><td>"+amount.value+"</td><td>"+prc+"</td><td>0</td><td align='center'><button onclick='release("+randId+")'>Release</button></td></tr>");
+		orders[randId]=srl+"-buy-"+amount.value+"-"+prc;
+		//alert(JSON.stringify(orders));
+	}
+	
+	function sell(){
+	srl=1;
+	randId=""+randInt(1,1000000);
+	randUnique=false;
+	
+	if(!(Object.keys(orders).length === 0 && orders.constructor === Object))while(!randUnique){
+	for(x in orders){
+	if(x==randId){
+	randUnique=false;
+	break;
+	}else{
+	randUnique=true;
+	}
+	
+	}
+	if(!randUnique)randId=""+randInt(1,1000000);
+	//alert(randUnique);
+	}
+		balance.textContent-=amount.value;
+		balance.textContent-=amount.value*fee/100;
+		srl=table.rows.length;
+		hdrs.insertAdjacentHTML("afterend","<tr id='"+randId+"'><th>"+srl+"</th><td>Sell</td><td>"+amount.value+"</td><td>"+prc+"</td><td>0</td><td align='center'><button onclick='release("+randId+")'>Release</button></td></tr>");
+		orders[randId]=srl+"-sell-"+amount.value+"-"+prc;
+		//alert(JSON.stringify(orders));
+	}
+	
+	function release(id){
+		trR=(document.getElementById(id));
+		trR.parentNode.removeChild(trR);
+		
+		amnt=parseInt(trR.cells[2].textContent);
+		pl=parseInt(amnt)*trR.cells[4].textContent/100;
+		
+		delete orders[id];
+		balance.textContent=parseInt(balance.textContent)+parseInt(amnt+pl);
+	}
+	function changeAmount(e){
+		amount.value=e.value;
+	}
+	function changeSpeed(e){
+	if(e.valu!=0)dur=1000-e.value;
+	
+	}
+	
+	
+  </script>
+</body>
+</html>
