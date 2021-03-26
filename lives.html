@@ -27,46 +27,17 @@ var superBuffer;
       var userCtx = userCanvas.getContext("2d");
       videoElement = document.querySelector("#videoElement");
       source = document.querySelector("#videoElement > source");
-      
+
 if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices.getUserMedia({ video: true, audio : true })
     .then(function (stream) {
       //video.srcObject = stream;
-      video.src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
-      vidStream=video.captureStream();
-      mediaRecorder = new MediaRecorder(vidStream, {mimeType: "video/webm"});
       
-      mediaRecorder.ondataavailable = handleDataAvailable;
-mediaRecorder.start(1000);
-
-recStopped=false;
-
     })
     .catch(function (err0r) {
       console.log("Something went wrong!\n"+err0r);
     });
 }
-
-function handleDataAvailable(event) {
-    
-    
-    recordedChunks.push(event.data);
-    if(!recStopped){
-    mediaRecorder.stop();
-    recStopped=true;
-    
-    }else{
-      mediaRecorder.start(1000);
-    recStopped=false;
-  
-    }
-    //alert("started");
-  
-    // ...
-    
-  
-}
-
 
 
 videoElement.addEventListener('play', function () {
@@ -78,6 +49,42 @@ videoElement.addEventListener('play', function () {
         }
     })();
 }, 0);
+
+
+if (window.MediaSource) {
+  var mediaSource = new MediaSource();
+  videoElement.src = URL.createObjectURL(mediaSource);
+  mediaSource.addEventListener('sourceopen', sourceOpen);
+} else {
+  console.log("The Media Source Extensions API is not supported.")
+}
+
+function sourceOpen(e) {
+  URL.revokeObjectURL(videoElement.src);
+  var mime = 'video/webm; codecs="opus, vp09.00.10.08"';
+  var mediaSource = e.target;
+  var sourceBuffer = mediaSource.addSourceBuffer(mime);
+  var videoUrl = './droid.webm';
+  fetch(videoUrl)
+    .then(function(response) {
+      return response.arrayBuffer();
+    })
+    .then(function(arrayBuffer) {
+      sourceBuffer.addEventListener('updateend', function(e) {
+        if (!sourceBuffer.updating && mediaSource.readyState === 'open') {
+          mediaSource.endOfStream();
+        }
+      });
+      sourceBuffer.appendBuffer(arrayBuffer);
+    })
+    .catch(function(e){
+      console.log(e);
+    });
+}
+
+
+
+/*
 
 setTimeout(function(){
  setInterval(function(){
@@ -112,6 +119,7 @@ setTimeout(function(){
   },1000);
 },2000);
 },4100);
+*/
     </script>
   </body>
 </html>
