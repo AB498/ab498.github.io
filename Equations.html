@@ -229,6 +229,7 @@
     		pushId="";
     		eqnClass=document.getElementsByClassName("eqnOn");
     		autoCheck=true;
+    		backupDate=new Date().toDateString();
     		
     		function checkData (val) {
     		
@@ -328,7 +329,7 @@
     		//const usersRef = dbRef.child('equations');
     		const status = db.ref("onlineStatus");
     		
-    		checkIfExists("Dhdhs");
+    		checkIfExists(backupDate);
     		
     		randOn=""+Math.random();
     		status.onDisconnect().set(randOn);
@@ -388,14 +389,15 @@
     		else{
     		  col = "lightblue";
     		  //setTimeout(function(){
-    		    //update(childSnap,childData1,childData2,generateRandomColor());
+    		    update(childSnap,childData1,childData2,generateRandomColor());
+    		    throw {};
     		  //},30000);
     		}
     		
     		if(backupRequired){
     		  //alert(0);
-    		  backup(childSnap,childData1,childData2,col,"Dhdhs");
-    		  checkIfExists('Dhdhs');
+    		  backup(childSnap,childData1,childData2,col,backupDate);
+    		  checkIfExists(backupDate);
     		}
     		datae.push({id:childSnap,name:childData1,content:childData2,color:col});
     	cntt++;
@@ -420,6 +422,9 @@
     			newElm=document.getElementById(""+item.id);
     			newElm.scrollIntoView({ behavior: 'smooth', block: 'end'});
     			
+    			setTimeout(function(){
+    			  newElm.className='item';
+    			},10000);
     			}else{
     			  className="item";
     			dbdata.innerHTML+="<div class='"+className+"' id='"+item.id+"' onclick='removeItem(\""+item.id+"\")'>"+q(item.name)+" : "+q(item.content)+"</div>";
@@ -439,9 +444,7 @@
     		valueI=document.getElementById("value");
     		
     function update(id ,key, value, color){
-      if(keyI.value!="" && valueI.value!="")
-           { 
-    		if(key==null || value==null){
+      	if(key==null || value==null){
     		key=keyI.value;
     		if(checkBox.checked==true){
     			value="\\("+valueI.value+"\\)";
@@ -461,9 +464,7 @@
     		
     		dbRef.child(pushId).set(dataToPush);
     		
-    		}else{
-    		  alert("Empty");
-    		}
+    	
     }
     
     function backup(id ,key, value, color,dbRef){
@@ -568,7 +569,7 @@
     		editDiv=document.getElementById("edit"+id);
     		editDivChilds=editDiv.childNodes;
     		
-    		update(id,editDivChilds[0].value,editDivChilds[1].value,null);
+    		update(id,editDivChilds[0].value,editDivChilds[1].value,generateRandomColor());
     		
     		}
     		
@@ -617,9 +618,9 @@
     		function generateRandomColor()
     		{
     		var randomColor = '#';
-    		randomColor+=randInt(100,210).toString(16);
-    		randomColor+=randInt(100,210).toString(16);
-    		randomColor+=randInt(100,210).toString(16);
+    		randomColor+=randInt(10,250).toString(16);
+    		randomColor+=randInt(10,250).toString(16);
+    		randomColor+=randInt(10,250).toString(16);
     		return randomColor;
     		//random color will be freshly served
     		}
