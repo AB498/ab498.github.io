@@ -174,7 +174,7 @@
     
     
     <br><br>
-    <button class="glow-on-hover assist" style="background-color:#333" onclick="update(null, null);">Update</button>
+    <button class="glow-on-hover assist" style="background-color:#333" onclick="update(null, null, null, generateRandomColor());">Update</button>
     <button class="glow-on-hover assist" style="background-color:#333" onclick="clearInputs();">Clear/New</button>
     
     <p id="preview"> Preview will appear here...</p>
@@ -316,6 +316,8 @@
     		dbdata.innerHTML="";
   			datae=[];
     		dat=snap.val();
+    		
+    		cntt=0;
     		Object.keys(dat).forEach(function(childSnap) {
     		//alert(JSON.stringify(childSnap));
     		dataTmp=dat[childSnap];
@@ -324,18 +326,36 @@
     		//alert(JSON.stringify(datae));
     		var childData2 = dataTmp[Object.keys(dataTmp)[0]];
     		var childData1 = Object.keys(dataTmp)[0];
-    		
-    		datae.push({id:childSnap,name:childData1,content:childData2});
-    	
+    		if(dataTmp['color'])
+    		  col = dataTmp['color'];
+    		else{
+    		  col = "lightblue";
+    		  //setTimeout(function(){
+    		    //update(childSnap,childData1,childData2,generateRandomColor());
+    		  //},30000);
+    		}
+    		datae.push({id:childSnap,name:childData1,content:childData2,color:col});
+    	cntt++;
+    	//if(cntt>300){
+    		//dbRef.child(childSnap).remove();
+    	//}
     		//alert(childSnap);
     		});
     		sortedData = sortJSON(datae,'name','123');
     		sortedData.forEach(function(item, index) {
+    		sortedData.forEach(function(itm,idx) {
+    		if (itm.name == item.name && itm.id!=item.id) {
+    		//alert('exists');
+    		dbRef.child(itm.id).remove();
+    	
+    		}
+    		});
     			if(item.id==pushId){
     				className="new";
     				
     			}else{className="item";}
     			dbdata.innerHTML+="<div class='"+className+"' id='"+item.id+"' onclick='removeItem(\""+item.id+"\")'>"+q(item.name)+" : "+q(item.content)+"</div>";
+    			document.getElementById(""+item.id).style.backgroundImage="linear-gradient(75deg,orange,"+item.color+","+item.color+",gold)";
     		});
     		
     		
@@ -346,7 +366,7 @@
     		keyI=document.getElementById("key");
     		valueI=document.getElementById("value");
     		
-    		function update(key, value){
+    function update(id ,key, value, color){
     		if(key==null || value==null){
     		key=keyI.value;
     		if(checkBox.checked==true){
@@ -358,8 +378,12 @@
     		//dbRef.child(key).set(value);
     		dataToPush={};
     		dataToPush[key]=value;
+    		dataToPush['color']=color;
+    		if(id!=null)
+    			pushId=id;
+    		else
+    			pushId=dbRef.push().getKey();
     		
-    		pushId=dbRef.push().getKey();
     		dbRef.child(pushId).set(dataToPush);
     		}
     		
@@ -492,6 +516,21 @@
     			return strrr.replace("[\"]\g", "\"").replace("[\']\g", "\'");;
     		} 
     		
+    		function generateRandomColor()
+    		{
+    		var randomColor = '#';
+    		randomColor+=randInt(140,210).toString(16);
+    		randomColor+=randInt(140,210).toString(16);
+    		randomColor+=randInt(140,210).toString(16);
+    		return randomColor;
+    		//random color will be freshly served
+    		}
+    		/**
+    		* Returns a random number between min (inclusive) and max (exclusive)
+    		*/
+    		function randInt(min, max) {
+    		return Math.random() * (max - min) + min;
+    		}
     	</script> 
     </body>
 </html>
