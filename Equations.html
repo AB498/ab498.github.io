@@ -229,7 +229,8 @@
     		pushId="";
     		eqnClass=document.getElementsByClassName("eqnOn");
     		autoCheck=true;
-    		backupDate=new Date().toDateString();
+    		date=new Date();
+    		backupDate=date.getDate()+"."+(date.getMonth()+1)+"."+date.getFullYear();
     		
     		function checkData (val) {
     		
