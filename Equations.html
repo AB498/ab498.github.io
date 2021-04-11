@@ -303,7 +303,9 @@
     		
     		
     		db=firebase.database();
-    		dbRef = db.ref("equations");
+    		dbRef = db.ref("equations").child('user');
+    		
+    		backupRequired=false;
     		
     		function checkIfExists(userId) {
     		  
@@ -327,6 +329,16 @@
     		  }
     		  
     		}
+    		
+    		db.ref('equations').child('user').once('value', function(snapshot) {
+    		dexists = (snapshot.val() != null);
+    		  if(dexists);
+    		    //alert("exitst");
+    		  else
+    		    alert("doests exts");
+    		    cloneLastBackup(db.ref('backups').child(backupDate),dbRef);
+    		});
+    		
     		//const usersRef = dbRef.child('equations');
     		const status = db.ref("onlineStatus");
     		
@@ -338,6 +350,16 @@
     		
     		// ... sometime later
     		//status.onDisconnect().cancel();
+    		
+    		function cloneLastBackup(oldRef, newRef) {
+    		  //alert(0);
+    		
+    		oldRef.once('value', function(snap) {
+    		newRef.set( snap.val(), function(error) {
+    		if( error && typeof(console) !== 'undefined' && console.error ) { console.error(error); }
+    		});
+    		});
+    		}
     		
     		status.on('value', function(snap) {
     		
@@ -385,6 +407,8 @@
     		//alert(JSON.stringify(datae));
     		var childData2 = dataTmp['value'];
     		var childData1 = dataTmp["key"];
+    		
+    		//alert(JSON.stringify(dataTmp));
     		if(dataTmp['color'])
     		  col = dataTmp['color'];
     		else{
@@ -401,6 +425,7 @@
     		  checkIfExists(backupDate);
     		}
     		datae.push({id:childSnap,name:childData1,content:childData2,color:col});
+    		//alert(0);
     	cntt++;
     	//if(cntt>300){
     		//dbRef.child(childSnap).remove();
@@ -418,6 +443,7 @@
     		});
     			if(item.id==pushId){
     				className="new";
+    				//alert(0);
     				dbdata.innerHTML+="<div class='"+className+"' id='"+item.id+"' onclick='removeItem(\""+item.id+"\")'>"+q(item.name)+" : "+q(item.content)+"</div>";
     			
     			newElm=document.getElementById(""+item.id);
