@@ -332,11 +332,13 @@
     		
     		db.ref('equations').child('user').once('value', function(snapshot) {
     		dexists = (snapshot.val() != null);
-    		  if(dexists);
+    		  if(dexists){
     		    //alert("exitst");
-    		  else
+    		  } 
+    		  else{
     		    alert("doests exts");
     		    cloneLastBackup(db.ref('backups').child(backupDate),dbRef);
+    		  } 
     		});
     		
     		//const usersRef = dbRef.child('equations');
