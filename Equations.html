@@ -28,6 +28,16 @@
         <title>Sample CRUD Firebase Javascript - 01 Read Data</title>
 		<style type="text/css">
 		
+		
+		body{
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		}
+		
 		#dbdata {
 			box-sizing:border-box;
 			background-color:aqua;
@@ -456,7 +466,9 @@
     			
           
     	    scrollToId=""+item.id;
-    	    
+    	    newElms=document.getElementById(""+item.id);
+    			newElms.style.backgroundImage="linear-gradient(75deg,orange,"+item.color+","+item.color+",gold)";
+    			
     			
     			}else{
     			  className="item";
@@ -485,9 +497,23 @@
     			},10000);
     			}
     		});
+    		
+    		document.querySelectorAll('.item').forEach(function(newlmn) {
+    // Now do something with my button
+    setLongClickListener(newlmn);
+    			
+    			
+});
+    			
     			
     		});
     		
+    		
+
+
+
+
+
     		
     		keyI=document.getElementById("key");
     		valueI=document.getElementById("value");
@@ -691,6 +717,42 @@
     		return parseInt(Math.random() * (max - min) + min);
     		}
     		
+    		hold_trigger = $('.item');
+        hold_time=1000;
+        
+        
+var gnStartTime = 0;
+var gbMove = false;
+var gbStillTouching = false;
+
+function checkTapHold(nID,ellm) {
+  if ((!gbMove) && (gbStillTouching) && (gnStartTime == nID)) {
+    gnStartTime = 0;
+    gbMove = false; 
+    //alert('tap hold event');    
+    
+    
+    
+  }
+}
+function setLongClickListener(elmn){
+  
+elmn.addEventListener('touchstart',function(event) {
+  
+  gbMove = false;
+  gbStillTouching = true;
+  gnStartTime = Number(new Date());
+  setTimeout(checkTapHold, hold_time, gnStartTime, event.target);
+},false);
+
+elmn.addEventListener('touchmove',function(event) {
+  gbMove = true;
+},false);
+
+elmn.addEventListener('touchend',function(event) {
+  gbStillTouching = false;
+},false);
+    	}
     	</script> 
     </body>
 </html>
