@@ -16,7 +16,7 @@
                 -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script type="text/x-mathjax-config">
-            MathJax.Hub.Config({  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+            MathJax.Hub.Config({  showMathMenu: false, tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
             MathJax.Hub.Register.StartupHook("End",function () {
             console.log("Mathjax loaded");
             console.log(typeof MathJax);
@@ -92,7 +92,6 @@
 		position: relative;
 		z-index: 0;
 		border-radius: 10px;
-		padding:15px;
 		}
 		
 		.glow-on-hover:before {
@@ -232,7 +231,6 @@
     		
     		
     	
-    		
     		
     		dbdata=document.querySelector("#dbdata");
     		sortI=document.querySelector("#sort");
@@ -462,7 +460,7 @@
     			if(item.id==pushId){
     				className="new";
     				//alert(0);
-    				dbdata.innerHTML+="<div class='"+className+"' id='"+item.id+"' onclick='removeItem(\""+item.id+"\")'>"+q(item.name)+" : "+q(item.content)+"</div>";
+    				dbdata.innerHTML+="<div class='"+className+"' id='"+item.id+"'>"+q(item.name)+" : "+q(item.content)+"</div>";
     			
           
     	    scrollToId=""+item.id;
@@ -472,7 +470,7 @@
     			
     			}else{
     			  className="item";
-    			dbdata.innerHTML+="<div class='"+className+"' id='"+item.id+"' onclick='removeItem(\""+item.id+"\")'>"+q(item.name)+" : "+q(item.content)+"</div>";
+    			dbdata.innerHTML+="<div class='"+className+"' id='"+item.id+"'>"+q(item.name)+" : "+q(item.content)+"</div>";
     			
     			newElms=document.getElementById(""+item.id);
     			newElms.style.backgroundImage="linear-gradient(75deg,orange,"+item.color+","+item.color+",gold)";
@@ -577,10 +575,8 @@
     			preview.textContent="\\("+val+"\\)";
     			MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
     			
-    		}
-    		function removeItem(id){
-    		options(id);
-    		}
+    		};
+    		
     		function sortJSON(arr, key, way) {
     		return arr.sort(function(a, b) {
     		var x = a[key]; var y = b[key];
@@ -731,6 +727,7 @@ function checkTapHold(nID,ellm) {
     gbMove = false; 
     //alert('tap hold event');    
     
+    options(ellm.id);
     
     
   }
@@ -739,6 +736,7 @@ function setLongClickListener(elmn){
   
 elmn.addEventListener('touchstart',function(event) {
   
+  event.target.classList.add("glow-on-hover");
   gbMove = false;
   gbStillTouching = true;
   gnStartTime = Number(new Date());
@@ -750,6 +748,8 @@ elmn.addEventListener('touchmove',function(event) {
 },false);
 
 elmn.addEventListener('touchend',function(event) {
+  event.target.classList.remove("glow-on-hover");
+  
   gbStillTouching = false;
 },false);
     	}
