@@ -258,15 +258,55 @@
     			sortedData.forEach(function(item, index) {
     			if(item.name.toLowerCase().includes(match.toLowerCase())){
     			//alert(fuzzball.ratio(item.name, match));
+    			
     			if(item.id==pushId){
-    			className="new";
+    				className="new";
+    				//alert(0);
+    				dbdata.innerHTML+="<div class='"+className+"' id='"+item.id+"'>"+q(item.name)+" : "+q(item.content)+"</div>";
     			
-    			}else{className="item";}
-    			dbdata.innerHTML+="<div class='"+className+"' id='"+item.id+"' onclick='removeItem(\""+item.id+"\")'>"+q(item.name)+" : "+q(item.content)+"</div>";
+          
+    	    scrollToId=""+item.id;
+    	    newElms=document.getElementById(""+item.id);
+    			newElms.style.backgroundImage="linear-gradient(75deg,orange,"+item.color+","+item.color+",gold)";
+    			
+    			
+    			}else{
+    			  className="item";
+    			dbdata.innerHTML+="<div class='"+className+"' id='"+item.id+"'>"+q(item.name)+" : "+q(item.content)+"</div>";
+    			
+    			newElms=document.getElementById(""+item.id);
+    			newElms.style.backgroundImage="linear-gradient(75deg,orange,"+item.color+","+item.color+",gold)";
     			}
-    			});
     			
-    			updatePreview();
+    			
+    			
+    			
+    		}
+    		});
+    		
+    		
+    		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+    		MathJax.Hub.Queue(function(){
+    		
+    		newElm=document.getElementById(scrollToId);
+    			if(newElm)
+    			{
+    			  
+    			  newElm.scrollIntoView({ behavior: 'smooth', block: 'end'});
+    			setTimeout(function(){
+    			  newElm.className='item';
+    			},10000);
+    			}
+    		});
+    		
+    		document.querySelectorAll('.item, .new').forEach(function(newlmn) {
+    // Now do something with my button
+    setLongClickListener(newlmn);
+    			
+    			
+});
+    		
+    		    			updatePreview();
     			
     		}
     		
@@ -500,7 +540,7 @@
     			}
     		});
     		
-    		document.querySelectorAll('.item').forEach(function(newlmn) {
+    		document.querySelectorAll('.item, .new').forEach(function(newlmn) {
     // Now do something with my button
     setLongClickListener(newlmn);
     			
@@ -665,7 +705,7 @@
     			myField=this;
     		});
     		
-    		function insertAtCursor(myFiel, myValue) {
+    		function insertAtCursor(myField, myValue) {
     		
     		//myField=valueI;//document.activeElement;
     		
