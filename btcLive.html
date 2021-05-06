@@ -3,9 +3,19 @@
 <head>
 <title></title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js" integrity="sha512-eVL5Lb9al9FzgR63gDs1MxcDS2wFu3loYAgjIH0+Hg38tCS8Ag62dwKyH+wzDb+QauDpEZjXbMn11blw8cbTJQ==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js" integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg==" crossorigin="anonymous"></script>
+<script src="assets/js/Chart.min.js"></script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  
+#logs{
+  padding:10px;
+  height: 100%;
+}
+
+
+</style>
+
 </head>
 <body>
 
@@ -23,7 +33,7 @@
 
 var ctx = document.getElementById('chart').getContext('2d');
     
-    dur=100;
+    dur=200;
     fee=0.2;
     prevPrc=0;
     count = 0;
@@ -37,21 +47,8 @@ var chart = new Chart(ctx, {
         datasets: [{
           label: 'Chart',
           data: [],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
+          backgroundColor: [],
+          borderColor: ["yellow"
           ],
           borderWidth: 1
         }]
@@ -83,7 +80,7 @@ var chart = new Chart(ctx, {
     }
     
     function removeData(chart) {
-    chart.data.labels.pop();
+    chart.data.labels.splice(0,1);
     chart.data.datasets.forEach((dataset) => {
     dataset.data.splice(0,1);
     dataset.backgroundColor.splice(0,1);
@@ -108,13 +105,14 @@ socket.onmessage = function (event) {
     if(up){
     col="yellow";
     }else{
-    col="red"}
+    col="lightblue"}
     
-    lastPrc=prc
-	p.textContent=prc;
-    addData(chart,ts.getMinutes()+":"+ts.getSeconds(),p.textContent,col);
+    lastPrc=prc;
+  	p.textContent=prc;
+  	p.style.backgroundColor=col;
+    addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
     count++;
-    if(count > 50){
+    if(count > 200){
     removeData(chart);
     }
     
