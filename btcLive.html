@@ -94,6 +94,9 @@ p=document.querySelector("#log");
 var socket = new WebSocket('wss://btc.data.hxro.io/live');
 
 lastPrc=0;
+win=0;
+loss=0;
+rate=0;
 
 socket.onmessage = function (event) {
     var msg = (event.data);
@@ -102,14 +105,20 @@ socket.onmessage = function (event) {
     ts=new Date(dat["ts"]);
     
     up = prc>lastPrc;
+    diff=prc-lastPrc;
+    
     if(up){
     col="yellow";
+    win++;
     }else{
-    col="lightblue"}
-    
+    col="lightblue";
+      loss++;
+    }
+    rate=Number(win/(win+loss)*100).toFixed(2);
     lastPrc=prc;
-  	p.textContent=prc;
-  	p.style.backgroundColor=col;
+  	p.innerHTML=prc+"<br>"+rate+"%";
+  	if(diff>10)p.style.backgroundColor="yellow";
+    if(diff<-10)p.style.backgroundColor="lightblue";
     addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
     count++;
     if(count > 200){
@@ -117,7 +126,27 @@ socket.onmessage = function (event) {
     }
     
     
+    
 };
+
+
+
+
+setInterval(function(){
+  
+  
+  if(rate<50){
+    rate=(parseFloat(rate)+0.1).toFixed(2);
+  }else{
+    rate=(parseFloat(rate)-0.1).toFixed(2);
+  }
+  p.innerHTML=prc+"<br>"+rate+"%";
+  	
+},30);
+
+
+
+
 </script>
 </body>
 </html>
