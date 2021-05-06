@@ -1,0 +1,124 @@
+
+<html>
+<head>
+<title></title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js" integrity="sha512-eVL5Lb9al9FzgR63gDs1MxcDS2wFu3loYAgjIH0+Hg38tCS8Ag62dwKyH+wzDb+QauDpEZjXbMn11blw8cbTJQ==" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8" src="Download/Chart.min.js"></script>
+
+</head>
+<body>
+
+<p id="log" ></p>
+
+
+  <canvas id="chart" width="100%" height="70%">
+
+  </canvas>
+  
+  
+  
+<script type="text/javascript">
+
+
+var ctx = document.getElementById('chart').getContext('2d');
+    
+    dur=100;
+    fee=0.2;
+    prevPrc=0;
+    count = 0;
+    volt=5;
+    prc=57000;
+    
+var chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [count],
+        datasets: [{
+          label: 'Chart',
+          data: [],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            }
+          }],
+          
+        },
+        animation: {
+        duration: dur*1,
+        easing: 'easeOutExpo'
+        }
+      }
+    });
+	minInChart=0;
+    function addData(chart, label, data, color) {
+      chart.data.labels.push(label);
+      chart.data.datasets.forEach((dataset) => {
+        dataset.data.push(data);
+        dataset.backgroundColor.push(color);
+        minInChart=(Math.min.apply(Math,dataset.data));
+      });
+      chart.update();
+    }
+    
+    function removeData(chart) {
+    chart.data.labels.pop();
+    chart.data.datasets.forEach((dataset) => {
+    dataset.data.splice(0,1);
+    dataset.backgroundColor.splice(0,1);
+    });
+    chart.update();
+    }
+    
+
+
+p=document.querySelector("#log");
+var socket = new WebSocket('wss://btc.data.hxro.io/live');
+
+lastPrc=0;
+
+socket.onmessage = function (event) {
+    var msg = (event.data);
+    dat=JSON.parse(JSON.stringify(msg).replaceAll("\\","").slice(1,-1));
+    prc=parseFloat(dat["price"]);
+    ts=new Date(dat["ts"]);
+    
+    up = prc>lastPrc;
+    if(up){
+    col="yellow";
+    }else{
+    col="red"}
+    
+    lastPrc=prc
+	p.textContent=prc;
+    addData(chart,ts.getMinutes()+":"+ts.getSeconds(),p.textContent,col);
+    count++;
+    if(count > 50){
+    removeData(chart);
+    }
+    
+    
+};
+</script>
+</body>
+</html>
