@@ -8,6 +8,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 
+html[data-theme='dark'] {
+    background: #fff;
+    filter: invert(1) hue-rotate(0deg)
+}
   
 #price, #botDiv{
   padding:10px;
@@ -64,6 +68,18 @@
   
   
 <script type="text/javascript">
+
+const htmlEl = document.getElementsByTagName('html')[0];
+
+const toggleTheme = (theme) => {
+    htmlEl.dataset.theme = theme;
+}
+
+
+toggleTheme('dark');
+
+
+
 
 balance=document.querySelector("#balance");
 amount=document.querySelector("#amount");
@@ -129,7 +145,7 @@ function buyReq(amnt, lever, prof){
   }).then((vall)=>{
      
      logs.insertAdjacentHTML("afterend",JSON.stringify(vall)+"<br>");
-   alert("buy");
+   //alert("buy");
    getBal();
   
   });
@@ -151,7 +167,7 @@ function sellReq(amnt, lever, prof){
   return val.json();
   }).then((vall)=>{
     logs.insertAdjacentHTML("afterend",JSON.stringify(vall)+"<br>");
-  alert("sell");
+  //alert("sell");
   getBal();
   
   });
@@ -333,7 +349,7 @@ setInterval(function(){
   getBal();
   
   
-},30000);
+},5000);
 
 </script>
 </body>
