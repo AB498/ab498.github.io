@@ -202,7 +202,7 @@ socket.onmessage = function (event) {
     }
     
     
-    if(!onceDone){
+    if(!onceDone&&bal!=0){
       amount.value=((leverage.value*bal)/prc).toFixed(5);
       onceDone=true;
     }
