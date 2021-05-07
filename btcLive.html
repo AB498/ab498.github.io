@@ -9,9 +9,10 @@
 <style>
 
   
-#logs{
+#price{
   padding:10px;
-  height: 100%;
+  width: 95%;
+  border-radius: 10px;
 }
 
 
@@ -20,7 +21,7 @@
 </head>
 <body>
 
-<p id="log" ></p>
+<p id="price" ></p>
 
 
   <canvas id="chart" width="100%" height="70%">
@@ -34,6 +35,7 @@
   <button id="cancelAll" onclick="cancellAll()">Cancel All </button>
   
   <p id="balance">Balance</p>
+  <p id="logs">Logs:</p>
   
   
 <script type="text/javascript">
@@ -44,28 +46,35 @@ leverage=document.querySelector("#leverage");
 buy=document.querySelector("#buy");
 sell=document.querySelector("#sell");
 cancelAll=document.querySelector("#cancelAll");
+logs=document.querySelector("#logs");
 
 url="https://site498.glitch.me";
 bal=0
 onceDone=false;
+positions=0;
 
 function getBal(){
 fetch(url+"/getBalance").then((val)=>{
   return val.json();
   }).then((vall)=>{
-    bal=vall.assets[1]["walletBalance"]
-    balance.innerHTML=bal;
+    bal=vall[1][1]["crossWalletBalance"]
+    
+    positions=vall[0]["positionAmt"];
+    
+    balance.innerHTML=bal+"<br>Positions: "+positions;
+    
   });
-  
 }
   
   getBal();
+  
+
 
 function buyReq(amnt, lever){
   
   if(amnt==null||lever==null){
     
-    amnt=amount.value;
+    amnt=parseFloat(amount.value).toFixed(4);
     lever=leverage.value;
     
   }
@@ -74,7 +83,7 @@ function buyReq(amnt, lever){
   }).then((vall)=>{
     balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
   });
-  
+  logs.innerHTML+="<br>Buy: "+prc;
   getBal();
   
 }
@@ -84,7 +93,7 @@ function sellReq(amnt, lever){
   
   if(amnt==null||lever==null){
     
-    amnt=amount.value;
+    amnt=parseFloat(amount.value).toFixed(4);
     lever=leverage.value;
     
   }
@@ -95,6 +104,7 @@ function sellReq(amnt, lever){
     balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
   });
   
+  logs.innerHTML+="<br>Sell: "+prc;
   getBal();
   
 }
@@ -170,13 +180,17 @@ var chart = new Chart(ctx, {
     
 
 
-p=document.querySelector("#log");
+p=document.querySelector("#price");
 var socket = new WebSocket('wss://btc.data.hxro.io/live');
 
 lastPrc=0;
 win=0;
 loss=0;
 rate=0;
+goingUp=0;
+goingDown=0;
+bigChangeCount=0;
+difficulty=2;
 
 socket.onmessage = function (event) {
     var msg = (event.data);
@@ -196,10 +210,37 @@ socket.onmessage = function (event) {
     }
     rate=Number(win/(win+loss)*100).toFixed(2);
     lastPrc=prc;
-  	p.innerHTML=prc+"<br>"+rate+"%";
-  	if(diff>10)p.style.backgroundColor="yellow";
-    if(diff<-10)p.style.backgroundColor="lightblue";
-    addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
+  	p.innerHTML=prc+"<br>"+rate+"%<br>u:"+goingUp+" d:"+goingDown;
+  	if(diff>10 && bigChangeCount!=count-1){
+  	  
+  	  goingDown+=1;
+  	  goingUp=0;
+      
+      bigChangeCount=count;
+      if(goingDown>=difficulty && positions==0){
+        sellReq(null,null);
+        positions=1;
+      }
+  	  p.style.backgroundColor="yellow";
+  	  
+  	}
+    if(diff<-10 && bigChangeCount!=count-1){
+  	  
+  	  goingDown=0;
+  	  goingUp+=1;
+  	  
+  	  bigChangeCount=count;
+  	  if(goingUp>=difficulty && positions==0){
+  	    buyReq(null,null);
+  	    positions=1;
+  	  }
+  	  p.style.backgroundColor="lightblue";
+  	  
+  	}
+  	//if(bigChangeCount<count)bigChangeCount=0;
+  	
+
+addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
     count++;
     if(count > 200){
     removeData(chart);
@@ -207,7 +248,7 @@ socket.onmessage = function (event) {
     
     
     if(!onceDone&&bal!=0){
-      amount.value=((leverage.value*bal)/prc/5).toFixed(5);
+      amount.value=((leverage.value*bal)/prc/3).toFixed(4);
       onceDone=true;
     }
     
@@ -224,8 +265,7 @@ setInterval(function(){
   }else{
     rate=(parseFloat(rate)-0.1).toFixed(2);
   }
-  p.innerHTML=prc+"<br>"+rate+"%";
-  	
+  p.innerHTML=prc+"<br>"+rate+"%<br>u:"+goingUp+" d:"+goingDown;
 },30);
 
 
