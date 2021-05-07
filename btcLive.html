@@ -47,7 +47,7 @@ html[data-theme='dark'] {
   </canvas>
   
   <input id="amount" value="0">
-  <input id="leverage" value="25">
+  <input id="leverage" value="50">
   <input id="difficulty" value="3" oninput="changeDiff(this)">
   <br>
   <button id="buy" onclick="buyReq(null,null,null)">Buy</button>
@@ -257,7 +257,7 @@ rate=0;
 goingUp=0;
 goingDown=0;
 bigChangeCount=0;
-difficulty=2;
+difficulty=difficultyInput.value;
 cooldown=false;
 
 socket.onmessage = function (event) {
