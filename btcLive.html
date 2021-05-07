@@ -49,6 +49,7 @@ html[data-theme='dark'] {
   <input id="amount" value="0">
   <input id="leverage" value="50">
   <input id="difficulty" value="3" oninput="changeDiff(this)">
+  <input id="profitThreshold" value="70" oninput="changeProf(this)">
   <br>
   <button id="buy" onclick="buyReq(null,null,null)">Buy</button>
   <button id="sell" onclick="sellReq(null,null,null)">Sell</button>
@@ -89,19 +90,26 @@ sell=document.querySelector("#sell");
 cancelAll=document.querySelector("#cancelAll");
 logs=document.querySelector("#logs");
 difficultyInput=document.querySelector("#difficulty");
+profitThresholdInput=document.querySelector("#profitThreshold");
 
 function changeDiff(el){
   
   difficulty=el.value;
   
 }
+function changeProf(el){
+  
+  profitThreshold=el.value;
+  
+}
+
 
 url="https://site498.glitch.me";
 bal=0
 onceDone=false;
 positions=0;
 botOn=true;
-profitThreshold=70;
+profitThreshold=profitThresholdInput.value;
 
 function getBal(){
 fetch(url+"/getBalance").then((val)=>{
