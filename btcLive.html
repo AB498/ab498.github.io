@@ -7,6 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+
   
 #logs{
   padding:10px;
@@ -26,11 +27,86 @@
 
   </canvas>
   
-  
+  <p id="balance">Balance</p>
+  <input id="amount" value="0">
+  <input id="leverage" value="25">
+  <button id="buy" onclick="buyReq(null,null)">Buy</button>
+  <button id="sell" onclick="sellReq(null,null)">Sell</button>
+  <button id="cancelAll" onclick="cancellAll()">Cancel All </button>
   
 <script type="text/javascript">
 
+balance=document.querySelector("#balance");
+amount=document.querySelector("#amount");
+leverage=document.querySelector("#leverage");
+buy=document.querySelector("#buy");
+sell=document.querySelector("#sell");
+cancelAll=document.querySelector("#cancelAll");
 
+url="https://site498.glitch.me";
+bal=0
+onceDone=false;
+
+fetch(url+"/getBalance").then((val)=>{
+  return val.json();
+  }).then((vall)=>{
+    bal=vall.assets[1]["walletBalance"]
+    balance.innerHTML=bal;
+  });
+  
+  
+  
+
+function buyReq(amnt, lever){
+  
+  if(amnt==null||lever==null){
+    
+    amnt=amount.value;
+    lever=leverage.value;
+    
+  }
+  fetch(url+"/buy?amount="+amnt+"&leverage="+lever).then((val)=>{
+  return val.json();
+  }).then((vall)=>{
+    balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
+  });
+  
+  
+  
+}
+
+function sellReq(amnt, lever){
+  
+  
+  if(amnt==null||lever==null){
+    
+    amnt=amount.value;
+    lever=leverage.value;
+    
+  }
+  
+  fetch(url+"/sell?amount="+amnt+"&leverage="+lever).then((val)=>{
+  return val.json();
+  }).then((vall)=>{
+    balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
+  });
+  
+  
+  
+}
+
+
+function cancellAll(){
+  
+  fetch(url+"/cancelAll").then((val)=>{
+  return val.json();
+  }).then((vall)=>{
+    balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
+  });
+  
+  
+  
+}
 var ctx = document.getElementById('chart').getContext('2d');
     
     dur=200;
@@ -126,6 +202,10 @@ socket.onmessage = function (event) {
     }
     
     
+    if(!onceDone){
+      amount.value=((leverage.value*bal)/prc).toFixed(5);
+      onceDone=true;
+    }
     
 };
 
