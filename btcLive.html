@@ -44,6 +44,8 @@
   
   <input id="amount" value="0">
   <input id="leverage" value="25">
+  <input id="difficulty" value="3" oninput="changeDiff(this)">
+  <br>
   <button id="buy" onclick="buyReq(null,null,null)">Buy</button>
   <button id="sell" onclick="sellReq(null,null,null)">Sell</button>
   <br>
@@ -70,6 +72,13 @@ buy=document.querySelector("#buy");
 sell=document.querySelector("#sell");
 cancelAll=document.querySelector("#cancelAll");
 logs=document.querySelector("#logs");
+difficultyInput=document.querySelector("#difficulty");
+
+function changeDiff(el){
+  
+  difficulty=el.value;
+  
+}
 
 url="https://site498.glitch.me";
 bal=0
@@ -116,7 +125,7 @@ function buyReq(amnt, lever, prof){
     
   }
   fetch(url+"/buy?amount="+amnt+"&leverage="+lever+"&profitThreshold="+profitThreshold).then((val)=>{
-  return val;
+  return val.json();
   }).then((vall)=>{
    // balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
    alert("buy");
@@ -138,7 +147,7 @@ function sellReq(amnt, lever, prof){
   }
   
   fetch(url+"/sell?amount="+amnt+"&leverage="+lever+"&profitThreshold="+profitThreshold).then((val)=>{
-  return val;
+  return val.json();
   }).then((vall)=>{
   //  balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
   alert("sell");
