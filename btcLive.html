@@ -44,8 +44,8 @@
   
   <input id="amount" value="0">
   <input id="leverage" value="25">
-  <button id="buy" onclick="buyReq(null,null)">Buy</button>
-  <button id="sell" onclick="sellReq(null,null)">Sell</button>
+  <button id="buy" onclick="buyReq(null,null,null)">Buy</button>
+  <button id="sell" onclick="sellReq(null,null,null)">Sell</button>
   <br>
   <button id="cancelAll" onclick="cancellAll()">Cancel All </button>
   <br>
@@ -262,7 +262,7 @@ socket.onmessage = function (event) {
       if(goingDown>=difficulty && !cooldown){
         cooldown=true;
   	    setTimeout(function(){cooldown=false;},60000);
-  	    if(botOn)sellReq(null,null);
+  	    if(botOn)sellReq(null,null,null);
         
       }
   	  p.style.backgroundColor="yellow";
@@ -278,7 +278,7 @@ socket.onmessage = function (event) {
   	  if(goingUp>=difficulty && !cooldown){
   	    cooldown=true;
   	    setTimeout(function(){cooldown=false;},60000);
-  	    if(botOn)buyReq(null,null);
+  	    if(botOn)buyReq(null,null,null);
   	    
   	  }
   	  p.style.backgroundColor="lightblue";
