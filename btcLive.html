@@ -46,7 +46,10 @@
   <input id="leverage" value="25">
   <button id="buy" onclick="buyReq(null,null)">Buy</button>
   <button id="sell" onclick="sellReq(null,null)">Sell</button>
+  <br>
   <button id="cancelAll" onclick="cancellAll()">Cancel All </button>
+  <br>
+  <button id="baln" onclick="getBal()">Get Balance</button>
   
   <div id="botDiv" class="botActive" onclick="botToggle(this.children[0])">
   <input id="bot" checked="checked" type="checkbox">Bot
@@ -156,7 +159,6 @@ function cancellAll(){
     balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
   });
   
-  getBal();
   
 }
 var ctx = document.getElementById('chart').getContext('2d');
@@ -316,7 +318,7 @@ setInterval(function(){
 /*
 setInterval(function(){
   
-  getBalance();
+  getBal();
   
   
 },30000);*/
