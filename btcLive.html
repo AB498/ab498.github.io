@@ -112,17 +112,19 @@ function buyReq(amnt, lever){
     lever=leverage.value;
     
   }
-  fetch(url+"/buy?amount="+amnt+"&leverage="+lever).then((val)=>{
+  fetch(url+"/buy?amount="+amnt+"&leverage="+lever+"&profitThreshold="+profitThreshold).then((val)=>{
+  return val.json();
   return val.json();
   }).then((vall)=>{
    // balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
+   getBal();
+  
   });
   logs.innerHTML+="<br>Buy: "+prc;
-  getBal();
   
 }
 
-function sellReq(amnt, lever){
+function sellReq(amnt, lever, prof){
   
   
   if(amnt==null||lever==null){
@@ -132,14 +134,16 @@ function sellReq(amnt, lever){
     
   }
   
-  fetch(url+"/sell?amount="+amnt+"&leverage="+lever).then((val)=>{
+  fetch(url+"/sell?amount="+amnt+"&leverage="+lever+"&profitThreshold="+profitThreshold).then((val)=>{
   return val.json();
   }).then((vall)=>{
   //  balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
+  getBal();
+  
   });
   
   logs.innerHTML+="<br>Sell: "+prc;
-  getBal();
+  
   
 }
 
@@ -309,13 +313,13 @@ setInterval(function(){
   p.innerHTML=prc+"<br>"+rate+"% Count: "+count+"<br>u:"+goingUp+" d:"+goingDown;
 },30);
 
-
+/*
 setInterval(function(){
   
   getBalance();
   
   
-},30000);
+},30000);*/
 
 </script>
 </body>
