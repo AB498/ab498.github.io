@@ -330,7 +330,7 @@ addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
     
     
     if(!onceDone&&bal!=0){
-      amount.value=((leverage.value*bal)/prc/3).toFixed(4);
+      amount.value=((leverage.value*bal)/prc/3).toFixed(3);
       if(amount.value<0.001)amount.value=0.001;
       onceDone=true;
     }
@@ -359,6 +359,12 @@ setInterval(function(){
   
 },5000);
 
+
+setTimeout(function(){
+  
+  location.reload(true);
+  
+},5*60000);
 </script>
 </body>
 </html>
