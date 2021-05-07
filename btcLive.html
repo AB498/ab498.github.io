@@ -14,7 +14,9 @@
   width: 95%;
   border-radius: 10px;
   background-color: goldenrod;
-  margin: 3px;
+  margin: 5px;
+  box-shadow: 5px 5px 15px 0px;
+  
 }
 
 .botActive{
@@ -46,7 +48,7 @@
   <button id="sell" onclick="sellReq(null,null)">Sell</button>
   <button id="cancelAll" onclick="cancellAll()">Cancel All </button>
   
-  <div id="botDiv" onclick="botToggle(this.children[0])">
+  <div id="botDiv" class="botActive" onclick="botToggle(this.children[0])">
   <input id="bot" checked="checked" type="checkbox">Bot
   </div>
   
@@ -91,11 +93,11 @@ function botToggle(dis){
     		if(dis.checked==true){
     		botOn=false;
     		dis.checked=false;
-    	  dis.classList.add("botActive");
+    	  dis.parentNode.classList.remove("botActive");
     		}else{
     		  botOn=true;
     		  dis.checked=true;
-    	  dis.classList.remove("botActive");
+    	  dis.parentNode.classList.add("botActive");
     		}
     		//alert(dis.checked);
 }
