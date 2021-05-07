@@ -127,7 +127,7 @@ function buyReq(amnt, lever, prof){
   fetch(url+"/buy?amount="+amnt+"&leverage="+lever+"&profitThreshold="+profitThreshold).then((val)=>{
   return val.json();
   }).then((vall)=>{
-   // balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
+     balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
    alert("buy");
    getBal();
   
@@ -149,7 +149,7 @@ function sellReq(amnt, lever, prof){
   fetch(url+"/sell?amount="+amnt+"&leverage="+lever+"&profitThreshold="+profitThreshold).then((val)=>{
   return val.json();
   }).then((vall)=>{
-  //  balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
+    balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
   alert("sell");
   getBal();
   
@@ -306,6 +306,7 @@ addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
     
     if(!onceDone&&bal!=0){
       amount.value=((leverage.value*bal)/prc/3).toFixed(4);
+      if(amount.value<0.001)amount.value=0.001;
       onceDone=true;
     }
     
