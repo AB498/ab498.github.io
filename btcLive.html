@@ -27,12 +27,14 @@
 
   </canvas>
   
-  <p id="balance">Balance</p>
   <input id="amount" value="0">
   <input id="leverage" value="25">
   <button id="buy" onclick="buyReq(null,null)">Buy</button>
   <button id="sell" onclick="sellReq(null,null)">Sell</button>
   <button id="cancelAll" onclick="cancellAll()">Cancel All </button>
+  
+  <p id="balance">Balance</p>
+  
   
 <script type="text/javascript">
 
@@ -47,6 +49,7 @@ url="https://site498.glitch.me";
 bal=0
 onceDone=false;
 
+function getBal(){
 fetch(url+"/getBalance").then((val)=>{
   return val.json();
   }).then((vall)=>{
@@ -54,8 +57,9 @@ fetch(url+"/getBalance").then((val)=>{
     balance.innerHTML=bal;
   });
   
+}
   
-  
+  getBal();
 
 function buyReq(amnt, lever){
   
@@ -71,7 +75,7 @@ function buyReq(amnt, lever){
     balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
   });
   
-  
+  getBal();
   
 }
 
@@ -91,7 +95,7 @@ function sellReq(amnt, lever){
     balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
   });
   
-  
+  getBal();
   
 }
 
@@ -104,7 +108,7 @@ function cancellAll(){
     balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
   });
   
-  
+  getBal();
   
 }
 var ctx = document.getElementById('chart').getContext('2d');
