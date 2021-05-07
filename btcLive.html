@@ -364,13 +364,17 @@ slider.oninput = function() {
 setInterval(function(){
   
   
-  if(rate<50){
-    rate=(parseFloat(rate)+0.1).toFixed(2);
+  if(win<loss){
+    win+=0.1;
+    //rate=(parseFloat(rate)+0.1).toFixed(2);
   }else{
-    rate=(parseFloat(rate)-0.1).toFixed(2);
+    loss+=0.1;
+    //rate=(parseFloat(rate)-0.1).toFixed(2);
   }
+  rate=Number(win/(win+loss)*100).toFixed(2);
+    
   p.innerHTML=prc+"<br>"+rate+"% Count: "+count+"<br>u:"+goingUp+" d:"+goingDown;
-},30);
+},50);
 
 
 setInterval(function(){
