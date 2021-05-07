@@ -94,7 +94,7 @@ fetch(url+"/getBalance").then((val)=>{
     bal=vall[1][1]["crossWalletBalance"]
     
     positions=vall[0]["positionAmt"];
-    if(parseInt(positions)==0)cancellAll();
+    //if(parseInt(positions)==0)cancellAll();
     
     balance.innerHTML=bal+"<br>Positions: "+positions;
     
@@ -327,13 +327,13 @@ setInterval(function(){
   p.innerHTML=prc+"<br>"+rate+"% Count: "+count+"<br>u:"+goingUp+" d:"+goingDown;
 },30);
 
-/*
+
 setInterval(function(){
   
   getBal();
   
   
-},30000);*/
+},30000);
 
 </script>
 </body>
