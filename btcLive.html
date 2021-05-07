@@ -73,6 +73,7 @@ bal=0
 onceDone=false;
 positions=0;
 botOn=true;
+profitThreshold=70;
 
 function getBal(){
 fetch(url+"/getBalance").then((val)=>{
@@ -81,6 +82,7 @@ fetch(url+"/getBalance").then((val)=>{
     bal=vall[1][1]["crossWalletBalance"]
     
     positions=vall[0]["positionAmt"];
+    if(parseInt(positions)==0)cancellAll();
     
     balance.innerHTML=bal+"<br>Positions: "+positions;
     
@@ -308,7 +310,12 @@ setInterval(function(){
 },30);
 
 
-
+setInterval(function(){
+  
+  getBalance();
+  
+  
+},30000);
 
 </script>
 </body>
