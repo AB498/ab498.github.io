@@ -34,6 +34,17 @@ html[data-theme='dark'] {
 70% {background-color:white;}
 100% {background-color:yellow;}
 }
+
+#slider{
+  width: 85%;
+}
+#sliderNum{
+  display: inline;
+  width:15%;
+}
+
+
+
 </style>
 
 </head>
@@ -45,7 +56,8 @@ html[data-theme='dark'] {
   <canvas id="chart" width="100%" height="70%">
 
   </canvas>
-  
+  <input type="range" min="10" max="1000" value="200" class="slider" id="slider">
+  <p id="sliderNum">200</p>
   <input id="amount" value="0">
   <input id="leverage" value="50">
   <input id="difficulty" value="3" oninput="changeDiff(this)">
@@ -324,7 +336,7 @@ socket.onmessage = function (event) {
 
 addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
     count++;
-    if(count > 200){
+    if(count > chartLength){
     removeData(chart);
     }
     
@@ -337,7 +349,16 @@ addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
     
 };
 
+slider = document.getElementById("slider");
+sliderNum = document.getElementById("sliderNum");
+chartLength=200;
+sliderNum.innerHTML = slider.value; // Display the default slider value
 
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  sliderNum.innerHTML = this.value;
+  chartLength=this.value;
+}
 
 
 setInterval(function(){
