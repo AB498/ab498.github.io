@@ -116,10 +116,10 @@ function buyReq(amnt, lever, prof){
     
   }
   fetch(url+"/buy?amount="+amnt+"&leverage="+lever+"&profitThreshold="+profitThreshold).then((val)=>{
-  return val.json();
-  return val.json();
+  return val;
   }).then((vall)=>{
    // balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
+   alert("buy");
    getBal();
   
   });
@@ -138,9 +138,10 @@ function sellReq(amnt, lever, prof){
   }
   
   fetch(url+"/sell?amount="+amnt+"&leverage="+lever+"&profitThreshold="+profitThreshold).then((val)=>{
-  return val.json();
+  return val;
   }).then((vall)=>{
   //  balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
+  alert("sell");
   getBal();
   
   });
