@@ -9,7 +9,7 @@
 <style>
 
 html[data-theme='dark'] {
-    background: #fff;
+    background: #ffaaff;
     filter: invert(1) hue-rotate(0deg)
 }
   
@@ -286,7 +286,7 @@ socket.onmessage = function (event) {
       
       //alert(positions);
       bigChangeCount=count;
-      if(goingDown>=difficulty && !cooldown){
+      if(goingDown>=difficulty && !cooldown && parseInt(positions)==0){
         cooldown=true;
   	    setTimeout(function(){cooldown=false;},60000);
   	    if(botOn)sellReq(null,null,null);
@@ -302,7 +302,7 @@ socket.onmessage = function (event) {
   	  
   	  //alert(positions);
   	  bigChangeCount=count;
-  	  if(goingUp>=difficulty && !cooldown){
+  	  if(goingUp>=difficulty && !cooldown && parseInt(positions)==0){
   	    cooldown=true;
   	    setTimeout(function(){cooldown=false;},60000);
   	    if(botOn)buyReq(null,null,null);
