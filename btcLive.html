@@ -60,7 +60,7 @@ html[data-theme='dark'] {
   <p id="sliderNum">200</p>
   <input id="amount" value="0">
   <input id="leverage" value="50">
-  <input id="difficulty" value="5" oninput="changeDiff(this)">
+  <input id="difficulty" value="3" oninput="changeDiff(this)">
   <input id="profitThreshold" value="70" oninput="changeProf(this)">
   <br>
   <button id="buy" onclick="buyReq(null,null,null)">Buy</button>
@@ -308,7 +308,7 @@ socket.onmessage = function (event) {
       
       //alert(positions);
       bigChangeCount=count;
-      if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)==0 && rate < 40){
+      if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)==0){
         cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    if(botOn)sellReq(null,null,null);
@@ -324,7 +324,7 @@ socket.onmessage = function (event) {
   	  
   	  //alert(positions);
   	  bigChangeCount=count;
-  	  if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)==0 && rate > 55){
+  	  if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)=0){
   	    cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    if(botOn)buyReq(null,null,null);
@@ -402,8 +402,8 @@ setInterval(function(){
   
   elapsedTime++;
   volatility=(count/elapsedTime).toFixed(2);
-  difficulty=Math.ceil(10-volatility);
-  difficultyInput.value=difficulty;
+  //difficulty=Math.ceil(10-volatility);
+  //difficultyInput.value=difficulty;
   
 },1000);
 
