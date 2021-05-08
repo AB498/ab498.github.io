@@ -130,7 +130,7 @@ fetch(url+"/getBalance").then((val)=>{
     bal=vall[1][1]["crossWalletBalance"]
     
     positions=vall[0]["positionAmt"];
-    if(parseInt(positions*1000)==0)cancellAll();
+    if(parseInt(positions*1000) == 0 && logs.textContent=="Logs:")alert(0);//cancellAll();
     
     balance.innerHTML=bal+"<br>Positions: "+positions;
     
@@ -154,6 +154,8 @@ function botToggle(dis){
 
 function buyReq(amnt, lever, prof){
   
+  logs.innerHTML+="<br>Buy: "+prc;
+  
   if(amnt==null||lever==null){
     
     amnt=parseFloat(amount.value).toFixed(3);
@@ -169,11 +171,12 @@ function buyReq(amnt, lever, prof){
    getBal();
   
   });
-  logs.innerHTML+="<br>Buy: "+prc;
   
 }
 
 function sellReq(amnt, lever, prof){
+  
+  logs.innerHTML+="<br>Sell: "+prc;
   
   
   if(amnt==null||lever==null){
@@ -192,7 +195,6 @@ function sellReq(amnt, lever, prof){
   
   });
   
-  logs.innerHTML+="<br>Sell: "+prc;
   
   
 }
