@@ -59,9 +59,9 @@ html[data-theme='dark'] {
   <input type="range" min="10" max="1000" value="200" class="slider" id="slider">
   <p id="sliderNum">200</p>
   <input id="amount" value="0">
-  <input id="leverage" value="50">
+  <input id="leverage" value="25">
   <input id="difficulty" value="3" oninput="changeDiff(this)">
-  <input id="profitThreshold" value="70" oninput="changeProf(this)">
+  <input id="profitThreshold" value="50" oninput="changeProf(this)">
   <br>
   <button id="buy" onclick="buyReq(null,null,null)">Buy</button>
   <button id="sell" onclick="sellReq(null,null,null)">Sell</button>
@@ -324,7 +324,7 @@ socket.onmessage = function (event) {
   	  
   	  //alert(positions);
   	  bigChangeCount=count;
-  	  if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)=0){
+  	  if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)==0){
   	    cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    if(botOn)buyReq(null,null,null);
@@ -355,7 +355,7 @@ addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
 
 slider = document.getElementById("slider");
 sliderNum = document.getElementById("sliderNum");
-chartLength=200;
+chartLength=50;
 sliderNum.innerHTML = slider.value; // Display the default slider value
 
 // Update the current slider value (each time you drag the slider handle)
@@ -391,7 +391,7 @@ setInterval(function(){
 
 setInterval(function(){
   
-  if(sliderNum.textContent=="200")location.reload(true);
+  if(sliderNum.textContent=="50")location.href("https://ab498.github.io/btcLive");
   
 },5*60000);
 
