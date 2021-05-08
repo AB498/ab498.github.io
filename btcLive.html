@@ -308,7 +308,7 @@ socket.onmessage = function (event) {
       
       //alert(positions);
       bigChangeCount=count;
-      if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)==0 && rate < 45){
+      if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)==0 && rate < 40){
         cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    if(botOn)sellReq(null,null,null);
@@ -324,7 +324,7 @@ socket.onmessage = function (event) {
   	  
   	  //alert(positions);
   	  bigChangeCount=count;
-  	  if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)==0 && rate > 45){
+  	  if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)==0 && rate > 55){
   	    cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    if(botOn)buyReq(null,null,null);
@@ -391,7 +391,7 @@ setInterval(function(){
 
 setTimeout(function(){
   
-  if(sliderNum.textContent!="200")location.reload(true);
+  if(sliderNum.textContent=="200")location.reload(true);
   
 },5*60000);
 </script>
