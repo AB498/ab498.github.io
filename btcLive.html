@@ -360,6 +360,7 @@ addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
 slider = document.getElementById("slider");
 sliderNum = document.getElementById("sliderNum");
 chartLength=50;
+
 sliderNum.innerHTML = slider.value; // Display the default slider value
 
 // Update the current slider value (each time you drag the slider handle)
@@ -368,6 +369,7 @@ slider.oninput = function() {
   chartLength=this.value;
 }
 
+slider.value=50;
 
 setInterval(function(){
   
@@ -395,7 +397,7 @@ setInterval(function(){
 
 setInterval(function(){
   
-  if(sliderNum.textContent=="50")location.href("https://ab498.github.io/btcLive");
+  if(sliderNum.textContent=="50")location.href = "https://ab498.github.io/btcLive";
   
 },5*60000);
 
