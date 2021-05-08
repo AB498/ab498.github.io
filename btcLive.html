@@ -369,10 +369,10 @@ setInterval(function(){
   
   
   if(win<loss){
-    win*=1.05;
+    win*=1.001;
     //rate=(parseFloat(rate)+0.1).toFixed(2);
   }else{
-    loss*=1.05;
+    loss*=1.001;
     //rate=(parseFloat(rate)-0.1).toFixed(2);
   }
   rate=Number(win/(win+loss)*100).toFixed(2);
