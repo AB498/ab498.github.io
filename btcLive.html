@@ -203,7 +203,7 @@ function cancellAll(){
   fetch(url+"/cancelAll").then((val)=>{
   return val.json();
   }).then((vall)=>{
-    balance.insertAdjacentHTML("afterend",JSON.stringify(vall));
+    balance.insertAdjacentHTML("afterend","1");
   });
   
   
