@@ -130,7 +130,7 @@ fetch(url+"/getBalance").then((val)=>{
     bal=vall[1][1]["crossWalletBalance"]
     
     positions=vall[0]["positionAmt"];
-    if(parseInt(positions*1000) == 0 && logs.textContent=="Logs:")alert(0);//cancellAll();
+    if(parseInt(positions*1000) == 0 && logs.textContent=="Logs:")cancellAll();
     
     balance.innerHTML=bal+"<br>Positions: "+positions;
     
