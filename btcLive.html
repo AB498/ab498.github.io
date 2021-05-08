@@ -309,7 +309,9 @@ socket.onmessage = function (event) {
       if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)==0){
         cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
-  	    if(botOn)sellReq(null,null,null);
+  	    
+  	    
+  	    //if(botOn)sellReq(null,null,null);
         
       }
       
@@ -327,6 +329,8 @@ socket.onmessage = function (event) {
   	  if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)==0){
   	    cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
+  	    
+  	    
   	    if(botOn)buyReq(null,null,null);
   	    
   	  }
