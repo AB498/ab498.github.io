@@ -369,10 +369,10 @@ setInterval(function(){
   
   
   if(win<loss){
-    win*=1.001;
+    win*=1.0001;
     //rate=(parseFloat(rate)+0.1).toFixed(2);
   }else{
-    loss*=1.001;
+    loss*=1.0001;
     //rate=(parseFloat(rate)-0.1).toFixed(2);
   }
   rate=Number(win/(win+loss)*100).toFixed(2);
@@ -401,7 +401,9 @@ elapsedTime=0;
 setInterval(function(){
   
   elapsedTime++;
-  volatility=count/elapsedTime;
+  volatility=(count/elapsedTime).toFixed(2);
+  difficulty=Math.ceil(10-volatility);
+  difficultyInput.value=difficulty;
   
 },1000);
 
