@@ -258,11 +258,11 @@ var chart = new Chart(ctx, {
       chart.update();
     }
     
-    function removeData(chart) {
-    chart.data.labels.splice(0,1);
+    function removeData(chart, start, end) {
+    chart.data.labels.splice(start,end);
     chart.data.datasets.forEach((dataset) => {
-    dataset.data.splice(0,1);
-    dataset.backgroundColor.splice(0,1);
+    dataset.data.splice(start,end);
+    dataset.backgroundColor.splice(start,end);
     });
     chart.update();
     }
@@ -338,8 +338,10 @@ socket.onmessage = function (event) {
 
 addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
     count++;
+    
+    
     if(count > chartLength){
-    removeData(chart);
+    removeData(chart, 0, chart.data.labels.length-chartLength);
     }
     
     
