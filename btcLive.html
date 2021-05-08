@@ -303,33 +303,37 @@ socket.onmessage = function (event) {
   	p.innerHTML=prc+"<br>"+rate+"% Count: "+count+"<br>"+volatility+" u:"+goingUp+" d:"+goingDown;
   	if(diff>10 && bigChangeCount<count-1){
   	  
-  	  goingDown+=1;
-  	  goingUp=0;
-      
+  	  
       //alert(positions);
       bigChangeCount=count;
-      if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)==0){
+      if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)==0){
         cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    if(botOn)sellReq(null,null,null);
         
       }
+      
+      goingDown+=1;
+  	  goingUp=0;
+      
   	  p.style.backgroundColor="yellow";
   	  
   	}
     if(diff<-10 && bigChangeCount<count-1){
   	  
-  	  goingDown=0;
-  	  goingUp+=1;
   	  
   	  //alert(positions);
   	  bigChangeCount=count;
-  	  if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)==0){
+  	  if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)==0){
   	    cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    if(botOn)buyReq(null,null,null);
   	    
   	  }
+  	  
+  	  goingDown=0;
+  	  goingUp+=1;
+  	  
   	  p.style.backgroundColor="lightblue";
   	  
   	}
