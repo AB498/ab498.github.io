@@ -310,7 +310,7 @@ socket.onmessage = function (event) {
       bigChangeCount=count;
       if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)==0 && rate < 45){
         cooldown=true;
-  	    setTimeout(function(){cooldown=false;},60000);
+  	    setTimeout(function(){cooldown=false;},20000);
   	    if(botOn)sellReq(null,null,null);
         
       }
@@ -326,7 +326,7 @@ socket.onmessage = function (event) {
   	  bigChangeCount=count;
   	  if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)==0 && rate > 45){
   	    cooldown=true;
-  	    setTimeout(function(){cooldown=false;},60000);
+  	    setTimeout(function(){cooldown=false;},20000);
   	    if(botOn)buyReq(null,null,null);
   	    
   	  }
