@@ -300,7 +300,7 @@ socket.onmessage = function (event) {
     }
     rate=Number(win/(win+loss)*100).toFixed(2);
     lastPrc=prc;
-  	p.innerHTML=prc+"<br>"+rate+"% Count: "+count+"<br>u:"+goingUp+" d:"+goingDown;
+  	p.innerHTML=prc+"<br>"+rate+"% Count: "+count+"<br>"+volatility+" u:"+goingUp+" d:"+goingDown;
   	if(diff>10 && bigChangeCount<count-1){
   	  
   	  goingDown+=1;
@@ -369,15 +369,15 @@ setInterval(function(){
   
   
   if(win<loss){
-    win+=0.1;
+    win*=1.05;
     //rate=(parseFloat(rate)+0.1).toFixed(2);
   }else{
-    loss+=0.1;
+    loss*=1.05;
     //rate=(parseFloat(rate)-0.1).toFixed(2);
   }
   rate=Number(win/(win+loss)*100).toFixed(2);
     
-  p.innerHTML=prc+"<br>"+rate+"% Count: "+count+"<br>u:"+goingUp+" d:"+goingDown;
+  p.innerHTML=prc+"<br>"+rate+"% Count: "+count+"<br>"+volatility+" u:"+goingUp+" d:"+goingDown;
 },50);
 
 
@@ -389,11 +389,23 @@ setInterval(function(){
 },5000);
 
 
-setTimeout(function(){
+setInterval(function(){
   
   if(sliderNum.textContent=="200")location.reload(true);
   
 },5*60000);
+
+volatility=0;
+elapsedTime=0;
+
+setInterval(function(){
+  
+  elapsedTime++;
+  volatility=count/elapsedTime;
+  
+},1000);
+
+
 </script>
 </body>
 </html>
