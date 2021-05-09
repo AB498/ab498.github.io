@@ -59,8 +59,8 @@ html[data-theme='dark'] {
   <input type="range" min="10" max="1000" value="50" class="slider" id="slider">
   <p id="sliderNum">50</p>
   <input id="amount" value="0">
-  <input id="leverage" value="25">
-  <input id="difficulty" value="3" oninput="changeDiff(this)">
+  <input id="leverage" value="10">
+  <input id="difficulty" value="5" oninput="changeDiff(this)">
   <input id="profitThreshold" value="50" oninput="changeProf(this)">
   <br>
   <button id="buy" onclick="buyReq(null,null,null)">Buy</button>
@@ -119,7 +119,7 @@ function changeProf(el){
 url="https://site498.glitch.me";
 bal=0
 onceDone=false;
-positions=0;
+positions=1;
 botOn=true;
 profitThreshold=profitThresholdInput.value;
 
@@ -154,7 +154,7 @@ function botToggle(dis){
 
 function buyReq(amnt, lever, prof){
   
-  logs.innerHTML+="<br>Buy: "+prc;
+  logs.innerHTML+="<br>Buy: "+prc+" V: "+volatility;
   
   if(amnt==null||lever==null){
     
@@ -306,7 +306,7 @@ socket.onmessage = function (event) {
   	  
       //alert(positions);
       bigChangeCount=count;
-      if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)==0){
+      if(volatility<10 && goingUp>=difficulty && !cooldown && parseInt(positions*10000)==0){
         cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    
@@ -326,7 +326,7 @@ socket.onmessage = function (event) {
   	  
   	  //alert(positions);
   	  bigChangeCount=count;
-  	  if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)==0){
+  	  if(volatility<10 && goingDown>=difficulty && !cooldown && parseInt(positions*10000)==0){
   	    cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    
@@ -354,7 +354,7 @@ addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
     
     
     if(!onceDone&&bal!=0){
-      amount.value=((leverage.value*bal)/prc/3).toFixed(3);
+      amount.value=((leverage.value*bal)/prc/5).toFixed(3);
       if(amount.value<0.001)amount.value=0.001;
       onceDone=true;
     }
@@ -416,6 +416,37 @@ setInterval(function(){
   //difficultyInput.value=difficulty;
   
 },1000);
+
+buyOnly=true;
+
+function sendPrefs(){
+  
+  var data = {
+      amount: amount.value,
+      leverage:leverage.value,
+      difficulty: difficulty,
+      profitThreshold: profitThreshold,
+      botOn: botOn,
+      buyOnly: buyOnly
+  };
+  //alert(JSON.stringify(payload));
+
+  fetch(url+"/sendPrefs", {
+    method: 'POST',
+    headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json'
+    },
+    body: data
+  }).then(v=>v.json()).then((val)=>{
+    
+    balance.insertAdjacentHTML("afterend",val.msg);
+  });
+  
+}
+
+//sendPrefs();
+
 
 
 </script>
