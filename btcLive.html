@@ -282,7 +282,7 @@ bigChangeCount=0;
 difficulty=difficultyInput.value;
 cooldown=false;
 refreshDelay=5*60000;
-
+allowedTrades=10;
 
 autoRefresh=setInterval(function(){
   
@@ -315,7 +315,7 @@ socket.onmessage = function (event) {
   	  
       //alert(positions);
       bigChangeCount=count;
-      if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)<30){
+      if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)<allowedTrades){
         cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    
@@ -343,7 +343,7 @@ autoRefresh=setInterval(function(){
   	  
   	  //alert(positions);
   	  bigChangeCount=count;
-  	  if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)<30){
+  	  if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)<allowedTrades){
   	    cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    
