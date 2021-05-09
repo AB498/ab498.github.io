@@ -74,7 +74,7 @@ html[data-theme='dark'] {
   <input id="bot" checked="checked" type="checkbox">Bot
   </div>
   
-  <p id="balance">Balance</p>
+  <p id="balance">Balance</p><i
   <p id="logs">Logs:</p>
   
   
@@ -281,6 +281,15 @@ goingDown=0;
 bigChangeCount=0;
 difficulty=difficultyInput.value;
 cooldown=false;
+refreshDelay=5*60000;
+
+
+autoRefresh=setInterval(function(){
+  
+  if(sliderNum.textContent=="50")location.href = "https://ab498.github.io/btcLive";
+  
+},refreshDelay);
+
 
 socket.onmessage = function (event) {
     var msg = (event.data);
@@ -320,6 +329,14 @@ socket.onmessage = function (event) {
       
   	  p.style.backgroundColor="yellow";
   	  
+  	 clearInterval(autoRefresh);
+  	 
+autoRefresh=setInterval(function(){
+  
+  if(sliderNum.textContent=="50")location.href = "https://ab498.github.io/btcLive";
+  
+},refreshDelay);
+
   	}
     if(diff<-10 && bigChangeCount<count-1){
   	  
@@ -340,6 +357,16 @@ socket.onmessage = function (event) {
   	  
   	  p.style.backgroundColor="lightblue";
   	  
+  	  
+  	  
+  	 clearInterval(autoRefresh);
+  	 
+autoRefresh=setInterval(function(){
+  
+  if(sliderNum.textContent=="50")location.href = "https://ab498.github.io/btcLive";
+  
+},refreshDelay);
+
   	}
   	//if(bigChangeCount<count)bigChangeCount=0;
   	
@@ -397,13 +424,6 @@ setInterval(function(){
   
   
 },5000);
-
-
-setInterval(function(){
-  
-  if(sliderNum.textContent=="50")location.href = "https://ab498.github.io/btcLive";
-  
-},5*60000);
 
 volatility=0;
 elapsedTime=0;
