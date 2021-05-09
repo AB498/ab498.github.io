@@ -59,9 +59,9 @@ html[data-theme='dark'] {
   <input type="range" min="10" max="1000" value="50" class="slider" id="slider">
   <p id="sliderNum">50</p>
   <input id="amount" value="0">
-  <input id="leverage" value="80">
+  <input id="leverage" value="20">
   <input id="difficulty" value="8" oninput="changeDiff(this)">
-  <input id="profitThreshold" value="50" oninput="changeProf(this)">
+  <input id="profitThreshold" value="80" oninput="changeProf(this)">
   <br>
   <button id="buy" onclick="buyReq(null,null,null)">Buy</button>
   <button id="sell" onclick="sellReq(null,null,null)">Sell</button>
@@ -381,7 +381,7 @@ addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
     
     
     if(!onceDone&&bal!=0){
-      amount.value=((leverage.value*bal)/prc/5).toFixed(3);
+      amount.value=((leverage.value*bal)/prc/8).toFixed(3);
       if(amount.value<0.001)amount.value=0.001;
       onceDone=true;
     }
