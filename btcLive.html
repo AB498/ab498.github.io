@@ -119,7 +119,7 @@ function changeProf(el){
 url="https://site498.glitch.me";
 bal=0
 onceDone=false;
-positions=1;
+positions=99999;
 botOn=true;
 profitThreshold=profitThresholdInput.value;
 
@@ -130,7 +130,7 @@ fetch(url+"/getBalance").then((val)=>{
     bal=vall[1][1]["crossWalletBalance"]
     
     positions=vall[0]["positionAmt"];
-    if(parseInt(positions*1000) == 0 && logs.textContent=="Logs:")cancellAll();
+    if((parseInt(positions*1000) == 0 || positions == 99999) && logs.textContent=="Logs:")cancellAll();
     
     balance.innerHTML=bal+"<br>Positions: "+positions;
     
@@ -281,7 +281,7 @@ goingDown=0;
 bigChangeCount=0;
 difficulty=difficultyInput.value;
 cooldown=false;
-refreshDelay=5*60000;
+refreshDelay=1*60000;
 allowedTrades=10;
 
 autoRefresh=setInterval(function(){
