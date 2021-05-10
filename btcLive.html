@@ -135,7 +135,7 @@ fetch(url+"/getBalance").then((val)=>{
     bal=vall[1][1]["crossWalletBalance"]
     
     positions=vall[0]["positionAmt"];
-    if((parseInt(positions*1000) == 0 || positions == 99999) && logs.textContent=="Logs:")cancellAll();
+    //if((parseInt(positions*1000) == 0 || positions == 99999) && logs.textContent=="Logs:")cancellAll();
     
     balance.innerHTML=bal+"<br>Positions: "+positions;
     
@@ -320,7 +320,7 @@ socket.onmessage = function (event) {
   	  
       //alert(positions);
       bigChangeCount=count;
-      if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)<allowedTrades){
+      if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)=0){
         cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    
@@ -348,7 +348,7 @@ autoRefresh=setInterval(function(){
   	  
   	  //alert(positions);
   	  bigChangeCount=count;
-  	  if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)<allowedTrades){
+  	  if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)==0){
   	    cooldown=true;
   	    setTimeout(function(){cooldown=false;},20000);
   	    
