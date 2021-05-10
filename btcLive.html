@@ -15,7 +15,7 @@ html[data-theme='dark'] {
   
 #price, #botDiv{
   padding:10px;
-  width: 95%;
+  width: 93%;
   border-radius: 10px;
   background-color: goldenrod;
   margin: 5px;
@@ -42,8 +42,12 @@ html[data-theme='dark'] {
   display: inline;
   width:15%;
 }
-
-
+#logs{
+  overflow-x: scroll;
+}
+#chartDiv{
+  width: 100%;
+}
 
 </style>
 
@@ -52,9 +56,9 @@ html[data-theme='dark'] {
 
 <p id="price" ></p>
 
-
+<div id="chartDiv">
   <canvas id="chart" width="100%" height="70%">
-
+</div>
   </canvas>
   <input type="range" min="10" max="1000" value="50" class="slider" id="slider">
   <p id="sliderNum">50</p>
