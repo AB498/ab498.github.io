@@ -178,12 +178,16 @@
 		.assist{
 			background-color:#990000;
 			padding: 10px;
-			width:100px;
+			width:22%;
 			margin:2px;
 			box-shadow:teal 5px 5px 7px -3px;
 			
 		}
-		
+		.posBtn{
+		  background-color: goldenrod; 
+		  margin: 5px;
+		  width: 45%;
+		}
 		
 		</style>
     </head>
@@ -203,15 +207,26 @@
     <input type="text" id="sort" placeholder="Sort" oninput="sortItems(this.value);"/>
     
     <br>
-    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\');"> \ </button>
+    
+    <centre>
+      <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\');"> \ </button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'{');"> $\{$ </button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'}');"> $\}$ </button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\int{}');"> $\int$</button>
+        <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\frac{}{}');">Fraction</button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\sqrt{}');"> $\sqrt{}$ </button>
     <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'^{}');"> ^ </button>
     <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'_{}');"> _ </button>
-    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\int{}');"> $\int$</button>
-    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\frac{}{}');">Fraction</button>
-    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\sqrt{}');"> $\sqrt{}$ </button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'=');"> = </button>
     <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\theta');"> $\theta$ </button>
-    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'{}');"> $\{\}$ </button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\xrightarrow[]{}');"> $\rightarrow$ </button>
+    <button class="glow-on-hover assist"  onclick="insertAtCursor(null,'\\xrightleftharpoons');"> $\rightleftharpoons$ </button>
+    
+    <br>
+    <button class="glow-on-hover assist posBtn"  onclick="insertAtCursor(-1,'');"> $\Leftarrow$ </button>
+    <button class="glow-on-hover assist posBtn"  onclick="insertAtCursor(1,'');"> $\Rightarrow$ </button>
 
+</centre>
     
     
     
@@ -731,7 +746,10 @@
     			cursorPos=startPos+myValue.indexOf("{")+1;
     		else
     		  cursorPos=startPos+myValue.length;
-    		myField.selectionStart=cursorPos;
+    		
+if(typeof(myFieldsss)==typeof(1))cursorPos+=myFieldsss;
+
+myField.selectionStart=cursorPos;
     		myField.selectionEnd=cursorPos;
     		updatePreview();
     		
