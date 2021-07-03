@@ -630,7 +630,8 @@
     		
     		
     		function updatePreview(val){
-    		
+    		  
+    		  
     			preview.textContent="\\("+val+"\\)";
     			MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
     			
@@ -751,7 +752,7 @@ if(typeof(myFieldsss)==typeof(1))cursorPos+=myFieldsss;
 
 myField.selectionStart=cursorPos;
     		myField.selectionEnd=cursorPos;
-    		updatePreview();
+    		updatePreview(myField.value);
     		
     		}
     		
