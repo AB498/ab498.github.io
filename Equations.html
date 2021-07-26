@@ -473,7 +473,7 @@
     		
     		document.querySelector("#dbdata").style.backgroundColor="lightgreen";
     		
-    		dbRef.on('value', function(snap) {
+    		dbRef.limit(10).on('value', function(snap) {
     		dbdata.innerHTML="";
   			datae=[];
     		dat=snap.val();
