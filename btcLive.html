@@ -16,6 +16,7 @@
       
       prc=0;
       lastPrc=0;
+      lastTsNow="";
       
       //=document.querySelector;
       debug=document.querySelector("#debug");
@@ -38,6 +39,10 @@ chart = new Chart(ctx, {
       annotation: {
          drawTime: 'afterDatasetsDraw',
          annotations: []
+      },
+      animation: {
+        duration: 1000,
+        easing: 'linear'
       }
    }
 });
@@ -68,18 +73,28 @@ var socket = new WebSocket('wss://btc.data.hxro.io/live');
     var msg = (event.data);
     dat=JSON.parse(JSON.stringify(msg).replaceAll("\\","").slice(1,-1));
     prc=parseFloat(dat["price"]);
+    
+    if(lastPrc!=0&&(lastPrc-prc<-5||lastPrc-prc>5))return;
+    
     ts=new Date(dat["ts"]);
     tsNow=ts.getMinutes()+":"+ts.getSeconds();
-        col="red";
-    col2="blue"
-
-    if(lastPrc-prc<5&&prc-lastPrc<5)addData(chart, 0, tsNow, prc, col);
-    //console.log(ts.getSeconds()%10);
-    if(ts.getSeconds()==0){
-      pushAnno(tsNow, prc);
+    if(tsNow==lastTsNow){
+      tsNow=tsNow+".5";
+    }else{
+      if(ts.getSeconds()==0){
+      if(chart.data.labels.includes(tsNow))pushAnno(tsNow, prc);
       
     }
-    d(chart.data.labels.length);
+      lastTsNow=tsNow;
+    }
+        col="red";
+    
+    col2="blue"
+
+    addData(chart, 0, tsNow, prc, col);
+    //console.log(ts.getSeconds()%10);
+    
+    d(chart.options.annotation.annotations.length);
     removeExtra();
     
     lastPrc=prc;
@@ -89,11 +104,11 @@ var socket = new WebSocket('wss://btc.data.hxro.io/live');
      
      if(chart.data.labels.length>100){
           //removeData(chart,0,chart.data.labels.length-100);
-          nTh=2;
+          nTh=10;
           var i = Math.floor(chart.data.labels.length / nTh);
 
 while (i--) {
-  if(chart.data.labels[(i + 1)*nTh-1].split(":")[1]!=0){
+  if(chart.data.labels[(i + 1)*nTh-1].split(":")[1]!="0"){
   chart.data.labels.splice((i + 1) * nTh - 1, 1);
     chart.data.datasets.forEach((dataset) => {
     dataset.data.splice((i + 1) * nTh - 1, 1);
@@ -102,6 +117,13 @@ while (i--) {
     });
   }
 }
+
+if(chart.options.annotation.annotations.length>3){
+  
+  chart.options.annotation.annotations.shift();
+  
+}
+
 }
      
    }    
