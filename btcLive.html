@@ -138,10 +138,10 @@
         //removeData(chart,0,chart.data.labels.length-100);
         nTh = 2;
         //pp='';
-        for (j = 0; j < thresRmv; j++) {
+        for (j = 0; j < thresRmv/5; j++) {
           //pp='\n'+chart.data.labels.length;
 
-          if (j%(nTh-1) == 0 && chart.data.labels[j].split(':')[1] != 0) {
+          if (true || j%(nTh-1) == 0 && chart.data.labels[j].split(':')[1] != 0) {
             chart.data.labels.splice(j, 1);
             chart.data.datasets.forEach((dataset) => {
               dataset.data.splice(j, 1);
@@ -151,28 +151,16 @@
           }
 
         }
-        //d(pp);
-        /*
-          var i = Math.floor(chart.data.labels.length / nTh);
+        
 
-while (i--) {
-  if(chart.data.labels[(i + 1)*nTh-1].split(":")[1]!="0"){
-  chart.data.labels.splice((i + 1) * nTh - 1, 1);
-    chart.data.datasets.forEach((dataset) => {
-    dataset.data.splice((i + 1) * nTh - 1, 1);
-    //dataset.backgroundColor.splice((i + 1) * nTh - 1, 1);
-    });
-  }
-}
-*/
-
-
+/*
         if (chart.options.annotation.annotations.length > 3) {
 
           removeData(chart, chart.data.labels.indexOf(chart.options.annotation.annotations[0].value), 1);
           chart.options.annotation.annotations.shift();
 
         }
+        */
 
       }
 
