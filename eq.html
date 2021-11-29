@@ -70,7 +70,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
 
   <!-- TODO: Add SDKs for Firebase products that you want to use
-          		https://firebase.google.com/docs/web/setup#available-libraries -->
+            		https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-database.js"></script>
@@ -185,19 +185,20 @@
     window.onscroll = function (e) {
       // called when the window is scrolled. d
       vCount = 0;
+      /*
       sorted.forEach(function(elm, ind) {
-        if (checkVisible(ind, document.querySelector("#"+sorted[ind].id)) == "under" && checkVisible(ind, document.querySelector("#"+sorted[ind].id)) == "visible") {
+        if (checkVisible(ind, document.querySelector("#"+sorted[ind].id)) == "under" && checkVisible(ind, document.querySelector("#"+sorted[ind].id)) == "visible")
+        {
           vCount++;
-          querySelector("#"+sorted[ind].id).classList.remove("hidden");
+          document.querySelector("#"+sorted[ind].id).classList.remove("hidden");
           //elm.innerHTML+="."+ind;
 
           /*}else if (checkVisible(ind,elm)=="over") {
               vCount++;
             //elm.classList.remove("hidden");
             //elm.innerHTML+="-"+ind;
-        */
         }
-      });
+      });*/
       preview.textContent = ""+vCount;
 
 
