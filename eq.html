@@ -3,7 +3,7 @@
   <style>
 
     .hidden {
-      visibility: hidden;
+      display: none;
     }
 
 
@@ -70,7 +70,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
 
   <!-- TODO: Add SDKs for Firebase products that you want to use
-        		https://firebase.google.com/docs/web/setup#available-libraries -->
+          		https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-database.js"></script>
@@ -79,6 +79,7 @@
 
     dataDiv = document.querySelector('#dbdata');
     preview = document.querySelector('#preview');
+    preview.style.position = 'fixed';
     datae = [];
     scrollToId = "39383838";
     // Your web app's Firebase configuration
@@ -141,11 +142,11 @@
       sorted.forEach(function(elm, ind) {
 
         if (ind > 28) {
-          dataDiv.innerHTML += "<div class='hidden' id='"+elm.id+"'>"+elm.name+"</div>";
+          dataDiv.innerHTML += "<div class='itm hidden' id='"+elm.id+"'>"+elm.name+"</div>";
 
           return;
         }
-        dataDiv.innerHTML += "<div id='"+elm.id+"'>"+elm.name+"</div>";
+        dataDiv.innerHTML += "<div class='itm' id='"+elm.id+"'>"+elm.name+"</div>";
       });
 
     }, (errorObject) => {
@@ -168,29 +169,39 @@
     }
 
 
-    function checkVisible(element) {
+    function checkVisible(srl, element) {
       var curPos = element.offsetTop;
       var curTop = curPos;
-      var screenHeight = $(window).height();
-      console.log(curTop+" "+screenHeight)
+      var screenHeight = window.innerHeight+window.scrollY;
+      console.log(srl+" "+curTop+" "+screenHeight+" "+(curTop < screenHeight && curTop != 0))
 
-      return (curTop > screenHeight) ? false: true;
+      if (curTop < screenHeight) return "under";
+      else if (curTop > window.scrollY) return "over";
+      else if (curTop != 0) return "zero";
+      else return "visible";
+
     }
 
     window.onscroll = function (e) {
       // called when the window is scrolled. d
       vCount = 0;
-      dataDiv.childNodes.forEach(function(elm, ind) {
-        if (checkVisible(elm)) {
+      sorted.forEach(function(elm, ind) {
+        if (checkVisible(ind, document.querySelector("#"+sorted[ind].id)) == "under" && checkVisible(ind, document.querySelector("#"+sorted[ind].id)) == "visible") {
           vCount++;
-          clss = document.querySelector('#'+sorted[ind].id);
-          if (clss.classList.contains("hidden")) {
-            clss.classList.remove("hidden");
-          }
-          //elm.textContent += "dddd";
+          querySelector("#"+sorted[ind].id).classList.remove("hidden");
+          //elm.innerHTML+="."+ind;
+
+          /*}else if (checkVisible(ind,elm)=="over") {
+              vCount++;
+            //elm.classList.remove("hidden");
+            //elm.innerHTML+="-"+ind;
+        */
         }
       });
-      preview.innerHTML = ""+vCount;
+      preview.textContent = ""+vCount;
+
+
+
 
     }
 
