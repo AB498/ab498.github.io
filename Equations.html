@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js">
+
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
   </script>
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -14,19 +15,16 @@
                   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=AM_CHTML"></script>
                   -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
-  <script>
-    MathJax = {
-      tex: {
-        inlineMath: [['$',
-          '$'],
-          ['\\(',
-            '\\)']]
-      }
-    };
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      showMathMenu: false, tex2jax: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]}});
+    MathJax.Hub.Register.StartupHook("End", function () {
+      console.log("Mathjax loaded");
+      console.log(typeof MathJax);
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub, "TFS"]);
+    });
   </script>
-
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   <title>Sample CRUD Firebase Javascript - 01 Read Data</title>
@@ -338,7 +336,9 @@
       });
 
 
-      MathJax.typesetPromise().then(function() {
+      MathJax.Hub.Queue(["Typeset",
+        MathJax.Hub]);
+      MathJax.Hub.Queue(function() {
 
         newElm = document.getElementById(scrollToId);
         if (newElm) {
@@ -584,7 +584,9 @@
       });
 
 
-      MathJax.typesetPromise().then(function() {
+      MathJax.Hub.Queue(["Typeset",
+        MathJax.Hub]);
+      MathJax.Hub.Queue(function() {
 
         newElm = document.getElementById(scrollToId);
         if (newElm) {
@@ -676,7 +678,7 @@
 
 
       preview.textContent = "\\("+val+"\\)";
-      MathJax.typesetPromise();
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 
     };
 
