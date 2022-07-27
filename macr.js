@@ -15,10 +15,9 @@ document.body.insertAdjacentElement(
 );
 
 window.nextt = function () {
-  if (window.timer) {
     window.timer.next();
 window.toggleTimer();
-  }
+  
 };
 window.toggleTimer = function () {
   window.navigator.vibrate(vbr);
