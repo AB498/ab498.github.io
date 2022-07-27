@@ -48,8 +48,8 @@ if (window.location.href == "https://mcqsmart.com/AppViewScoreJS.php") {
 function clickButton1() {
   window.navigator.vibrate(vbr);
   if (window.timer) window.timer.clear();
-  window.timer = new Timer(function () {
     document.getElementById("button1").click();
+  window.timer = new Timer(function () {
     clickButton1();
     return;
   }, t);
