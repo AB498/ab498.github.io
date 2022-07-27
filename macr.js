@@ -83,6 +83,7 @@ function Timer(callback, delay) {
     timerId = null;
     remaining = 0;
     timerId = window.setTimeout(callback, remaining);
+toggleTimer();
   };
 
   this.clear = function () {
