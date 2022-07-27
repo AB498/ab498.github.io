@@ -9,7 +9,7 @@ window.timer = null;
 document.body.insertAdjacentElement(
   "afterbegin",
   new DOMParser().parseFromString(
-    "<div style='position:fixed;bottom:0px;width:100%;'><div id='infoo' style='width:48%;background-color:orange;padding:5px;display: inline;float:right;' onclick='toggleTimer()'> Pause </div><div id='nextt' style='background-color:blue;padding:5px;display: inline;float:right;width:50%' onclick='nextt()'> Next </div></div>",
+    "<div style='position:fixed;bottom:0px;width:100%;'><div id='nextt' style='background-color:blue;padding:5px;display: inline;float:right;width:50%' onclick='nextt()'> Next </div><div id='infoo' style='width:50%;background-color:orange;padding:5px;display: inline;float:right;' onclick='toggleTimer()'> Pause </div></div>",
     "text/html"
   ).documentElement
 );
