@@ -80,8 +80,9 @@ function Timer(callback, delay) {
   this.next = function () {
     window.navigator.vibrate(vbr);
 
-    window.clearTimeout(timerId);
+   if(timerId){ window.clearTimeout(timerId);
     timerId = null;
+              }
     remaining = 0;
     timerId = window.setTimeout(callback, remaining);
   };
