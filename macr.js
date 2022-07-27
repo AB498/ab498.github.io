@@ -84,7 +84,8 @@ function Timer(callback, delay) {
   };
 
   this.clear = function () {
-    return;
+    window.clearTimeout(timerId);
+    timerId = null;
   };
 
   this.resume();
