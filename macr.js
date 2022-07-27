@@ -42,7 +42,7 @@ if (window.location.href == "https://mcqsmart.com/AppViewPlayJS.php") {
   clickButton1();
 }
 if (window.location.href == "https://mcqsmart.com/AppViewScoreJS.php") {
-  window.location.href = urk;
+  window.location.href = url;
 }
 
 function clickButton1() {
