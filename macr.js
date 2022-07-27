@@ -16,9 +16,8 @@ document.body.insertAdjacentElement(
 
 window.nextt = function () {
     document.getElementById("button1").click();
-  if(timer){
-   // timer.pause();
-  }
+  clickButton1();
+  timer.pause();
   
 };
 window.toggleTimer = function () {
