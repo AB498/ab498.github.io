@@ -17,7 +17,7 @@ document.body.insertAdjacentElement(
 window.nextt = function () {
     document.getElementById("button1").click();
   if(timer){
-    timer.pause();
+   // timer.pause();
   }
   
 };
