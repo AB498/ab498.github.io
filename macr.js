@@ -1,6 +1,6 @@
 var buttonInputs = document.querySelectorAll('input[type="button"]');
 var url = "https://mcqsmart.com/HSC/Science/index-App-HSC-Chemistry-Two.php";
-var chapter = 2;
+var chapter = 0;
 
 var t = 3000;
 var vbr = 50;
