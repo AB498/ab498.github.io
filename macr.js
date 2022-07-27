@@ -15,8 +15,10 @@ document.body.insertAdjacentElement(
 );
 
 window.nextt = function () {
-    window.timer.next();
-window.toggleTimer();
+    document.getElementById("button1").click();
+  if(timer){
+    timer.pause();
+  }
   
 };
 window.toggleTimer = function () {
