@@ -1,35 +1,6 @@
-function makeRequest(method, url) {
-  return new Promise(function (resolve, reject) {
-    let xhr = new XMLHttpRequest();
-    xhr.open(method, url);
-    xhr.onload = function () {
-      if (this.status >= 200 && this.status < 300) {
-        resolve(xhr.response);
-      } else {
-        reject({
-          status: this.status,
-          statusText: xhr.statusText,
-        });
-      }
-    };
-    xhr.onerror = function () {
-      reject({
-        status: this.status,
-        statusText: xhr.statusText,
-      });
-    };
-    xhr.send();
-  });
-}
-let result = await makeRequest("GET", "https://ab498.github.io/temp");
-
 var buttonInputs = document.querySelectorAll('input[type="button"]');
 var url = "https://mcqsmart.com/HSC/Science/index-App-HSC-Chemistry-Two.php";
 var chapter = 2;
-
-url = result.split("\n")[0];
-chapter = result.split("\n")[1];
-console.log(url);
 
 var t = 3000;
 var vbr = 50;
