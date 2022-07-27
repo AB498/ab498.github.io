@@ -17,6 +17,7 @@ document.body.insertAdjacentElement(
 window.nextt = function () {
   if (window.timer) {
     window.timer.next();
+window.toggleTimer();
   }
 };
 window.toggleTimer = function () {
@@ -83,7 +84,6 @@ function Timer(callback, delay) {
     timerId = null;
     remaining = 0;
     timerId = window.setTimeout(callback, remaining);
-toggleTimer();
   };
 
   this.clear = function () {
