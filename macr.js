@@ -79,11 +79,8 @@ function Timer(callback, delay) {
   this.next = function () {
     window.navigator.vibrate(vbr);
 
-   if(timerId){ window.clearTimeout(timerId);
-    timerId = null;
-              }
-    remaining = 0;
-    timerId = window.setTimeout(callback, remaining);
+    clickButton1();
+    this.pause();
   };
 
   this.clear = function () {
