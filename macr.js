@@ -5,7 +5,6 @@ var chapter = 0;
 
 var t = 3000;
 var vbr = 50;
-window.timer = nullchem1
 
 document.body.insertAdjacentElement(
   "afterbegin",
