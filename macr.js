@@ -3,22 +3,49 @@ var url = "https://mcqsmart.com/HSC/Science/index-App-HSC-Chemistry-Two.php";
 var phys2url = "https://mcqsmart.com/HSC/Science/index-App-HSC-Physics-Two.php";
 var chapter = 0;
 
+var chInfo = localStorage.getItem("ch_info");
+if (chInfo == null) chInfo = "chem2 0";
+var sub = chInfo.split(" ")[0];
+var chp = parseInt(chInfo.split(" ")[1]);
+chapter = chp;
+
+if (sub == "phy1") {
+  url = "https://mcqsmart.com/HSC/Science/index-App-HSC-Physics-One.php";
+}
+if (sub == "phy2") {
+  url = "https://mcqsmart.com/HSC/Science/index-App-HSC-Physics-Two.php";
+}
+if (sub == "chem1") {
+  url = "https://mcqsmart.com/HSC/Science/index-App-HSC-Chemistry-One.php";
+}
+if (sub == "chem2") {
+  url = "https://mcqsmart.com/HSC/Science/index-App-HSC-Chemistry-Two.php";
+}
+
 var t = 3000;
 var vbr = 50;
-window.timer=null;
+window.timer = null;
 
 document.body.insertAdjacentElement(
   "afterbegin",
   new DOMParser().parseFromString(
-    "<div style='position:fixed;bottom:0px;width:100%;'><div id='nextt' style='background-color:blue;padding:10px;text-align: center;display: inline;float:right;width:50%' onclick='nextt()'> Next </div><div id='infoo' style='width:50%;background-color:orange;padding:10px;text-align: center;display: inline;float:right;' onclick='toggleTimer()'> Pause </div></div>",
+    "<div style='position:fixed;bottom:0px;width:100%;'>" +
+      "<input id='ch' style='width:100%;background-color:grey;padding:10px;text-align: center;display: inline;float:right;' type='text' oninput='setLocalStorage(this.value)'>" +
+      "<div id='nextt' style='background-color:blue;padding:10px;text-align: center;display: inline;float:right;width:50%' onclick='nextt()'> Next </div>" +
+      "<div id='infoo' style='width:50%;background-color:orange;padding:10px;text-align: center;display: inline;float:right;' onclick='toggleTimer()'> Pause </div>" +
+      "</div>",
     "text/html"
   ).documentElement
 );
 
+document.getElementById("ch").value = chInfo;
+
+window.setLocalStorage = function (e) {
+  localStorage.setItem("ch_info", "" + e);
+};
 window.nextt = function () {
   clickButton1();
   window.toggleTimer();
-  
 };
 window.toggleTimer = function () {
   window.navigator.vibrate(vbr);
@@ -49,7 +76,7 @@ if (window.location.href == "https://mcqsmart.com/AppViewScoreJS.php") {
 function clickButton1() {
   window.navigator.vibrate(vbr);
   if (window.timer) window.timer.clear();
-    document.getElementById("button1").click();
+  document.getElementById("button1").click();
   window.timer = new Timer(function () {
     clickButton1();
     return;
