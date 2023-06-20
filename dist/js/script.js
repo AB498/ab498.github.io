@@ -34,7 +34,11 @@ darkToggle.addEventListener("click", function () {
 
 // TOGGLE BUTTON DARK MODE (LOCAL STORAGE) BASED ON USER PREFERENCE
 // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+if (
+  localStorage.theme === "dark" ||
+  (!("theme" in localStorage) &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches)
+) {
   darkToggle.checked = true;
 } else {
   darkToggle.checked = false;
