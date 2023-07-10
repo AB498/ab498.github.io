@@ -19,7 +19,7 @@
 
 <body>
 
-    <div x-data="{ expanded:true, wageramount:0.1 }" x-init="
+    <div x-data="{ expanded:false, wageramount:0.1 }" x-init="
     window.wageramount = wageramount;
     $watch('wageramount', (v)=>{
         if(!parseFloat(v))return;
@@ -40,17 +40,19 @@
                 </div>
             </div>
             <div class="flex flex-col relative">
-                <div class="bg-gray-800 overflow-auto p-2 absolute w-full left-0 top-0 -translate-y-full"
+                <div class="bg-gray-700 overflow-auto p-2 absolute w-full left-0 top-0 -translate-y-full"
                     x-show="expanded">
                     <div class="flex p-2">
                         <input type="text" class="bg-zinc-600" x-model="wageramount">
                     </div>
                     <div class="price overflow-auto break-words"> price </div>
                 </div>
-                <div class="flex bg-red-300 justify-around space-x-1 py-1 ">
+                <div class="flex flex-col  bg-gray-800 justify-center space-x-1 p-2 "> 
                     <div class="stake overflow-auto text-xs break-words"> stake </div>
-                    <input type="checkbox" id="autoplay" checked class="w-6 h-6 p-2">
-                    <label for="autoplay">Autoplay</label>
+                    <div class="flex items-center space-x-2 ">
+                        <input type="checkbox" id="autoplay" checked class="w-4 h-4 p-2">
+                        <label for="autoplay">Autoplay</label>
+                    </div>
                 </div>
                 <div class="flex bg-red-300 justify-around space-x-1 py-1 ">
                     <div onclick="bidup()"
@@ -66,7 +68,7 @@
                     <div class="expand flex items-center justify-center p-1 rounded hover:bg-gray-300 bg-red-500"
                         @click="expanded=!expanded">
                         <span class="material-symbols-outlined rotate-180"
-                            x-text="expanded&&'expand_more'||'expand_less'">
+                            x-text="!expanded&&'expand_more'||'expand_less'">
                         </span>
                     </div>
                 </div>
