@@ -46,12 +46,16 @@
                     <div class="price overflow-auto break-words">price </div>
                 </div>
                 <div class="flex flex-col p-2 bg-gray-800 justify-center space-y-1">
-                    <div class="flex p-1 px-2 space-x-2"> 
+                    <div class="flex p-1 px-2 space-x-2">
                         <input id="wageramount" type="text" class="bg-zinc-600" x-model="wageramount">
-                        <div class="p-1 px-2 bg-blue-400 rounded" onclick="document.getElementById('wageramount').value = (parseFloat(document.getElementById('wageramount').value) + 0.1).toFixed(2) ">+</div>
-                        <div class="p-1 px-2 bg-blue-400 rounded" onclick="document.getElementById('wageramount').value = (parseFloat(document.getElementById('wageramount').value) - 0.1).toFixed(2) ">-</div>
-                    </div>  
-                    <div class="overflow-auto text-xs break-words">Version: 0.1.6 </div>
+                        <div class="p-1 px-2 bg-blue-400 rounded"
+                            onclick="document.getElementById('wageramount').value = (parseFloat(document.getElementById('wageramount').value) + 0.1).toFixed(2) ">
+                            +</div>
+                        <div class="p-1 px-2 bg-blue-400 rounded"
+                            onclick="document.getElementById('wageramount').value = (parseFloat(document.getElementById('wageramount').value) - 0.1).toFixed(2) ">
+                            -</div>
+                    </div>
+                    <div class="overflow-auto text-xs break-words">Version: 0.1.7 </div>
                     <div class="stats whitespace-pre-wrap overflow-auto text-xs break-words">stats </div>
                     <div class="stake whitespace-pre-wrap overflow-auto text-xs break-words">stake </div>
                     <div class="flex items-center space-x-2 ">
@@ -61,7 +65,7 @@
                 </div>
                 <div class="flex bg-red-300 justify-around space-x-1 py-1 ">
                     <div onclick="bidup()"
-                        class="up flex items-center justify-center w-full rounded hover:bg-gray-300 bg-blue-500"> UP 
+                        class="up flex items-center justify-center w-full rounded hover:bg-gray-300 bg-blue-500"> UP
                     </div>
                     <div onclick="biddown()"
                         class="down flex items-center justify-center w-full rounded hover:bg-gray-300 bg-red-500"> DOWN
@@ -117,6 +121,7 @@
         const ctx = document.getElementById("tester");
         const ctx2 = document.getElementById("changegraph");
 
+        lossStreak = 0;
         lastMinutePrice = 0;
         lastBid = '';
         setInterval(() => {
@@ -147,10 +152,13 @@
             if (new Date().getSeconds() == 55 && !biddoneinsecond) {
                 if ((lastBid == 'up' && lastMinutePrice > lastM[lastM.length - 1])
                     || (lastBid == 'down' && lastMinutePrice < lastM[lastM.length - 1])) {
+                    lossStreak++;
                     console.log("lost ", new Date().toTimeString(), lastMinutePrice, lastM[lastM.length - 1])
                     $(".logs").text($(".logs").text() + "\n" + new Date().toTimeString() + " " + lastBid + " " + "lost" + " " + lastMinutePrice + " " + lastM[lastM.length - 1])
-                    $('#wageramount').val(parseFloat($('#wageramount').val()) * 1.05);
+                    if (lossStreak >= 3)
+                        $('#wageramount').val(parseFloat($('#wageramount').val()) * 1.8);
                 } else {
+                    lossStreak = 0;
                     $('#wageramount').val(0.1);
                 }
                 if (document.getElementById('autoplay').checked && (largestdown || largestup)) {
