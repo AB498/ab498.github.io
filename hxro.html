@@ -108,9 +108,9 @@
                 // console.log(jsn)
                 lastM.push(prc || jsn.p);
                 changeData.push(parseFloat(jsn.q) * lastchange);
-                if (lastM.length > 100) {
-                    lastM = lastM.slice(1, 100);
-                    changeData = changeData.slice(1, 100);
+                if (lastM.length > 800) {
+                    lastM = lastM.slice(1, 800);
+                    changeData = changeData.slice(1, 800);
                 }
             });
         }
@@ -174,7 +174,7 @@
             $(".price").text(JSON.stringify(new Date(jsn?.T).toLocaleTimeString())
                 + " " + new Date().toLocaleTimeString());
             $(".stats").text("largestup: " + largestup.toFixed(2) + " largestdown: " + largestdown.toFixed(2) + " \nlastBid: " + (lastBid || 'N/A') + " current: " + (lastM[lastM.length - 1] - (lastMinutePrice || lastM[lastM.length - 1])).toFixed(2))
-        }, 500);
+        }, 800);
 
         const constestUrl =
             "https://api.iconicmarkets.io/contests/by-series/9bqu5kYo3RUBY1kxSQjwpKPYrFzsFxEK7tHrxwLs3XWH";
