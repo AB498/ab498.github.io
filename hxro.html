@@ -137,12 +137,19 @@
             plotChanges(ctx, lastM);
             plotChanges(ctx2, changeData);
             largestup = 0;
+            upcount = 0;
             largestdown = 0;
+            downcount = 0;
             for (let i = 0; i < changeData.length; i++) {
                 if (changeData[i] > largestup && changeData[i] > 0.001)
                     largestup = changeData[i];
                 if (changeData[i] < largestdown && changeData[i] < -0.001)
                     largestdown = changeData[i];
+
+                if (changeData[i] > 0.001)
+                    upcount++;
+                if (changeData[i] < -0.001)
+                    downcount++;
             }
             $(".up").removeClass('bg-yellow-500');
             $(".down").removeClass('bg-yellow-500');
@@ -171,10 +178,11 @@
                     $('#wageramount').val(0.1);
                 }
                 if (document.getElementById('autoplay').checked && (largestdown || largestup)) {
-                    if (-largestdown > largestup) {
+                    // if (-largestdown > largestup) {
+                    if (downcount > upcount * 2) {
                         biddown(); lastBid = 'down';
                     }
-                    else if (-largestdown < largestup) {
+                    else if (downcount * 2 < upcount) {
                         bidup(); lastBid = 'up';
                     } else {
                         lastBid = '';
@@ -190,7 +198,10 @@
 
             $(".price").text(JSON.stringify(new Date(jsn?.T).toLocaleTimeString())
                 + " " + new Date().toLocaleTimeString());
-            $(".stats").text("largestup: " + largestup.toFixed(2) + " largestdown: " + largestdown.toFixed(2) + " \nlastBid: " + (lastBid || 'N/A') + " current: " + (lastM[lastM.length - 1] - (lastMinutePrice || lastM[lastM.length - 1])).toFixed(2))
+            $(".stats").text(
+                "largestup: " + largestup.toFixed(2) + " largestdown: " + largestdown.toFixed(2)
+                + " \npcount: " + upcount.toFixed(2) + " downcount: " + downcount
+                + " \nlastBid: " + (lastBid || 'N/A') + " current: " + (lastM[lastM.length - 1] - (lastMinutePrice || lastM[lastM.length - 1])).toFixed(2))
         }, 800);
 
         const constestUrl =
