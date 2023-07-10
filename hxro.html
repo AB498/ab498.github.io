@@ -51,7 +51,7 @@
                         <div class="p-1 px-2 bg-blue-400 rounded" onclick="document.getElementById('wageramount').value = (parseFloat(document.getElementById('wageramount').value) + 0.1).toFixed(2) ">+</div>
                         <div class="p-1 px-2 bg-blue-400 rounded" onclick="document.getElementById('wageramount').value = (parseFloat(document.getElementById('wageramount').value) - 0.1).toFixed(2) ">-</div>
                     </div>  
-                    <div class="overflow-auto text-xs break-words">Version: 0.1.4 </div>
+                    <div class="overflow-auto text-xs break-words">Version: 0.1.5 </div>
                     <div class="stats whitespace-pre-wrap overflow-auto text-xs break-words">stats </div>
                     <div class="stake whitespace-pre-wrap overflow-auto text-xs break-words">stake </div>
                     <div class="flex items-center space-x-2 ">
@@ -211,7 +211,7 @@
                 {
                     contestId: contestId,
                     direction: "moon", // "rekt"
-                    wager: window.wageramount,
+                    wager: parseFloat(document.getElementById('wageramount').value),
                     contestType: "OverUnder",
                     assetType: "USDC",
                 },
@@ -227,7 +227,7 @@
                 {
                     contestId: contestId,
                     direction: "rekt",
-                    wager: window.wageramount,
+                    wager: parseFloat(document.getElementById('wageramount').value),
                     contestType: "OverUnder",
                     assetType: "USDC",
                 },
