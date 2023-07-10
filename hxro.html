@@ -64,7 +64,7 @@
                             onclick="document.getElementById('minloss').value = (parseInt(document.getElementById('minloss').value) - 1) ">
                             -</div>
                     </div>
-                    <div class="overflow-auto text-xs break-words">Version: 0.1.10</div>
+                    <div class="overflow-auto text-xs break-words">Version: 0.1.11</div>
                     <div class="stats whitespace-pre-wrap overflow-auto text-xs break-words">stats </div>
                     <div class="stake whitespace-pre-wrap overflow-auto text-xs break-words">stake </div>
                     <div class="flex items-center space-x-2 ">
@@ -121,9 +121,9 @@
                 // console.log(jsn)
                 lastM.push(prc || jsn.p);
                 changeData.push(parseFloat(jsn.q) * lastchange);
-                if (lastM.length > 200) {
-                    lastM = lastM.slice(1, 200);
-                    changeData = changeData.slice(1, 200);
+                if (lastM.length > 800) {
+                    lastM = lastM.slice(1, 800);
+                    changeData = changeData.slice(1, 800);
                 }
             });
         }
