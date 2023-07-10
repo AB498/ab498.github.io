@@ -47,8 +47,8 @@
                     </div>
                     <div class="price overflow-auto break-words"> price </div>
                 </div>
-                <div class="flex flex-col  bg-gray-800 justify-center space-x-1"> 
-                    <div class="overflow-auto text-xs break-words"> Version: 0.1.1 </div>
+                <div class="flex flex-col  bg-gray-800 justify-center space-y-1">
+                    <div class="overflow-auto text-xs break-words"> Version: 0.1.2 </div>
                     <div class="stake overflow-auto text-xs break-words"> stake </div>
                     <div class="flex items-center space-x-2 ">
                         <input type="checkbox" id="autoplay" checked class="w-4 h-4 p-2">
@@ -119,9 +119,9 @@
             largestup = 0;
             largestdown = 0;
             for (let i = 0; i < changeData.length; i++) {
-                if (changeData[i] > largestup)
+                if (changeData[i] > largestup && changeData[i] > 0.001)
                     largestup = changeData[i];
-                if (changeData[i] < largestdown)
+                if (changeData[i] < largestdown && changeData[i] < -0.001)
                     largestdown = changeData[i];
             }
             if (-largestdown > largestup) {
