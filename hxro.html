@@ -55,7 +55,7 @@
                             onclick="document.getElementById('wageramount').value = (parseFloat(document.getElementById('wageramount').value) - 0.1).toFixed(2) ">
                             -</div>
                     </div>
-                    <div class="overflow-auto text-xs break-words">Version: 0.1.7 </div>
+                    <div class="overflow-auto text-xs break-words">Version: 0.1.8 </div>
                     <div class="stats whitespace-pre-wrap overflow-auto text-xs break-words">stats </div>
                     <div class="stake whitespace-pre-wrap overflow-auto text-xs break-words">stake </div>
                     <div class="flex items-center space-x-2 ">
@@ -155,7 +155,7 @@
                     lossStreak++;
                     console.log("lost ", new Date().toTimeString(), lastMinutePrice, lastM[lastM.length - 1])
                     $(".logs").text($(".logs").text() + "\n" + new Date().toTimeString() + " " + lastBid + " " + "lost" + " " + lastMinutePrice + " " + lastM[lastM.length - 1])
-                    if (lossStreak >= 4)
+                    if (lossStreak >= 6)
                         $('#wageramount').val(parseFloat($('#wageramount').val()) * 2);
                 } else {
                     lossStreak = 0;
