@@ -42,13 +42,15 @@
             <div class="flex flex-col relative space-y-1">
                 <div class="bg-gray-700 overflow-auto p-2 absolute w-full left-0 top-0 -translate-y-full"
                     x-show="expanded">
+                    <div class="logs overflow-auto break-words whitespace-pre-wrap"> logs </div>
                     <div class="flex p-2">
-                        <input type="text" class="bg-zinc-600" x-model="wageramount">
+                        <input id="wageramount type=" text" class="bg-zinc-600" x-model="wageramount">
                     </div>
                     <div class="price overflow-auto break-words"> price </div>
                 </div>
-                <div class="flex flex-col  bg-gray-800 justify-center space-y-1">
-                    <div class="overflow-auto text-xs break-words"> Version: 0.1.2 </div>
+                <div class="flex flex-col p-2 bg-gray-800 justify-center space-y-1">
+                    <div class="overflow-auto text-xs break-words"> Version: 0.1.3 </div>
+                    <div class="stats overflow-auto text-xs break-words"> stake </div>
                     <div class="stake overflow-auto text-xs break-words"> stake </div>
                     <div class="flex items-center space-x-2 ">
                         <input type="checkbox" id="autoplay" checked class="w-4 h-4 p-2">
@@ -113,6 +115,8 @@
         const ctx = document.getElementById("tester");
         const ctx2 = document.getElementById("changegraph");
 
+        lastMinutePrice = 0;
+        lastBid = '';
         setInterval(() => {
             plotChanges(ctx, lastM);
             plotChanges(ctx2, changeData);
@@ -124,30 +128,48 @@
                 if (changeData[i] < largestdown && changeData[i] < -0.001)
                     largestdown = changeData[i];
             }
+            $(".up").removeClass('bg-yellow-500');
+            $(".down").removeClass('bg-yellow-500');
+
             if (-largestdown > largestup) {
-                $('.down').css('color', 'yellow')
-                $('.up').css('color', '')
-                if (document.getElementById('autoplay').checked && new Date().getSeconds() == 55 && !biddoneinsecond && (largestdown && largestup)) {
-                    biddown();
-                    biddoneinsecond = true;
-                } else {
-                    biddoneinsecond = false;
-                }
+                $(".down").addClass('bg-yellow-500');
             }
-            else {
-                $('.up').css('color', 'yellow')
-                $('.down').css('color', '')
-                if (document.getElementById('autoplay').checked && new Date().getSeconds() == 55 && !biddoneinsecond && (largestdown && largestup)) {
-                    bidup();
-                    biddoneinsecond = true;
-                } else {
-                    biddoneinsecond = false;
+            else if (-largestdown < largestup) {
+                $(".up").addClass('bg-yellow-500');
+            } else {
+            }
+
+            if (new Date().getSeconds() == 0) {
+                lastMinutePrice = lastM[lastM.length - 1]
+            }
+            if (new Date().getSeconds() == 55 && !biddoneinsecond) {
+                if ((lastBid == 'up' && lastMinutePrice > lastM[lastM.length - 1])
+                    || (lastBid == 'down' && lastMinutePrice < lastM[lastM.length - 1])) {
+                    console.log("lost ", lastMinutePrice, lastM[lastM.length - 1])
+                    $(".logs").text($(".logs").text() + "\n" + lastBid + " " + "lost" + " " + lastMinutePrice + " " + lastM[lastM.length - 1])
+
                 }
+                if (document.getElementById('autoplay').checked && (largestdown || largestup)) {
+                    if (-largestdown > largestup) {
+                        biddown(); lastBid = 'down';
+                    }
+                    else if (-largestdown < largestup) {
+                        bidup(); lastBid = 'up';
+                    } else {
+                        lastBid = '';
+                    }
+                }
+                biddoneinsecond = true;
+
+            } else {
+                biddoneinsecond = false;
+
             }
             // console.log('up ', largestup, ' down ', largestdown)
 
             $(".price").text(JSON.stringify(new Date(jsn?.T).toLocaleTimeString())
                 + " " + new Date().toLocaleTimeString());
+            $(".stats").text("largestup: " + largestup.toFixed(2) + " largestdown: " + largestdown.toFixed(2) + " lastBid: " + lastBid + " current: " + (lastM[lastM.length - 1] - (lastMinutePrice || lastM[lastM.length - 1])).toFixed(2))
         }, 500);
 
         const constestUrl =
@@ -172,7 +194,7 @@
             nowTime.setMinutes(nowTime.getMinutes() + 1);
             let contest = response2.data.find((e) => e.contestId == contestId);
             // console.log(contest || "No contests", response2.data[0].contestId, contestId)
-            $(".stake").text("Wager: " + (contest?.wager || "No contests") + " Balance: " + response2.data[0].playerBalance);
+            $(".stake").text("Wager: " + (contest?.wager || "No contests") + " Balance: " + response2.data[0].playerBalance.toFixed(2));
         }
         setInterval(() => {
             getStake()
