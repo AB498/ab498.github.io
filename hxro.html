@@ -154,10 +154,10 @@
             $(".up").removeClass('bg-yellow-500');
             $(".down").removeClass('bg-yellow-500');
 
-            if (downcount > upcount * 2) {
+            if (downcount > upcount * 1.5) {
                 $(".down").addClass('bg-yellow-500');
             }
-            else if (downcount * 2 < upcount) {
+            else if (downcount * 1.5 < upcount) {
                 $(".up").addClass('bg-yellow-500');
             } else {
             }
@@ -179,10 +179,10 @@
                 }
                 if (document.getElementById('autoplay').checked && (largestdown || largestup)) {
                     // if (-largestdown > largestup) {
-                    if (downcount > upcount * 2) {
+                    if (downcount > upcount * 1.5) {
                         biddown(); lastBid = 'down';
                     }
-                    else if (downcount * 2 < upcount) {
+                    else if (downcount * 1.5 < upcount) {
                         bidup(); lastBid = 'up';
                     } else {
                         lastBid = '';
