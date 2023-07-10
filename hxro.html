@@ -145,8 +145,8 @@
             if (new Date().getSeconds() == 55 && !biddoneinsecond) {
                 if ((lastBid == 'up' && lastMinutePrice > lastM[lastM.length - 1])
                     || (lastBid == 'down' && lastMinutePrice < lastM[lastM.length - 1])) {
-                    console.log("lost ", lastMinutePrice, lastM[lastM.length - 1])
-                    $(".logs").text($(".logs").text() + "\n" + lastBid + " " + "lost" + " " + lastMinutePrice + " " + lastM[lastM.length - 1])
+                    console.log("lost ", new Date().toTimeString(), lastMinutePrice, lastM[lastM.length - 1])
+                    $(".logs").text($(".logs").text() + "\n" + new Date().toTimeString() + " " + lastBid + " " + "lost" + " " + lastMinutePrice + " " + lastM[lastM.length - 1])
 
                 }
                 if (document.getElementById('autoplay').checked && (largestdown || largestup)) {
@@ -169,7 +169,7 @@
 
             $(".price").text(JSON.stringify(new Date(jsn?.T).toLocaleTimeString())
                 + " " + new Date().toLocaleTimeString());
-            $(".stats").text("largestup: " + largestup.toFixed(2) + " largestdown: " + largestdown.toFixed(2) + " \nlastBid: " + (lastBid||'N/A') + " current: " + (lastM[lastM.length - 1] - (lastMinutePrice || lastM[lastM.length - 1])).toFixed(2))
+            $(".stats").text("largestup: " + largestup.toFixed(2) + " largestdown: " + largestdown.toFixed(2) + " \nlastBid: " + (lastBid || 'N/A') + " current: " + (lastM[lastM.length - 1] - (lastMinutePrice || lastM[lastM.length - 1])).toFixed(2))
         }, 500);
 
         const constestUrl =
