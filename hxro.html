@@ -54,9 +54,9 @@
                     class="down flex items-center justify-center w-full rounded hover:bg-gray-300 bg-red-500"> DOWN
                 </div>
                 <div onclick="cancellast()"
-                    class="down flex items-center justify-center p-1 rounded hover:bg-gray-300 bg-red-500"> &#10006;
+                    class="cancel flex items-center justify-center p-1 rounded hover:bg-gray-300 bg-red-500"> &#10006;
                 </div>
-                <div class="down flex items-center justify-center p-1 rounded hover:bg-gray-300 bg-red-500"
+                <div class="expand flex items-center justify-center p-1 rounded hover:bg-gray-300 bg-red-500"
                     @click="expanded=!expanded">
                     <span class="material-symbols-outlined rotate-180" x-text="expanded&&'expand_more'||'expand_less'">
                     </span>
@@ -104,6 +104,36 @@
         setInterval(() => {
             plotChanges(ctx, lastM);
             plotChanges(ctx2, changeData);
+            largestup = 0;
+            largestdown = 0;
+            for (let i = 0; i < changeData.length; i++) {
+                if (changeData[i] > largestup)
+                    largestup = changeData[i];
+                if (changeData[i] < largestdown)
+                    largestdown = changeData[i];
+            }
+            if (-largestdown > largestup) {
+                $('.down').css('color', 'yellow')
+                $('.up').css('color', '')
+                if (new Date().getSeconds() == 50 && !biddoneinsecond && (largestdown && largestup)) {
+                    biddown();
+                    biddoneinsecond = true;
+                } else {
+                    biddoneinsecond = false;
+                }
+            }
+            else {
+                $('.up').css('color', 'yellow')
+                $('.down').css('color', '')
+                if (new Date().getSeconds() == 50 && !biddoneinsecond && (largestdown && largestup)) {
+                    bidup();
+                    biddoneinsecond = true;
+                } else {
+                    biddoneinsecond = false;
+                }
+            }
+            // console.log('up ', largestup, ' down ', largestdown)
+
             $(".price").text(JSON.stringify(new Date(jsn?.T).toLocaleTimeString())
                 + " " + new Date().toLocaleTimeString());
         }, 500);
@@ -150,7 +180,7 @@
                 {headers: {"Ocp-Apim-Subscription-Key": apikey, }, }
 
             );
-            console.log(response2.data);
+            console.log("bid placed: up");
         }
         async function biddown() {
             await getContests();
@@ -165,7 +195,7 @@
                 },
                 {headers: {"Ocp-Apim-Subscription-Key": apikey, }, }
             );
-            console.log(response2.data);
+            console.log("bid placed: down");
         }
 
         async function getContests() {
@@ -191,7 +221,7 @@
                 },
                 {headers: {"Ocp-Apim-Subscription-Key": apikey, }, }
             );
-            console.log(response2.data);
+            console.log("bids cancelled");
         }
         function plotChanges(chr, data) {
             Plotly.purge(chr)
