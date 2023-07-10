@@ -121,9 +121,9 @@
                 // console.log(jsn)
                 lastM.push(prc || jsn.p);
                 changeData.push(parseFloat(jsn.q) * lastchange);
-                if (lastM.length > 800) {
-                    lastM = lastM.slice(1, 800);
-                    changeData = changeData.slice(1, 800);
+                if (lastM.length > 200) {
+                    lastM = lastM.slice(1, 200);
+                    changeData = changeData.slice(1, 200);
                 }
             });
         }
