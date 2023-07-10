@@ -200,7 +200,7 @@
                 + " " + new Date().toLocaleTimeString());
             $(".stats").text(
                 "largestup: " + largestup.toFixed(2) + " largestdown: " + largestdown.toFixed(2)
-                + " \npcount: " + upcount.toFixed(2) + " downcount: " + downcount
+                + " \nupcount: " + upcount + " downcount: " + downcount
                 + " \nlastBid: " + (lastBid || 'N/A') + " current: " + (lastM[lastM.length - 1] - (lastMinutePrice || lastM[lastM.length - 1])).toFixed(2))
         }, 800);
 
