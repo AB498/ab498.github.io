@@ -42,16 +42,16 @@
             <div class="flex flex-col relative space-y-1">
                 <div class="bg-gray-700 overflow-auto p-2 absolute w-full left-0 top-0 -translate-y-full"
                     x-show="expanded">
-                    <div class="logs overflow-auto break-words whitespace-pre-wrap"> logs </div>
+                    <div class="logs overflow-auto break-words whitespace-pre-wrap">logs </div>
                     <div class="flex p-2">
                         <input id="wageramount type=" text" class="bg-zinc-600" x-model="wageramount">
                     </div>
-                    <div class="price overflow-auto break-words"> price </div>
+                    <div class="price overflow-auto break-words">price </div>
                 </div>
                 <div class="flex flex-col p-2 bg-gray-800 justify-center space-y-1">
-                    <div class="overflow-auto text-xs break-words"> Version: 0.1.3 </div>
-                    <div class="stats overflow-auto text-xs break-words"> stake </div>
-                    <div class="stake overflow-auto text-xs break-words"> stake </div>
+                    <div class="overflow-auto text-xs break-words">Version: 0.1.3 </div>
+                    <div class="stats whitespace-pre-wrap overflow-auto text-xs break-words">stats </div>
+                    <div class="stake whitespace-pre-wrap overflow-auto text-xs break-words">stake </div>
                     <div class="flex items-center space-x-2 ">
                         <input type="checkbox" id="autoplay" checked class="w-4 h-4 p-2">
                         <label for="autoplay">Autoplay</label>
@@ -169,7 +169,7 @@
 
             $(".price").text(JSON.stringify(new Date(jsn?.T).toLocaleTimeString())
                 + " " + new Date().toLocaleTimeString());
-            $(".stats").text("largestup: " + largestup.toFixed(2) + " largestdown: " + largestdown.toFixed(2) + " lastBid: " + lastBid + " current: " + (lastM[lastM.length - 1] - (lastMinutePrice || lastM[lastM.length - 1])).toFixed(2))
+            $(".stats").text("largestup: " + largestup.toFixed(2) + " largestdown: " + largestdown.toFixed(2) + " \nlastBid: " + (lastBid||'N/A') + " current: " + (lastM[lastM.length - 1] - (lastMinutePrice || lastM[lastM.length - 1])).toFixed(2))
         }, 500);
 
         const constestUrl =
