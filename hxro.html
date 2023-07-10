@@ -147,7 +147,9 @@
                     || (lastBid == 'down' && lastMinutePrice < lastM[lastM.length - 1])) {
                     console.log("lost ", new Date().toTimeString(), lastMinutePrice, lastM[lastM.length - 1])
                     $(".logs").text($(".logs").text() + "\n" + new Date().toTimeString() + " " + lastBid + " " + "lost" + " " + lastMinutePrice + " " + lastM[lastM.length - 1])
-
+                    $('#wageramount').val(parseFloat($('#wageramount').val()) * 1.1);
+                } else {
+                    $('#wageramount').val(0.1);
                 }
                 if (document.getElementById('autoplay').checked && (largestdown || largestup)) {
                     if (-largestdown > largestup) {
