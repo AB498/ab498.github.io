@@ -39,27 +39,36 @@
                         class="bg-zinc-900 flex items-center justify-center h-1/2 w-1/2 overflow-hidden"></div>
                 </div>
             </div>
-            <div class="flex bg-red-300 justify-around space-x-1 py-1 relative">
+            <div class="flex flex-col relative">
                 <div class="bg-gray-800 overflow-auto p-2 absolute w-full left-0 top-0 -translate-y-full"
                     x-show="expanded">
                     <div class="flex p-2">
                         <input type="text" class="bg-zinc-600" x-model="wageramount">
                     </div>
-                    <div class="stake overflow-auto text-xs break-words"> stake </div>
                     <div class="price overflow-auto break-words"> price </div>
                 </div>
-                <div onclick="bidup()"
-                    class="up flex items-center justify-center w-full rounded hover:bg-gray-300 bg-blue-500"> UP </div>
-                <div onclick="biddown()"
-                    class="down flex items-center justify-center w-full rounded hover:bg-gray-300 bg-red-500"> DOWN
+                <div class="flex bg-red-300 justify-around space-x-1 py-1 ">
+                    <div class="stake overflow-auto text-xs break-words"> stake </div>
+                    <input type="checkbox" id="autoplay" checked class="w-6 h-6 p-2">
+                    <label for="autoplay">Autoplay</label>
                 </div>
-                <div onclick="cancellast()"
-                    class="cancel flex items-center justify-center p-1 rounded hover:bg-gray-300 bg-red-500"> &#10006;
-                </div>
-                <div class="expand flex items-center justify-center p-1 rounded hover:bg-gray-300 bg-red-500"
-                    @click="expanded=!expanded">
-                    <span class="material-symbols-outlined rotate-180" x-text="expanded&&'expand_more'||'expand_less'">
-                    </span>
+                <div class="flex bg-red-300 justify-around space-x-1 py-1 ">
+                    <div onclick="bidup()"
+                        class="up flex items-center justify-center w-full rounded hover:bg-gray-300 bg-blue-500"> UP
+                    </div>
+                    <div onclick="biddown()"
+                        class="down flex items-center justify-center w-full rounded hover:bg-gray-300 bg-red-500"> DOWN
+                    </div>
+                    <div onclick="cancellast()"
+                        class="cancel flex items-center justify-center p-1 rounded hover:bg-gray-300 bg-red-500">
+                        &#10006;
+                    </div>
+                    <div class="expand flex items-center justify-center p-1 rounded hover:bg-gray-300 bg-red-500"
+                        @click="expanded=!expanded">
+                        <span class="material-symbols-outlined rotate-180"
+                            x-text="expanded&&'expand_more'||'expand_less'">
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -115,7 +124,7 @@
             if (-largestdown > largestup) {
                 $('.down').css('color', 'yellow')
                 $('.up').css('color', '')
-                if (new Date().getSeconds() == 50 && !biddoneinsecond && (largestdown && largestup)) {
+                if (document.getElementById('autoplay').checked && new Date().getSeconds() == 55 && !biddoneinsecond && (largestdown && largestup)) {
                     biddown();
                     biddoneinsecond = true;
                 } else {
@@ -125,7 +134,7 @@
             else {
                 $('.up').css('color', 'yellow')
                 $('.down').css('color', '')
-                if (new Date().getSeconds() == 50 && !biddoneinsecond && (largestdown && largestup)) {
+                if (document.getElementById('autoplay').checked && new Date().getSeconds() == 55 && !biddoneinsecond && (largestdown && largestup)) {
                     bidup();
                     biddoneinsecond = true;
                 } else {
@@ -180,7 +189,7 @@
                 {headers: {"Ocp-Apim-Subscription-Key": apikey, }, }
 
             );
-            console.log("bid placed: up");
+            console.log(new Date(), "bid placed: up");
         }
         async function biddown() {
             await getContests();
@@ -195,7 +204,7 @@
                 },
                 {headers: {"Ocp-Apim-Subscription-Key": apikey, }, }
             );
-            console.log("bid placed: down");
+            console.log(new Date(), "bid placed: down");
         }
 
         async function getContests() {
@@ -221,7 +230,7 @@
                 },
                 {headers: {"Ocp-Apim-Subscription-Key": apikey, }, }
             );
-            console.log("bids cancelled");
+            console.log(new Date(), "bids cancelled");
         }
         function plotChanges(chr, data) {
             Plotly.purge(chr)
