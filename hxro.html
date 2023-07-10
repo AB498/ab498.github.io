@@ -155,7 +155,7 @@
                     lossStreak++;
                     console.log("lost ", new Date().toTimeString(), lastMinutePrice, lastM[lastM.length - 1])
                     $(".logs").text($(".logs").text() + "\n" + new Date().toTimeString() + " " + lastBid + " " + "lost" + " " + lastMinutePrice + " " + lastM[lastM.length - 1])
-                    if (lossStreak >= 3)
+                    if (lossStreak >= 4)
                         $('#wageramount').val(parseFloat($('#wageramount').val()) * 1.8);
                 } else {
                     lossStreak = 0;
