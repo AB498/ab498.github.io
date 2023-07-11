@@ -13,6 +13,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Merienda&display=swap" rel="stylesheet">
 
+<link rel="icon" href="dist/img/Hexagon.png" type="image/x-icon" />
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
 <body>
     <style>
         body {
@@ -56,16 +60,12 @@
             <div class="flex">
                 <!-- <span class="mr-2 text-sm font-semibold text-slate-500">Light</span> -->
                 <input type="checkbox" class="hidden" id="dark-toggle" checked="darkmode" />
-                <label for="dark-toggle" onclick="window.app.onoff='justify-end'">
+                <label for="dark-toggle" onclick="app.onoff=app.onoff==''?'justify-end':''">
                     <div class="flex h-9 w-14 {{onoff}} cursor-pointer  rounded-full bg-slate-500 p-1">
                         <div
                             class="toggle-circle  flex h-7 w-7 items-center justify-center rounded-full bg-white transition duration-300 ease-in-out">
-                            <svg role="img" class="" width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                aria-labelledby="color-scheme-dark">
-                                <path
-                                    d="M12.048 21.963c-.308 0-.618-.015-.93-.043-2.66-.246-5.064-1.513-6.771-3.567s-2.512-4.651-2.266-7.311a10.004 10.004 0 0 1 9.038-9.038 1 1 0 0 1 .896 1.589 6.008 6.008 0 0 0 1.258 8.392c2.078 1.536 5.055 1.536 7.133 0a1 1 0 0 1 1.591.896 9.951 9.951 0 0 1-9.949 9.082zM9.315 4.438a8.006 8.006 0 0 0-5.244 6.787 7.954 7.954 0 0 0 1.813 5.849 7.95 7.95 0 0 0 5.417 2.854 7.95 7.95 0 0 0 8.266-5.243 8.01 8.01 0 0 1-2.729.476 7.946 7.946 0 0 1-4.755-1.565C9.174 11.443 8.145 7.68 9.315 4.438z">
-                                </path>
-                            </svg>
+
+                            <span class="material-symbols-outlined text-red-600">dark_mode</span>
                         </div>
                     </div>
                 </label>
@@ -84,7 +84,7 @@
             show: false,
             count: 20,
             darkmode: true, // computable()
-            onoff:   'bg-blue-500' // {{ inline if else }}
+            onoff: '' // {{ inline if else }}
         });
         let timeNow = new Date().getHours();
         let greeting =
@@ -96,6 +96,6 @@
                         : timeNow > 20 && timeNow <= 23 ? "Good Night" : "Good Midnight";
 
         app.message = greeting
-    app.onoff = 'justify-end'
+
     </script>
 </body>
