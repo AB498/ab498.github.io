@@ -176,8 +176,6 @@
                     $(".logs").text($(".logs").text() + "\n" + new Date().toTimeString() + " " + lastBid + " " + "lost" + " " + lastMinutePrice + " " + lastM[lastM.length - 1])
                     if (lossStreak >= parseInt(document.getElementById('minloss').value)) {
                         $('#wageramount').val(parseFloat($('#wageramount').val()) * 2);
-                        if (parseFloat($('#wageramount').val() > largestwager))
-                            largestwager = parseFloat($('#wageramount').val())
                     }
                     losses++;
                 } else if ((lastBid == 'up' && lastMinutePrice < lastM[lastM.length - 1])
@@ -189,6 +187,8 @@
                     lossStreak = 0;
                     $('#wageramount').val(0.1);
                 }
+                if (parseFloat($('#wageramount').val()) > largestwager)
+                    largestwager = parseFloat($('#wageramount').val())
                 if (document.getElementById('autoplay').checked && (largestdown || largestup)) {
                     // if (-largestdown > largestup) {
                     // if (downcount > upcount * 1.5) {
