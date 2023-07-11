@@ -1,7 +1,11 @@
-<script src="https://ab498.github.io/static/xjs.js"></script>
-<script src="https://ab498.github.io/static/utils.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
+<!-- <script src="https://ab498.github.io/static/xjs.js"></script>
+<script src="https://ab498.github.io/static/utils.js"></script> -->
+<!-- production -->
+<script src="static/xjs.js"></script>
+<script src="static/utils.js"></script>
+<!-- development -->
 
+<script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
@@ -45,7 +49,29 @@
         };
     </script>
     <div id="app">
-        <div class="flex w-full h-12 text-xl bg-gray-900 text-gray-200 center">{{message}}</div>
+        <div class="flex w-full h-12 text-xl bg-gray-900 text-gray-200 center">
+            <div>
+                {{message}}
+            </div>
+            <div class="flex">
+                <!-- <span class="mr-2 text-sm font-semibold text-slate-500">Light</span> -->
+                <input type="checkbox" class="hidden" id="dark-toggle" checked="darkmode" />
+                <label for="dark-toggle" onclick="window.app.onoff='justify-end'">
+                    <div class="flex h-9 w-14 {{onoff}} cursor-pointer  rounded-full bg-slate-500 p-1">
+                        <div
+                            class="toggle-circle  flex h-7 w-7 items-center justify-center rounded-full bg-white transition duration-300 ease-in-out">
+                            <svg role="img" class="" width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                aria-labelledby="color-scheme-dark">
+                                <path
+                                    d="M12.048 21.963c-.308 0-.618-.015-.93-.043-2.66-.246-5.064-1.513-6.771-3.567s-2.512-4.651-2.266-7.311a10.004 10.004 0 0 1 9.038-9.038 1 1 0 0 1 .896 1.589 6.008 6.008 0 0 0 1.258 8.392c2.078 1.536 5.055 1.536 7.133 0a1 1 0 0 1 1.591.896 9.951 9.951 0 0 1-9.949 9.082zM9.315 4.438a8.006 8.006 0 0 0-5.244 6.787 7.954 7.954 0 0 0 1.813 5.849 7.95 7.95 0 0 0 5.417 2.854 7.95 7.95 0 0 0 8.266-5.243 8.01 8.01 0 0 1-2.729.476 7.946 7.946 0 0 1-4.755-1.565C9.174 11.443 8.145 7.68 9.315 4.438z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                </label>
+                <!-- <span class="ml-2 text-sm font-semibold text-slate-500">Dark</span> -->
+            </div>
+        </div>
     </div>
 
     <script>
@@ -57,13 +83,19 @@
             wrte: (data) => {data.count++; data.darkmode = !data.darkmode},
             show: false,
             count: 20,
-            darkmode: false
+            darkmode: true, // computable()
+            onoff:   'bg-blue-500' // {{ inline if else }}
         });
-        const hour = new Date().getHours(); const welcomeTypes = ['Good morning', 'Good afternoon', 'Good evening']; let welcomeText = '';
-        if (hour < 12) welcomeText = welcomeTypes[0];
-        else if (hour < 18) welcomeText = welcomeTypes[1];
-        else welcomeText = welcomeTypes[2];
-        app.message = welcomeText
+        let timeNow = new Date().getHours();
+        let greeting =
+            timeNow >= 5 && timeNow < 12
+                ? "Good Morning"
+                : timeNow >= 12 && timeNow < 18
+                    ? "Good Afternoon"
+                    : timeNow < 20 && timeNow > 18 ? "Good Evening"
+                        : timeNow > 20 && timeNow <= 23 ? "Good Night" : "Good Midnight";
 
+        app.message = greeting
+    app.onoff = 'justify-end'
     </script>
 </body>

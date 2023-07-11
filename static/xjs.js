@@ -415,7 +415,7 @@ function fire(el, data, template, watchinfo = {}, dataroot, attach, ignoreEl) {
         }
         toReplace = toReplace.replace(
           new RegExp("{{\\s*" + escapeRegex(key) + "\\s*}}", "g"),
-          (val)
+          val
         );
       }
       textNode.textContent = toReplace;
@@ -425,7 +425,9 @@ function fire(el, data, template, watchinfo = {}, dataroot, attach, ignoreEl) {
     for (let attr of attrs) {
       if (attr.name == "@click") continue;
       let matches = findMatches(attr.value);
+      // debug(attr.value, matches);
       let id = el.attributes["e-data-id"].value;
+      debug(attr.value);
       for (let match of matches) {
         let key = match.trim();
         let pth = watchinfo.attrMap[XJSON.parsePath(match)[0]];
@@ -443,7 +445,7 @@ function fire(el, data, template, watchinfo = {}, dataroot, attach, ignoreEl) {
               pth,
               (old, val) => {
                 reseAttrs(el, _elTemp);
-                // debug(val);
+                debug(val, el.classList);
                 // XJSON.unwatch(dataroot, pth, id);
                 // debug('removed ' + JSON.stringify(id in Object.keys(XJSON.getWatchers(dataroot, pth))));
                 fire(el, data, el, watchinfo, dataroot, false);
@@ -511,6 +513,10 @@ function reseAttrs(el, _elTemp) {
     let textNode = textNodes[i];
     let textNodeT = textNodesT[i];
     textNode.textContent = textNodeT.textContent;
+  }
+  let attrs = [..._elTemp.attributes];
+  for (let i = 0; i < attrs.length; i++) {
+    el.setAttribute(attrs[i].name, attrs[i].value);
   }
 }
 function findMatchesSqBrackets(string) {
