@@ -133,6 +133,9 @@
         lossStreak = 0;
         lastMinutePrice = 0;
         lastBid = '';
+        largestwager = 0;
+        losses = 0;
+        wins = 0;
         setInterval(() => {
             plotChanges(ctx, lastM);
             plotChanges(ctx2, changeData);
@@ -171,8 +174,17 @@
                     lossStreak++;
                     console.log("lost ", new Date().toTimeString(), lastMinutePrice, lastM[lastM.length - 1])
                     $(".logs").text($(".logs").text() + "\n" + new Date().toTimeString() + " " + lastBid + " " + "lost" + " " + lastMinutePrice + " " + lastM[lastM.length - 1])
-                    if (lossStreak >= parseInt(document.getElementById('minloss').value))
+                    if (lossStreak >= parseInt(document.getElementById('minloss').value)) {
                         $('#wageramount').val(parseFloat($('#wageramount').val()) * 2);
+                        if (parseFloat($('#wageramount').val() > largestwager))
+                            largestwager = parseFloat($('#wageramount').val())
+                    }
+                    losses++;
+                } else if ((lastBid == 'up' && lastMinutePrice < lastM[lastM.length - 1])
+                    || (lastBid == 'down' && lastMinutePrice > lastM[lastM.length - 1])) {
+                    wins++;
+                    lossStreak = 0;
+                    $('#wageramount').val(0.1);
                 } else {
                     lossStreak = 0;
                     $('#wageramount').val(0.1);
@@ -202,6 +214,7 @@
             $(".stats").text(
                 "largestup: " + largestup.toFixed(2) + " largestdown: " + largestdown.toFixed(2)
                 + " \nupcount: " + upcount + " downcount: " + downcount
+                + "\nlargestwager: " + largestwager + " wins: " + wins + " losses: " + losses
                 + " \nlastBid: " + (lastBid || 'N/A') + " current: " + (lastM[lastM.length - 1] - (lastMinutePrice || lastM[lastM.length - 1])).toFixed(2))
         }, 800);
 
