@@ -415,7 +415,7 @@ function fire(el, data, template, watchinfo = {}, dataroot, attach, ignoreEl) {
         }
         toReplace = toReplace.replace(
           new RegExp("{{\\s*" + escapeRegex(key) + "\\s*}}", "g"),
-          JSON.stringify(val)
+          (val)
         );
       }
       textNode.textContent = toReplace;

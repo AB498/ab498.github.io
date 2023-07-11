@@ -1,0 +1,69 @@
+<script src="https://ab498.github.io/static/xjs.js"></script>
+<script src="https://ab498.github.io/static/utils.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Merienda&display=swap" rel="stylesheet">
+
+<body>
+    <style>
+        body {
+            font-family: 'Kalam', cursive;
+            font-family: 'Patrick Hand', cursive;
+            font-family: 'Merienda', cursive;
+        }
+
+        .center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .full {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    spacing: {
+                        'alias-4': '1rem',
+                        'alias-8': '2rem',
+                    },
+                    colors: {
+                        'alias-red': 'red',
+                    },
+                    // Add more custom aliases as needed
+                },
+            },
+        };
+    </script>
+    <div id="app">
+        <div class="flex w-full h-12 text-xl bg-gray-900 text-gray-200 center">{{message}}</div>
+    </div>
+
+    <script>
+        document.body.insertAdjacentElement("beforeend", new DOMParser().parseFromString(`<div class="debugcol h-1/2 h-8 bg-gray-950/75 text-white flex flex-col overflow-auto whitespace-pre-wrap ring-2 transition-all flex flex-col bottom-0 fixed w-screen z-10  backdrop-filter backdrop-blur-sm">        <div onclick="document.querySelector('.debugcol').classList.toggle('h-8');"            class="h-8 shrink-0 justify-center items-center flex flex-col  font-bold ring-2   p-2  sticky top-0 ">            <div class="rounded hover:bg-gray-500 bg-gray-800 flex justify-center items-center w-full"> LOGS </div>        </div>        <div class="debug flex flex-col flex-col-reverse">            <div class="grow"></div>        </div>    </div>`, "text/html").body.firstChild);
+        var app = AutoDOM.create("#app", {
+            message: "Hello World!", deep: {deep1: [24, 67, 5, 8]},
+            items: Array(2).fill(0).map((_, i) => ({name: "Item " + i})),
+            bgcol: "bg-red-500",
+            wrte: (data) => {data.count++; data.darkmode = !data.darkmode},
+            show: false,
+            count: 20,
+            darkmode: false
+        });
+        const hour = new Date().getHours(); const welcomeTypes = ['Good morning', 'Good afternoon', 'Good evening']; let welcomeText = '';
+        if (hour < 12) welcomeText = welcomeTypes[0];
+        else if (hour < 18) welcomeText = welcomeTypes[1];
+        else welcomeText = welcomeTypes[2];
+        app.message = welcomeText
+
+    </script>
+</body>
