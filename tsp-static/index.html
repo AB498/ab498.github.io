@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="js/tree-sitter.js"></script>
+  <script src="../static/xjs.js"></script>
+  <script defer src="../static/utils.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- <script src="js/jsonviewer.js"></script> -->
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+  <div class="editor full">
+
+  </div>
+
+  <script type="importmap">
+              {
+                "imports": {
+                  "vue":          "https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.0-beta.15/vue.esm-browser.js",
+                  "vue-router":   "https://cdnjs.cloudflare.com/ajax/libs/vue-router/4.0.0-alpha.12/vue-router.esm.js",
+                  "vuex":         "https://cdnjs.cloudflare.com/ajax/libs/vuex/4.0.0-beta.2/vuex.esm-browser.js"
+                }
+              }
+            </script>
+  <script type="module">
+    import {ref} from 'vue';
+    import JsonViewer from '../static/jsonviewer.js';
+    window.JsonViewer = JsonViewer;
+
+    const Parser = window.TreeSitter;
+    Parser.init().then(async () => {
+      /* the library is ready */
+      console.log(window.TreeSitter);
+      const parser = new Parser();
+      const JavaScript = await Parser.Language.load('js/tree-sitter-javascript.wasm');
+      parser.setLanguage(JavaScript);
+      const sourceCode = 'let x = 1; console.log(x);';
+      const tree = parser.parse(sourceCode);
+      debug(tree.rootNode);
+      debug(tree.rootNode);
+    });
+
+  </script>
+</body>
+
+</html>
