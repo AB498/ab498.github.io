@@ -5,12 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <script src="js/tree-sitter.js"></script>
-  <script src="../static/xjs.js"></script>
-  <script defer src="../static/utils.js"></script>
+  <script src="../static/js/tree-sitter.js"></script>
+  <script src="../static/js/xjs.js"></script>
+  <script defer src="../static/js/utils.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- <script src="js/jsonviewer.js"></script> -->
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="../static/css/style.css">
 
 </head>
 
@@ -31,7 +31,7 @@
             </script>
   <script type="module">
     import {ref} from 'vue';
-    import JsonViewer from '../static/jsonviewer.js';
+    import JsonViewer from '../static/js/jsonviewer.js';
     window.JsonViewer = JsonViewer;
 
     const Parser = window.TreeSitter;
@@ -39,12 +39,13 @@
       /* the library is ready */
       console.log(window.TreeSitter);
       const parser = new Parser();
-      const JavaScript = await Parser.Language.load('js/tree-sitter-javascript.wasm');
+      const JavaScript = await Parser.Language.load('../static/js/tree-sitter-javascript.wasm');
       parser.setLanguage(JavaScript);
       const sourceCode = 'let x = 1; console.log(x);';
       const tree = parser.parse(sourceCode);
       debug(tree.rootNode);
       debug(tree.rootNode);
+      debug('tree.rootNode');
     });
 
   </script>

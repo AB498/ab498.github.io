@@ -2,7 +2,7 @@ document.body.insertAdjacentElement(
   "beforeend",
   new DOMParser().parseFromString(
     `<div
-        class="debugcol bg-gray-950/75 text-white flex flex-col  h-1/2 overflow-auto whitespace-pre-wrap transition-all bottom-0 fixed w-screen z-10  backdrop-filter backdrop-blur-sm">
+        class="debugcol bg-gray-950/75 text-white flex flex-col  h-1/2 overflow-auto whitespace-pre-wrap transition-all bottom-0 fixed w-screen z-10 backdrop-filter backdrop-blur-sm">
         <div onclick="document.querySelector('.debugcol').classList.toggle('h-8');"
             class="h-8 shrink-0 justify-center items-center flex flex-col  font-bold bg-gray-700 p-1 sticky top-0 z-10">
             <div class="rounded hover:bg-gray-500 bg-gray-800 flex justify-center items-center w-full"> LOGS </div>
@@ -30,11 +30,23 @@ function escapeHTML(str) {
 const debug = (...args) => {
   console.log(...args);
 
+  let time = new Date().toLocaleTimeString();
   if (typeof args[0] == "object") {
-    let jsv = document.createElement("div");
+    let jsv = new DOMParser()
+      .parseFromString(
+        `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-red-950/25 pt-1 first-letter:font-mono whitespace-pre-wrap"><div class="time bg-gray-600 rounded-md p-1 text-xs">${time}</div></div>`,
+        "text/html"
+      )
+      .documentElement.querySelector("body").firstChild;
+    let jsv2 = new DOMParser().parseFromString(
+      `<div class="w-full h-full"></div>`,
+      "text/html"
+      ).documentElement.querySelector('body').firstChild;
+    console.log(jsv2)
     document.querySelector(".debug").appendChild(jsv);
+    jsv.appendChild(jsv2);
     new JsonViewer({
-      container: jsv,
+      container: jsv2,
       data: JSON.stringify(args[0]),
       theme: "dark",
       expand: false,
@@ -42,22 +54,15 @@ const debug = (...args) => {
     return;
   }
   let argsString = args.map((e) => f(e)).join(" ");
-  document
-    .querySelector(".debug")
-    .appendChild(
-      new DOMParser().parseFromString(
-        '<div class="bg-red-950/75 font-mono border-b-2 hover:bg-sky-700 whitespace-pre-wrap">' +
-          argsString +
-          "</div>",
-        "text/html"
-      ).documentElement
-    );
-  document.querySelector(".debug").classList.remove("bg-red-500/75");
-  document.querySelector(".debug").classList.add("bg-sky-500/75");
+  let jsv = new DOMParser().parseFromString(
+    `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-red-950/25 pt-1 first-letter:font-mono whitespace-pre-wrap"><div class="time bg-gray-600 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
+    "text/html"
+  ).documentElement;
+  document.querySelector(".debug").appendChild(jsv);
 };
 error = (s) => {
   document.querySelector(".debug").innerHTML +=
-    '\n<div class="bg-red-500 font-mono border-b-2 hover:bg-sky-500  whitespace-pre-wrap">' +
+    '\n<div class="bg-red-500 font-mono border-b-2  whitespace-pre-wrap">' +
     f(s) +
     "</div>";
   document.querySelector(".debug").classList.remove("bg-sky-500/75");
@@ -65,7 +70,7 @@ error = (s) => {
 };
 // window.onerror = function (msg, url, linenumber) {
 //   document.querySelector(".debug").innerHTML +=
-//     '\n<div class="bg-red-500 font-mono border-b-2 hover:bg-sky-500  whitespace-pre-wrap">' +
+//     '\n<div class="bg-red-500 font-mono border-b-2  whitespace-pre-wrap">' +
 //     f(msg) +
 //     "\nURL: " +
 //     url +

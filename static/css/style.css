@@ -28,7 +28,6 @@
 }
 
 .jv-light-con{
-    background: #fff;
     color: #000;
     font-family: monospace;
     overflow: auto;
@@ -91,7 +90,6 @@
 /* for dark theme */
 
 .jv-dark-con{
-    background: #272822;
     color: #fff;
     font-family: monospace;
     overflow: visible;
