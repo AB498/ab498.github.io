@@ -427,7 +427,7 @@ function fire(el, data, template, watchinfo = {}, dataroot, attach, ignoreEl) {
       let matches = findMatches(attr.value);
       // debug(attr.value, matches);
       let id = el.attributes["e-data-id"].value;
-      debug(attr.value);
+      // debug(attr.value);
       for (let match of matches) {
         let key = match.trim();
         let pth = watchinfo.attrMap[XJSON.parsePath(match)[0]];
@@ -445,7 +445,7 @@ function fire(el, data, template, watchinfo = {}, dataroot, attach, ignoreEl) {
               pth,
               (old, val) => {
                 reseAttrs(el, _elTemp);
-                debug(val, el.classList);
+                // debug(val, el.classList);
                 // XJSON.unwatch(dataroot, pth, id);
                 // debug('removed ' + JSON.stringify(id in Object.keys(XJSON.getWatchers(dataroot, pth))));
                 fire(el, data, el, watchinfo, dataroot, false);

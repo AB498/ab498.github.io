@@ -1,0 +1,191 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.5/chartjs-plugin-annotation.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <canvas id="ctx"></canvas>
+
+  <p id="debug">
+    Debug
+  </p>
+
+
+  <script type="text/javascript">
+
+
+    prc = 0;
+    lastPrc = 0;
+    lastTsNow = "";
+    onceDone = false;
+    lastBig = null;
+
+    //=document.querySelector;
+    debug = document.querySelector("#debug");
+    d = function(v) {
+      debug.textContent = v
+    };
+
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          data: [],
+          backgroundColor: "#00000000",
+          borderColor: "red",
+          pointBackgroundColor: 'red',
+          pointRadius: 0,
+
+        }, {
+          data: [],
+          backgroundColor: "#00000000",
+          borderColor: "blue",
+          pointBackgroundColor: 'blue',
+          pointRadius: 0,
+
+        }]
+      },
+      options: {
+        annotation: {
+          drawTime: 'afterDatasetsDraw',
+          annotations: []
+        },
+        animation: {
+          duration: 1000,
+          easing: 'linear'
+        }
+      }
+    });
+
+
+    function getVertical(val, lab) {
+
+      return {
+        type: 'line',
+        scaleID: 'x-axis-0',
+        value: val,
+        label: {
+          enabled: true,
+          content: lab
+        }
+      }
+    }
+
+    function pushAnno(val, lab) {
+      chart.options.annotation.annotations.push(getVertical(val, lab));
+      chart.update();
+    }
+
+    var socket = new WebSocket('wss://btc.data.hxro.io/live');
+
+    socket.onmessage = function (event) {
+
+      var msg = (event.data);
+      dat = JSON.parse(JSON.stringify(msg).replaceAll("\\", "").slice(1, -1));
+      prc = parseFloat(dat["price"]);
+
+      if (lastBig == null)lastBig = prc;
+      if (lastPrc != 0 && (lastPrc-prc<-5 || lastPrc-prc > 5)) {
+
+
+        if (!onceDone) {
+          lastBig = prc;
+          addData(chart, 1, tsNow, prc+3
+          , col2);
+
+          onceDone = true;
+        }else{
+          addData(chart, 0, tsNow, prc, col);
+        }
+
+      } else {
+
+        onceDone = false;
+
+
+        ts = new Date(dat["ts"]);
+        tsNow = ts.getMinutes()+":"+ts.getSeconds();
+        if (tsNow == lastTsNow) {
+          tsNow = tsNow+".5";
+
+        } else {
+          if (ts.getSeconds() == 0) {
+            if (chart.data.labels[chart.data.labels.length-2].split(":")[1] < 3)pushAnno(tsNow, prc);
+
+          }
+          lastTsNow = tsNow;
+        }
+        col = "red";
+
+        col2 = "blue"
+
+        addData(chart, 0, tsNow, prc, col);
+        addData(chart, 1, tsNow, lastBig, col2, true);
+
+
+        //console.log(ts.getSeconds()%10);
+
+        d(chart.data.labels.length);
+        removeExtra();
+      }
+      lastPrc = prc;
+    }
+    defThresRmv = 300;
+    function removeExtra() {
+      thresRmv = defThresRmv;
+      if (chart.data.labels.length > thresRmv) {
+
+        //removeData(chart,0,chart.data.labels.length-100);
+        nTh = 2;
+        //pp='';
+        for (j = 0; j < thresRmv/30; j++) {
+          //pp='\n'+chart.data.labels.length;
+
+          if (true || j%(nTh-1) == 0 && chart.data.labels[j].split(':')[1] != 0) {
+            chart.data.labels.splice(j, 1);
+            chart.data.datasets.forEach((dataset) => {
+              dataset.data.splice(j, 1);
+
+            });
+            thresRmv--;
+          }
+
+        }
+        
+
+/*
+        if (chart.options.annotation.annotations.length > 3) {
+
+          removeData(chart, chart.data.labels.indexOf(chart.options.annotation.annotations[0].value), 1);
+          chart.options.annotation.annotations.shift();
+
+        }
+        */
+
+      }
+
+    }
+    function addData(chart, dsNum, label, data, color, sameLabel) {
+      if (!sameLabel)chart.data.labels.push(label);
+      chart.data.datasets[dsNum].data.push(data);
+      //chart.data.datasets[dsNum].backgroundColor.push(color);
+
+      chart.update();
+    }
+
+    function removeData(chart, start, leng) {
+      chart.data.labels.splice(start, leng);
+      chart.data.datasets.forEach((dataset) => {
+        dataset.data.splice(start, leng);
+        //dataset.backgroundColor.splice(start,end);
+      });
+      chart.update();
+    }
+
+
+  </script>
+</body>
+</html>

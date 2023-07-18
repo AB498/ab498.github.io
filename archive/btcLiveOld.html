@@ -1,0 +1,479 @@
+
+<html>
+<head>
+<title></title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js" integrity="sha512-eVL5Lb9al9FzgR63gDs1MxcDS2wFu3loYAgjIH0+Hg38tCS8Ag62dwKyH+wzDb+QauDpEZjXbMn11blw8cbTJQ==" crossorigin="anonymous"></script>
+<script src="assets/js/Chart.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+
+html[data-theme='dark'] {
+    background: #ffaaff;
+    filter: invert(1) hue-rotate(0deg)
+}
+  
+#price, #botDiv{
+  padding:10px;
+  width: 95%;
+  border-radius: 10px;
+  background-color: goldenrod;
+  margin: 8px;
+  margin-left: 0px;
+  box-shadow: 5px 5px 15px 0px;
+  
+}
+
+.botActive{
+  animation: 1s blink linear 0s infinite;
+ }
+
+@keyframes blink {
+0% {background-color:yellow;}
+20% {background-color: white;}
+50% {background-color:yellow;}
+70% {background-color:white;}
+100% {background-color:yellow;}
+}
+
+#slider{
+  width: 85%;
+}
+#sliderNum{
+  display: inline;
+  width:15%;
+}
+#logs{
+  overflow-x: scroll;
+}
+#chartDiv{
+  width: 100%;
+}
+
+</style>
+
+</head>
+<body>
+
+<p id="price" ></p>
+
+<div id="chartDiv">
+  <canvas id="chart" width="100%" height="70%">
+</div>
+  </canvas>
+  <input type="range" min="10" max="1000" value="50" class="slider" id="slider">
+  <p id="sliderNum">50</p>
+  <input id="amount" value="0">
+  <input id="leverage" value="20">
+  <input id="difficulty" value="8" oninput="changeDiff(this)">
+  <input id="profitThreshold" value="80" oninput="changeProf(this)">
+  <br>
+  <button id="buy" onclick="buyReq(null,null,null)">Buy</button>
+  <button id="sell" onclick="sellReq(null,null,null)">Sell</button>
+  <br>
+  <button id="cancelAll" onclick="cancellAll()">Cancel All </button>
+  <br>
+  <button id="baln" onclick="getBal()">Get Balance</button>
+  
+  <div id="botDiv" class="botActive" onclick="botToggle(this.children[0])">
+  <input id="bot" checked="checked" type="checkbox">Bot
+  </div>
+  
+  <p id="balance">Balance</p><i
+  <p id="logs">Logs:</p>
+  
+  
+  
+  
+<script type="text/javascript">
+
+const htmlEl = document.getElementsByTagName('html')[0];
+
+const toggleTheme = (theme) => {
+    htmlEl.dataset.theme = theme;
+}
+
+
+toggleTheme('dark');
+
+
+
+
+balance=document.querySelector("#balance");
+amount=document.querySelector("#amount");
+leverage=document.querySelector("#leverage");
+buy=document.querySelector("#buy");
+sell=document.querySelector("#sell");
+cancelAll=document.querySelector("#cancelAll");
+logs=document.querySelector("#logs");
+difficultyInput=document.querySelector("#difficulty");
+profitThresholdInput=document.querySelector("#profitThreshold");
+
+function changeDiff(el){
+  
+  difficulty=el.value;
+  
+}
+function changeProf(el){
+  
+  profitThreshold=el.value;
+  
+}
+
+
+url="https://site498.glitch.me";
+bal=0
+onceDone=false;
+positions=99999;
+botOn=true;
+profitThreshold=profitThresholdInput.value;
+
+function getBal(){
+fetch(url+"/getBalance").then((val)=>{
+  return val.json();
+  }).then((vall)=>{
+    bal=vall[1][1]["crossWalletBalance"]
+    
+    positions=vall[0]["positionAmt"];
+    //if((parseInt(positions*1000) == 0 || positions == 99999) && logs.textContent=="Logs:")cancellAll();
+    
+    balance.innerHTML=bal+"<br>Positions: "+positions;
+    
+  });
+}
+  
+  getBal();
+  
+function botToggle(dis){
+    		if(dis.checked==true){
+    		botOn=false;
+    		dis.checked=false;
+    	  dis.parentNode.classList.remove("botActive");
+    		}else{
+    		  botOn=true;
+    		  dis.checked=true;
+    	  dis.parentNode.classList.add("botActive");
+    		}
+    		//alert(dis.checked);
+}
+
+function buyReq(amnt, lever, prof){
+  
+  logs.innerHTML+="<br>Buy: "+prc+" V: "+volatility;
+  
+  if(amnt==null||lever==null){
+    
+    amnt=parseFloat(amount.value).toFixed(3);
+    lever=leverage.value;
+    
+  }
+  fetch(url+"/buy?amount="+amnt+"&leverage="+lever+"&profitThreshold="+profitThreshold).then((val)=>{
+  return val.json();
+  }).then((vall)=>{
+     
+     logs.insertAdjacentHTML("afterend",JSON.stringify(vall)+"<br>");
+   //alert("buy");
+   getBal();
+  
+  });
+  
+}
+
+function sellReq(amnt, lever, prof){
+  
+  logs.innerHTML+="<br>Sell: "+prc;
+  
+  
+  if(amnt==null||lever==null){
+    
+    amnt=parseFloat(amount.value).toFixed(3);
+    lever=leverage.value;
+    
+  }
+  
+  fetch(url+"/sell?amount="+amnt+"&leverage="+lever+"&profitThreshold="+profitThreshold).then((val)=>{
+  return val.json();
+  }).then((vall)=>{
+    logs.insertAdjacentHTML("afterend",JSON.stringify(vall)+"<br>");
+  //alert("sell");
+  getBal();
+  
+  });
+  
+  
+  
+}
+
+
+function cancellAll(){
+  
+  fetch(url+"/cancelAll").then((val)=>{
+  return val.json();
+  }).then((vall)=>{
+    balance.insertAdjacentHTML("afterend","1");
+  });
+  
+  
+}
+var ctx = document.getElementById('chart').getContext('2d');
+    
+    dur=200;
+    fee=0.2;
+    prevPrc=0;
+    count = 0;
+    volt=5;
+    prc=57000;
+    
+var chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [count],
+        datasets: [{
+          label: 'Chart',
+          data: [],
+          backgroundColor: [],
+          borderColor: ["yellow"
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            }
+          }],
+          
+        },
+        animation: {
+        duration: dur*1,
+        easing: 'easeOutExpo'
+        }
+      }
+    });
+	minInChart=0;
+    function addData(chart, label, data, color) {
+      chart.data.labels.push(label);
+      chart.data.datasets.forEach((dataset) => {
+        dataset.data.push(data);
+        dataset.backgroundColor.push(color);
+        minInChart=(Math.min.apply(Math,dataset.data));
+      });
+      chart.update();
+    }
+    
+    function removeData(chart, start, end) {
+    chart.data.labels.splice(start,end);
+    chart.data.datasets.forEach((dataset) => {
+    dataset.data.splice(start,end);
+    dataset.backgroundColor.splice(start,end);
+    });
+    chart.update();
+    }
+    
+
+
+p=document.querySelector("#price");
+var socket = new WebSocket('wss://btc.data.hxro.io/live');
+
+lastPrc=0;
+win=0;
+loss=0;
+rate=0;
+goingUp=0;
+goingDown=0;
+bigChangeCount=0;
+difficulty=difficultyInput.value;
+cooldown=false;
+refreshDelay=1*60000;
+allowedTrades=10;
+
+autoRefresh=setInterval(function(){
+  
+  if(sliderNum.textContent=="50")location.href = "https://ab498.github.io/btcLive";
+  
+},refreshDelay);
+
+
+socket.onmessage = function (event) {
+    var msg = (event.data);
+    dat=JSON.parse(JSON.stringify(msg).replaceAll("\\","").slice(1,-1));
+    prc=parseFloat(dat["price"]);
+    ts=new Date(dat["ts"]);
+    
+    up = prc>lastPrc;
+    diff=prc-lastPrc;
+    
+    if(up){
+    col="yellow";
+    win++;
+    }else{
+    col="lightblue";
+      loss++;
+    }
+    rate=Number(win/(win+loss)*100).toFixed(2);
+    lastPrc=prc;
+  	p.innerHTML=prc+"<br>"+rate+"% Count: "+count+"<br>"+volatility+" u:"+goingUp+" d:"+goingDown;
+  	if(diff>10 && bigChangeCount<count-1){
+  	  
+  	  
+      //alert(positions);
+      bigChangeCount=count;
+      if(goingUp>=difficulty && !cooldown && parseInt(positions*10000)==0){
+        cooldown=true;
+  	    setTimeout(function(){cooldown=false;},20000);
+  	    
+  	    
+  	    if(botOn)buyReq(null,null,null);
+  	    
+      }
+      
+      goingDown+=1;
+  	  goingUp=0;
+      
+  	  p.style.backgroundColor="yellow";
+  	  
+  	 clearInterval(autoRefresh);
+  	 
+autoRefresh=setInterval(function(){
+  
+  if(sliderNum.textContent=="50")location.href = "https://ab498.github.io/btcLive";
+  
+},refreshDelay);
+
+  	}
+    if(diff<-10 && bigChangeCount<count-1){
+  	  
+  	  
+  	  //alert(positions);
+  	  bigChangeCount=count;
+  	  if(goingDown>=difficulty && !cooldown && parseInt(positions*10000)==0){
+  	    cooldown=true;
+  	    setTimeout(function(){cooldown=false;},20000);
+  	    
+  	    if(botOn)sellReq(null,null,null);
+        
+  	    
+  	  }
+  	  
+  	  goingDown=0;
+  	  goingUp+=1;
+  	  
+  	  p.style.backgroundColor="lightblue";
+  	  
+  	  
+  	  
+  	 clearInterval(autoRefresh);
+  	 
+autoRefresh=setInterval(function(){
+  
+  if(sliderNum.textContent=="50")location.href = "https://ab498.github.io/btcLive";
+  
+},refreshDelay);
+
+  	}
+  	//if(bigChangeCount<count)bigChangeCount=0;
+  	
+
+addData(chart,ts.getMinutes()+":"+ts.getSeconds(),prc,col);
+    count++;
+    
+    
+    if(count > chartLength){
+    removeData(chart, 0, chart.data.labels.length-chartLength);
+    }
+    
+    
+    if(!onceDone&&bal!=0){
+      amount.value=((leverage.value*bal)/prc/8).toFixed(3);
+      if(amount.value<0.001)amount.value=0.001;
+      onceDone=true;
+    }
+    
+};
+
+slider = document.getElementById("slider");
+sliderNum = document.getElementById("sliderNum");
+chartLength=50;
+
+sliderNum.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  sliderNum.innerHTML = this.value;
+  chartLength=this.value;
+}
+
+slider.value=50;
+
+setInterval(function(){
+  
+  
+  if(win<loss){
+    win*=1.0001;
+    //rate=(parseFloat(rate)+0.1).toFixed(2);
+  }else{
+    loss*=1.0001;
+    //rate=(parseFloat(rate)-0.1).toFixed(2);
+  }
+  rate=Number(win/(win+loss)*100).toFixed(2);
+    
+  p.innerHTML=prc+"<br>"+rate+"% Count: "+count+"<br>"+volatility+" u:"+goingUp+" d:"+goingDown;
+},50);
+
+
+setInterval(function(){
+  
+  getBal();
+  
+  
+},5000);
+
+volatility=0;
+elapsedTime=0;
+
+setInterval(function(){
+  
+  elapsedTime++;
+  volatility=(count/elapsedTime).toFixed(2);
+  //difficulty=Math.ceil(10-volatility);
+  //difficultyInput.value=difficulty;
+  
+},1000);
+
+buyOnly=true;
+
+function sendPrefs(){
+  
+  var data = {
+      amount: amount.value,
+      leverage:leverage.value,
+      difficulty: difficulty,
+      profitThreshold: profitThreshold,
+      botOn: botOn,
+      buyOnly: buyOnly
+  };
+  //alert(JSON.stringify(payload));
+
+  fetch(url+"/sendPrefs", {
+    method: 'POST',
+    headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json'
+    },
+    body: data
+  }).then(v=>v.json()).then((val)=>{
+    
+    balance.insertAdjacentHTML("afterend",val.msg);
+  });
+  
+}
+
+//sendPrefs();
+
+
+
+</script>
+</body>
+</html>

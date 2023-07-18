@@ -1,3 +1,20 @@
+document.body.insertAdjacentElement(
+  "beforeend",
+  new DOMParser().parseFromString(
+    `<div
+        class="debugcol bg-gray-950/75 text-white flex flex-col  h-1/2 overflow-auto whitespace-pre-wrap transition-all bottom-0 fixed w-screen z-10  backdrop-filter backdrop-blur-sm">
+        <div onclick="document.querySelector('.debugcol').classList.toggle('h-8');"
+            class="h-8 shrink-0 justify-center items-center flex flex-col  font-bold bg-gray-700 p-1 sticky top-0 z-10">
+            <div class="rounded hover:bg-gray-500 bg-gray-800 flex justify-center items-center w-full"> LOGS </div>
+        </div>
+        <div class="debug flex flex-col overflow-auto">
+            <div class="grow"></div>
+        </div>
+    </div>`,
+    "text/html"
+  ).body.firstChild
+);
+
 function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     let r = (Math.random() * 16) | 0,
@@ -12,10 +29,29 @@ function escapeHTML(str) {
 }
 const debug = (...args) => {
   console.log(...args);
-  document.querySelector(".debug").innerHTML +=
-    '\n<div class="bg-sky-500/75 font-mono border-b-2 hover:bg-sky-500  whitespace-pre-wrap">' +
-    args.map((e) => f(e)).join(" ") +
-    "</div>";
+
+  if (typeof args[0] == "object") {
+    let jsv = document.createElement("div");
+    document.querySelector(".debug").appendChild(jsv);
+    new JsonViewer({
+      container: jsv,
+      data: JSON.stringify(args[0]),
+      theme: "dark",
+      expand: false,
+    });
+    return;
+  }
+  let argsString = args.map((e) => f(e)).join(" ");
+  document
+    .querySelector(".debug")
+    .appendChild(
+      new DOMParser().parseFromString(
+        '<div class="bg-red-950/75 font-mono border-b-2 hover:bg-sky-700 whitespace-pre-wrap">' +
+          argsString +
+          "</div>",
+        "text/html"
+      ).documentElement
+    );
   document.querySelector(".debug").classList.remove("bg-red-500/75");
   document.querySelector(".debug").classList.add("bg-sky-500/75");
 };

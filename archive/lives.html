@@ -1,0 +1,125 @@
+<html>
+  <head>
+    <style>
+      #userCanvas{
+        width: 50vw;
+        height: 30vh;
+        float: left;
+        background-color: aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <input id="debug"/>Debug
+    <canvas id="userCanvas"></canvas>
+    <video id="camera" autoplay loop></video>
+    <video id="videoElement" autoplay>
+      <source id="srcc" src="" type="" media="" />
+    </video>
+    
+    <script>
+      
+      p=document.querySelector("#debug");
+      var recordedChunks = [];
+var superBuffer;
+      var video = document.querySelector("#camera");
+      var userCanvas = document.querySelector("#userCanvas");
+      var userCtx = userCanvas.getContext("2d");
+      videoElement = document.querySelector("#videoElement");
+      source = document.querySelector("#videoElement > source");
+
+if (navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({ video: true, audio : true })
+    .then(function (stream) {
+      //video.srcObject = stream;
+      
+    })
+    .catch(function (err0r) {
+      console.log("Something went wrong!\n"+err0r);
+    });
+}
+
+
+videoElement.addEventListener('play', function () {
+    var $this = this; //cache
+    (function loop() {
+        if (!$this.paused && !$this.ended) {
+            userCtx.drawImage($this, 0, 0);
+            setTimeout(loop, 1000 / 30); // drawing at 30fps
+        }
+    })();
+}, 0);
+
+
+if (window.MediaSource) {
+  var mediaSource = new MediaSource();
+  videoElement.src = URL.createObjectURL(mediaSource);
+  mediaSource.addEventListener('sourceopen', sourceOpen);
+} else {
+  console.log("The Media Source Extensions API is not supported.")
+}
+
+function sourceOpen(e) {
+  URL.revokeObjectURL(videoElement.src);
+  var mime = 'video/webm; codecs="opus, vp09.00.10.08"';
+  var mediaSource = e.target;
+  var sourceBuffer = mediaSource.addSourceBuffer(mime);
+  var videoUrl = './droid.webm';
+  fetch(videoUrl)
+    .then(function(response) {
+      return response.arrayBuffer();
+    })
+    .then(function(arrayBuffer) {
+      sourceBuffer.addEventListener('updateend', function(e) {
+        if (!sourceBuffer.updating && mediaSource.readyState === 'open') {
+          mediaSource.endOfStream();
+        }
+      });
+      sourceBuffer.appendBuffer(arrayBuffer);
+    })
+    .catch(function(e){
+      console.log(e);
+    });
+}
+
+
+
+/*
+
+setTimeout(function(){
+ setInterval(function(){
+    superBuffers = new Blob(recordedChunks.slice(2,4),{'type':'video/webm'});
+    
+    //alert(superBuffers.length);
+    videoElement.src = window.URL.createObjectURL(superBuffers);
+    videoElement.load();
+    //alert(recordedChunks.length);
+    if(recordedChunks.length>2){
+    recordedChunks.shift();
+    recordedChunks.shift();
+    }
+      p.value=recordedChunks.length;
+  
+    //alert(superBuffers.length);
+    
+  setTimeout(function(){
+    superBuffers = new Blob(recordedChunks.slice(2,4),{'type':'video/webm'});
+  
+    videoElement.src = window.URL.createObjectURL(superBuffers);
+    videoElement.load();
+    if(recordedChunks.length>2){
+    recordedChunks.shift();
+    recordedChunks.shift();
+    }
+    
+      p.value=recordedChunks.length;
+  
+    //alert(recordedChunks.length);
+  
+  },1000);
+},2000);
+},4100);
+*/
+    </script>
+  </body>
+</html>

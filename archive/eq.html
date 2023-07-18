@@ -1,0 +1,213 @@
+<html>
+<body>
+  <style>
+
+    .hidden {
+      display: none;
+    }
+
+
+
+  </style>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
+
+  <input type="text" id="key" placeholder="Title" oninput="checkData(this.value)" />
+  <div>
+    <div class="eqnOn">
+      \(
+    </div>
+    <input type="text" id="value" placeholder="Content" oninput="updatePreview(this.value)" />
+    <div class="eqnOn">
+      \)
+    </div>
+  </div>
+  <input type="checkbox" checked="checked" id="eqn" onclick="equationToggle()">Auto equation syntax
+  <input type="checkbox" checked="checked" id="existings" onclick="chkExistingsToggle()">Auto check existings
+
+  <br>
+  <input type="text" id="sort" placeholder="Sort" oninput="sortItems(this.value);" />
+
+  <br>
+
+  <centre>
+    <button class="glow-on-hover assist" onclick="insertAtCursor(null,'\\');"> \ </button>
+    <button class="glow-on-hover assist" onclick="insertAtCursor(null,'{');"> $\{$ </button>
+    <button class="glow-on-hover assist" onclick="insertAtCursor(null,'}');"> $\}$ </button>
+    <button class="glow-on-hover assist" onclick="insertAtCursor(null,'\\int{}');"> $\int$</button>
+    <button class="glow-on-hover assist" onclick="insertAtCursor(null,'\\frac{}{}');">Fraction</button>
+    <button class="glow-on-hover assist" onclick="insertAtCursor(null,'\\sqrt{}');"> $\sqrt{}$ </button>
+    <button class="glow-on-hover assist" onclick="insertAtCursor(null,'^{}');"> ^ </button>
+    <button class="glow-on-hover assist" onclick="insertAtCursor(null,'_{}');"> _ </button>
+    <button class="glow-on-hover assist" onclick="insertAtCursor(null,'=');"> = </button>
+    <button class="glow-on-hover assist" onclick="insertAtCursor(null,'\\theta');"> $\theta$ </button>
+    <button class="glow-on-hover assist" onclick="insertAtCursor(null,'\\xrightarrow[]{}');"> $\rightarrow$ </button>
+    <button class="glow-on-hover assist" onclick="insertAtCursor(null,'\\rightleftharpoons');"> $\rightleftharpoons$ </button>
+
+    <br>
+    <button class="glow-on-hover assist posBtn" onclick="insertAtCursor(-1,'');"> $\Leftarrow$ </button>
+    <button class="glow-on-hover assist posBtn" onclick="insertAtCursor(1,'');"> $\Rightarrow$ </button>
+
+  </centre>
+
+
+
+  <br><br>
+  <button class="glow-on-hover assist" style="background-color:#333" onclick="update(null, null, null, generateRandomColor());">Update</button>
+  <button class="glow-on-hover assist" style="background-color:#333" onclick="clearInputs();">Clear/New</button>
+
+  <p id="preview">
+    Preview will appear here...
+  </p>
+
+  <div id="dbdata">
+    Data<br>
+  </div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+            		https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-database.js"></script>
+
+  <script>
+
+    dataDiv = document.querySelector('#dbdata');
+    preview = document.querySelector('#preview');
+    preview.style.position = 'fixed';
+    datae = [];
+    scrollToId = "39383838";
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var USERS_LOCATION = "https://equations498-default-rtdb.firebaseio.com/";
+
+    var firebaseConfig = {
+      apiKey: "AIzaSyBUiM_pQL8U_ZC2K438cKkZXxIAkALgeT4",
+      authDomain: "equations498.firebaseapp.com",
+      projectId: "equations498",
+      storageBucket: "equations498.appspot.com",
+      messagingSenderId: "716116414673",
+      appId: "1:716116414673:web:50153e57b7f6d25d4f35f0",
+      measurementId: "G-TFVJQ1QKL1"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+
+    db = firebase.database();
+    ref = db.ref('equations/user');
+    ref.on('value', (snapshot) => {
+
+      dat = snapshot.val();
+
+
+      Object.keys(dat).forEach(function(childSnap) {
+        //alert(JSON.stringify(childSnap));
+        dataTmp = dat[childSnap];
+
+        //console.log(childSnap);
+
+        //alert(JSON.stringify(datae));
+        var childData2 = dataTmp['value'];
+        var childData1 = dataTmp["key"];
+
+        //alert(JSON.stringify(dataTmp));
+        if (dataTmp['color'])
+          col = dataTmp['color'];
+        else {
+          col = "lightblue";
+        }
+        datae.push({
+          id: childSnap, name: childData1, content: childData2, color: col
+        });
+        //alert(0);
+        //cntt++;
+        //if(cntt>300){
+        //dbRef.child(childSnap).remove();
+        //}
+        //alert(childSnap);
+      });
+
+
+      sorted = sortObj(datae,
+        'name',
+        '123');
+
+      sorted.forEach(function(elm, ind) {
+
+        if (ind > 28) {
+          dataDiv.innerHTML += "<div class='itm hidden' id='"+elm.id+"'>"+elm.name+"</div>";
+
+          return;
+        }
+        dataDiv.innerHTML += "<div class='itm' id='"+elm.id+"'>"+elm.name+"</div>";
+      });
+
+    }, (errorObject) => {
+      console.log('The read failed: ' + errorObject.name);
+    });
+
+
+
+    function sortObj(arr, key, way) {
+      return arr.sort(function(a,
+        b) {
+        var x = a[key]; var y = b[key];
+        if (way === '123') {
+          return ((x < y) ? -1: ((x > y) ? 1: 0));
+        }
+        if (way === '321') {
+          return ((x > y) ? -1: ((x < y) ? 1: 0));
+        }
+      });
+    }
+
+
+    function checkVisible(srl, element) {
+      var curPos = element.offsetTop;
+      var curTop = curPos;
+      var screenHeight = window.innerHeight+window.scrollY;
+      console.log(srl+" "+curTop+" "+screenHeight+" "+(curTop < screenHeight && curTop != 0))
+
+      if (curTop < screenHeight) return "under";
+      else if (curTop > window.scrollY) return "over";
+      else if (curTop != 0) return "zero";
+      else return "visible";
+
+    }
+
+    window.onscroll = function (e) {
+      // called when the window is scrolled. d
+      vCount = 0;
+      /*
+      sorted.forEach(function(elm, ind) {
+        if (checkVisible(ind, document.querySelector("#"+sorted[ind].id)) == "under" && checkVisible(ind, document.querySelector("#"+sorted[ind].id)) == "visible")
+        {
+          vCount++;
+          document.querySelector("#"+sorted[ind].id).classList.remove("hidden");
+          //elm.innerHTML+="."+ind;
+
+          /*}else if (checkVisible(ind,elm)=="over") {
+              vCount++;
+            //elm.classList.remove("hidden");
+            //elm.innerHTML+="-"+ind;
+        }
+      });*/
+      preview.textContent = ""+vCount;
+
+
+
+
+    }
+
+
+  </script>
+
+</body>
+</html>
