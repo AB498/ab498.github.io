@@ -1,11 +1,13 @@
+debugcount = 0;
+
 document.body.insertAdjacentElement(
   "beforeend",
   new DOMParser().parseFromString(
     `<div
-        class="debugcol bg-gray-950/75 text-white flex flex-col  h-1/2 overflow-auto whitespace-pre-wrap transition-all bottom-0 fixed w-screen z-10 backdrop-filter backdrop-blur-sm">
+        class="debugcol h-1/2 h-8 dark:text-zinc-50 text-zinc-950/75 bg-zinc-50 dark:bg-zinc-950/75 text-white flex flex-col overflow-auto whitespace-pre-wrap transition-all bottom-0 fixed w-screen z-50 backdrop-filter backdrop-blur-sm">
         <div onclick="document.querySelector('.debugcol').classList.toggle('h-8');"
             class="h-8 shrink-0 justify-center items-center flex flex-col  font-bold bg-gray-700 p-1 sticky top-0 z-10">
-            <div class="rounded hover:bg-gray-500 bg-gray-800 flex justify-center items-center w-full"> LOGS </div>
+            <div class="debugtitle rounded hover:bg-gray-500  bg-zinc-200 dark:bg-zinc-900/75 flex justify-center items-center w-full"> LOGS </div>
         </div>
         <div class="debug flex flex-col overflow-auto">
             <div class="grow"></div>
@@ -38,11 +40,10 @@ const debug = (...args) => {
         "text/html"
       )
       .documentElement.querySelector("body").firstChild;
-    let jsv2 = new DOMParser().parseFromString(
-      `<div class="w-full h-full"></div>`,
-      "text/html"
-      ).documentElement.querySelector('body').firstChild;
-    console.log(jsv2)
+    let jsv2 = new DOMParser()
+      .parseFromString(`<div class="w-full h-full"></div>`, "text/html")
+      .documentElement.querySelector("body").firstChild;
+    console.log(jsv2);
     document.querySelector(".debug").appendChild(jsv);
     jsv.appendChild(jsv2);
     new JsonViewer({
@@ -51,14 +52,16 @@ const debug = (...args) => {
       theme: "dark",
       expand: false,
     });
-    return;
+  } else {
+    let argsString = args.map((e) => f(e)).join(" ");
+    let jsv = new DOMParser().parseFromString(
+      `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-red-950/25 pt-1 first-letter:font-mono whitespace-pre-wrap"><div class="time bg-gray-600 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
+      "text/html"
+    ).documentElement;
+    document.querySelector(".debug").appendChild(jsv);
   }
-  let argsString = args.map((e) => f(e)).join(" ");
-  let jsv = new DOMParser().parseFromString(
-    `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-red-950/25 pt-1 first-letter:font-mono whitespace-pre-wrap"><div class="time bg-gray-600 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
-    "text/html"
-  ).documentElement;
-  document.querySelector(".debug").appendChild(jsv);
+  debugcount++;
+  document.querySelector(".debugtitle").textContent = `LOGS (${debugcount})`;
 };
 error = (s) => {
   document.querySelector(".debug").innerHTML +=

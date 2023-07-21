@@ -14,11 +14,17 @@
 
 </head>
 
-<body>
+<body class="w-screen h-screen">
 
-  <div class="editor full">
-
+  <div class="editor h-64 bg-red-500 p-2">
+    <div class="maininput bg-white full font-mono">
+      <div class="initialline w-full bg-blue-200 h-6 flex space-x-2">
+        <div class="linenumber w-8 bg bg-blue-500 text-white center">1</div>
+        <div class="linetext">Initial text</div>
+      </div>
+    </div>
   </div>
+  <textarea name="editortextstore" class="bg-gray-200 w-full" id="" cols="30" rows="10"></textarea>
 
   <script type="importmap">
               {
