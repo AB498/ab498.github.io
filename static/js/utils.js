@@ -36,7 +36,7 @@ const debug = (...args) => {
   if (typeof args[0] == "object") {
     let jsv = new DOMParser()
       .parseFromString(
-        `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-red-950/25 pt-1 first-letter:font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div></div>`,
+        `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-zinc-50 dark:bg-zinc-950/75 pt-1 first-letter:font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div></div>`,
         "text/html"
       )
       .documentElement.querySelector("body").firstChild;
@@ -55,7 +55,7 @@ const debug = (...args) => {
   } else {
     let argsString = args.map((e) => f(e)).join(" ");
     let jsv = new DOMParser().parseFromString(
-      `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-red-950/25 pt-1 first-letter:font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
+      `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-zinc-50 dark:bg-zinc-950/75 pt-1 first-letter:font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
       "text/html"
     ).documentElement;
     document.querySelector(".debug").appendChild(jsv);
