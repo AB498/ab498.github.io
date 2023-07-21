@@ -14,8 +14,14 @@ document.body.insertAdjacentElement(
             <div class="grow"></div>
         </div>
     </div>`,
-    "text/html"
   ).body.firstChild
+);
+        // <script src="https://cdn.tailwindcss.com"></script>
+
+document.body.appendChild(
+  new DOMParser().parseFromString(
+    <script src="https://cdn.tailwindcss.com"></script>
+  )
 );
 
 function uuidv4() {
