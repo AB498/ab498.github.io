@@ -5,6 +5,7 @@ document.body.insertAdjacentElement(
   new DOMParser().parseFromString(
     `<div
         class="debugcol h-1/2 h-8 dark:text-zinc-50 text-zinc-950/75 bg-zinc-50 dark:bg-zinc-950/75 flex flex-col overflow-auto whitespace-pre-wrap transition-all bottom-0 fixed w-screen z-50 backdrop-filter backdrop-blur-sm">
+        <script src="https://cdn.tailwindcss.com"></script>
         <div onclick="document.querySelector('.debugcol').classList.toggle('h-8');"
             class="h-8 shrink-0 justify-center items-center flex flex-col  font-bold bg-zinc-50 dark:bg-zinc-950/75 p-1 sticky top-0 z-10">
             <div class="debugtitle rounded hover:bg-gray-500  bg-zinc-200 dark:bg-zinc-900/75 flex justify-center items-center w-full"> LOGS </div>
