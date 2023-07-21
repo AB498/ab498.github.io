@@ -16,13 +16,7 @@ document.body.insertAdjacentElement(
     </div>`,
   ).body.firstChild
 );
-        // <script src="https://cdn.tailwindcss.com"></script>
 
-document.body.appendChild(
-  new DOMParser().parseFromString(
-    <script src="https://cdn.tailwindcss.com"></script>
-  )
-);
 
 function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
