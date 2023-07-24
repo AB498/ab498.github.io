@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hovered Character</title>
+    <style>
+        /* Style for the div container */
+        .hover-container {
+            padding: 20px;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            cursor: default;
+        }
+    </style> 
+</head>
+
+<body>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="static/js/xjs.js"></script>
+    <script defer src="static/js/utils.js"></script>
+
+    <div class="hover-container" onmousemove="getHoveredCharacter(event)">
+        Hover over this text to get the hovered character.
+    </div>
+
+    <script>
+        function getHoveredCharacter(event) {
+            const hoveredDiv = event.target;
+            const textContent = hoveredDiv.textContent;
+
+            // Get the position of the hovered character within the div
+            const range = document.createRange();
+            const offset = event.offsetX;
+            range.setStart(hoveredDiv.firstChild, 0);
+            const hoveredCharacterIndex = range.startOffset + offset / 8; // Adjust the divisor as per your font-size
+
+            // Ensure the hoveredCharacterIndex is within bounds
+            if (hoveredCharacterIndex >= 0 && hoveredCharacterIndex < textContent.length) {
+                const hoveredCharacter = textContent.charAt(hoveredCharacterIndex);
+                debug('Hovered Character:', hoveredCharacter);
+                console.log('Hovered Character:', hoveredCharacter);
+                // You can now use 'hoveredCharacter' as needed
+            }
+        }
+    </script>
+</body>
+
+</html>

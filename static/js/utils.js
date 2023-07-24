@@ -17,7 +17,6 @@ document.body.insertAdjacentElement(
   ).body.firstChild
 );
 
-
 function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     let r = (Math.random() * 16) | 0,
@@ -33,7 +32,17 @@ function escapeHTML(str) {
 const debug = (...args) => {
   console.log(...args);
 
-  let time = new Date().toLocaleTimeString();
+  const hours = new Date().getHours();
+  let time =
+    (hours % 12 || 12) +
+    ":" + 
+    new Date().getMinutes() +
+    ":" +
+    new Date().getSeconds() +
+    "." +
+    new Date().getMilliseconds() +
+    " " +
+    (hours >= 12 ? "PM" : "AM");
   if (typeof args[0] == "object") {
     let jsv = new DOMParser()
       .parseFromString(
@@ -59,7 +68,7 @@ const debug = (...args) => {
       `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-zinc-50 dark:bg-zinc-950/75 pt-1 first-letter:font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
       "text/html"
     ).documentElement;
-    document.querySelector(".debug").appendChild(jsv);
+    document.querySelector(".debug").insertAdjacentElement("afterbegin", jsv);
   }
   debugcount++;
   document.querySelector(".debugtitle").textContent = `LOGS (${debugcount})`;
