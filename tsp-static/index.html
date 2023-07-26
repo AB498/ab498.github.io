@@ -11,48 +11,361 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- <script src="js/jsonviewer.js"></script> -->
   <link rel="stylesheet" href="../static/css/style.css">
+  <style>
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
 
+      50% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* Apply the animation to the element you want to blink */
+    .blinking-text {
+      animation: blink 1s infinite;
+    }
+
+    .unselectable {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  </style>
 </head>
 
 <body class="w-screen h-screen">
 
-  <div class="editor h-64 bg-red-500 p-2">
-    <div class="maininput bg-white full font-mono">
-      <div class="initialline w-full bg-blue-200 h-6 flex space-x-2">
-        <div class="linenumber w-8 bg bg-blue-500 text-white center">1</div>
-        <div class="linetext">Initial text</div>
+  <div id="app" class="editor h-64 bg-zinc-500 p-1">
+    <div
+      class="textinput relative unselectable cursor-text full bg-zinc-950 text-zinc-300 flex flex-col font-mono overflow-auto"
+      @mouseup="e=>endSelection(cursorEnd[0], cursorEnd[1], e)"
+      @mouseleave="e=>endSelection(cursorEnd[0], cursorEnd[1], e)"
+      :class="state.inputfocused?'ring-2 ring-zinc-50':'ring-0'" @mousedown="state.inputfocused=true"
+      v-click-outside="()=>state.inputfocused=false" @click="state.inputfocused=true">
+      <div class="cursor absolute pointer-events-none" :ref="el => cursorUIO = el">
+        <div class="line border-l-2 border-zinc-50 w-3 h-6 flex justify-center items-center blinking-text"></div>
+        <div class="top-full left-0 text-xs bg-red-500 rounded px-1 text-zinc-50">{{cursorInfo}}</div>
+      </div>
+      <div class="flex flex-col">
+        <div v-for="(line, row) in content" class="flex">
+          <div v-for="(char, col) in line" class="w-3 h-6 shrink-0" :class="{'bg-zinc-900': char.selected}" :ref="el =>{ if(!contentRefs[char.row]) contentRefs[char.row] = [];
+            contentRefs[char.row][char.col] = el;
+          }" @mousedown="e=>startSelection(char.row, char.col, e)" @mouseup="e=>endSelection(char.row, char.col, e)"
+            @mousemove="e=>updateSelection(char.row, char.col, e)">
+            <span class="">{{char.char}}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <textarea name="editortextstore" class="bg-gray-200 w-full" id="" cols="30" rows="10"></textarea>
 
   <script type="importmap">
-              {
-                "imports": {
-                  "vue":          "https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.0-beta.15/vue.esm-browser.js",
-                  "vue-router":   "https://cdnjs.cloudflare.com/ajax/libs/vue-router/4.0.0-alpha.12/vue-router.esm.js",
-                  "vuex":         "https://cdnjs.cloudflare.com/ajax/libs/vuex/4.0.0-beta.2/vuex.esm-browser.js"
-                }
-              }
-            </script>
+    {
+      "imports": {
+        "vue":          "https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.0-beta.15/vue.esm-browser.js",
+        "vue-router":   "https://cdnjs.cloudflare.com/ajax/libs/vue-router/4.0.0-alpha.12/vue-router.esm.js",
+        "vuex":         "https://cdnjs.cloudflare.com/ajax/libs/vuex/4.0.0-beta.2/vuex.esm-browser.js"
+      }
+    }
+  </script>
   <script type="module">
-    import {ref} from 'vue';
-    import JsonViewer from '../static/js/jsonviewer.js';
-    window.JsonViewer = JsonViewer;
+    import {
+      createApp, ref,
+      onMounted, reactive,
+      nextTick, computed,
+    } from 'vue';
 
-    const Parser = window.TreeSitter;
-    Parser.init().then(async () => {
-      /* the library is ready */
-      console.log(window.TreeSitter);
-      const parser = new Parser();
-      const JavaScript = await Parser.Language.load('../static/js/tree-sitter-javascript.wasm');
-      parser.setLanguage(JavaScript);
-      const sourceCode = 'let x = 1; console.log(x);';
-      const tree = parser.parse(sourceCode);
-      debug(tree.rootNode);
-      debug(tree.rootNode);
-      debug('tree.rootNode');
+    let app = createApp({
+      setup() {
+        const dummyText = `Hello World!
+from vue3
+line 3.....................
+line 4.....................
+line 5.....................
+line 6.....................
+line 3.....................
+line 4.....................
+line 5.....................
+line 6..................... 
+line 3.....................
+line 4.....................
+line 5.....................
+line 6.....................
+line 3.....................
+line 4.....................
+line 5.....................
+line 6.....................
+line 3.....................
+line 4.....................
+line 5.....................
+line 6.....................
+line 7.....................`;
+        const state = reactive({})
+        const content = reactive([[]])
+        const contentRefs = reactive([])
+        const cursorEnd = reactive([0, 0]);
+        const cursorStart = reactive([0, 0]);
+        const cursorUIO = ref(null);
+        const cursorInfo = computed(() => {
+          return `(${cursorEnd[0]}, ${cursorEnd[1]})`
+        })
+        onMounted(() => {
+          document.querySelector('.textinput').click();
+          window.onkeydown = e => {
+            if (!state.inputfocused) return;
+            // debug(e.key)
+            if (e.key == 'ArrowLeft') {
+              setArray(cursorEnd, prevPointer(cursorEnd)||cursorEnd)
+              setArray(cursorStart, cursorEnd);
+              moveCursorUIO(cursorEnd[0], cursorEnd[1]);
+            } else if (e.key == 'ArrowRight') {
+              setArray(cursorEnd, nextPointer(cursorEnd)||cursorEnd)
+              setArray(cursorStart, cursorEnd);
+              moveCursorUIO(cursorEnd[0], cursorEnd[1]);
+            } else if (e.key == 'ArrowUp') {
+              if (cursorEnd[0] > 0) {
+                cursorEnd[0]--;
+                cursorStart[0]--;
+              }
+              moveCursorUIO(cursorEnd[0], cursorEnd[1]);
+            } else if (e.key == 'ArrowDown') {
+              if (cursorEnd[0] < content.length - 1) {
+                cursorEnd[0]++;
+                cursorStart[0]++;
+              }
+              moveCursorUIO(cursorEnd[0], cursorEnd[1]);
+            } else if (e.key == 'Backspace') {
+              debug(charAt(cursorEnd))
+              let prev = prevChar(charAt(cursorEnd))
+              debug(...[prev.row, prev.col])
+              setArray(cursorEnd, [prev.row, prev.col])
+              debug(...cursorEnd)
+              moveCursorUIO(cursorEnd[0], cursorEnd[1]);
+              if (prev.char == '\\n') {
+                content[prev.row].splice(prev.col, 1);
+                content[prev.row] = content[prev.row].concat(content[prev.row + 1]);
+                content.splice(prev.row + 1, 1);
+              } else {
+                content[prev.row].splice(prev.col, 1);
+              }
+              for (let i = cursorEnd[0]; i < content.length; i++)
+                content[i].forEach((char, index) => content[i][index] = makeChar(char.char, i, index))
+
+            } else if (e.key == 'Delete') {
+              let next = (charAt(cursorEnd))
+              if (next.char == '\\n') {
+                content[cursorEnd[0]].splice(cursorEnd[1], 1);
+                content[cursorEnd[0]] = content[cursorEnd[0]].concat(content[cursorEnd[0] + 1]);
+                content.splice(cursorEnd[0] + 1, 1);
+              } else {
+                content[cursorEnd[0]].splice(cursorEnd[1], 1);
+              }
+              for (let i = cursorEnd[0]; i < content.length; i++)
+                content[i].forEach((char, index) => content[i][index] = makeChar(char.char, i, index))
+            } else if (e.key == 'Enter') {
+              content.splice(cursorEnd[0] + 1, 0, []);
+              content[cursorEnd[0] + 1] = content[cursorEnd[0]].splice(cursorEnd[1], content[cursorEnd[0]].length - cursorEnd[1]);
+              cursorEnd[0]++;
+              cursorEnd[1] = 0;
+              moveCursorUIO(cursorEnd[0], cursorEnd[1]);
+            } else if (e.key.length == 1) {
+              content[cursorEnd[0]].splice(cursorEnd[1], 0, makeChar(e.key, cursorEnd[0], cursorEnd[1]));
+              content[cursorEnd[0]].forEach((char, index) => content[cursorEnd[0]][index] = makeChar(char.char, cursorEnd[0], index))
+              cursorEnd[1]++;
+              setArray(cursorStart, cursorEnd);
+              debug("strt", ...cursorStart)
+              moveCursorUIO(cursorEnd[0], cursorEnd[1]);
+            }
+          }
+
+          let lineNum = 0;
+          let charNum = 0;
+          for (let i = 0; i < dummyText.length; i++) {
+
+            let char = dummyText[i];
+            if (i != 0 && prevChar({row: lineNum, col: charNum}).char == '\n') {
+              lineNum++;
+              charNum = 0;
+              content[lineNum] = [];
+              prevChar({row: lineNum, col: charNum}).char = '\\n';
+            }
+            let [row, col] = [lineNum, charNum];
+            content[lineNum].push(makeChar(char, row, col));
+            charNum++;
+          }
+          content[lineNum].push(makeChar('\\0', lineNum, charNum));
+        })
+        function makeChar(char, row, col) {
+          return {
+            char, row, col,
+            selected: computed(() => {
+              let [cursor1, cursor2] = swapIfNecessary(cursorStart, cursorEnd);
+              if (row < cursor1[0] && row < cursor2[0]) return false; if (row > cursor1[0] && row < cursor2[0]) return true;
+              if (row == cursor1[0] && row != cursor2[0] && col >= cursor1[1]) return true;
+              if (row == cursor2[0] && row != cursor1[0] && col < cursor2[1]) return true;
+              if (row == cursor1[0] && row == cursor2[0] &&
+                col >= cursor1[1] && col < cursor2[1]) return true;
+            })
+          }
+        }
+        function correctXY(row, col, e) {
+          let rect = getRect(contentRefs[row][col], document.querySelector('.textinput'));
+          if (e.clientX < rect.left + rect.width / 2) {
+          } else {
+            col++
+          }
+          return [row, col]
+        }
+        function startSelection(row, col, e) {
+          [row, col] = correctXY(row, col, e);
+          state.selecting = true;
+          cursorStart[0] = row;
+          cursorStart[1] = col;
+          cursorEnd[0] = row;
+          cursorEnd[1] = col;
+          moveCursorUIO(cursorEnd[0], cursorEnd[1]);
+
+        }
+        function endSelection(row, col, e) {
+          if (state.selecting) {
+            [row, col] = correctXY(row, col, e);
+            state.selecting = false;
+            cursorEnd[0] = row;
+            cursorEnd[1] = col;
+            // let pointer = cursorStart;
+            // while (pointer[0] != cursorEnd[0] || pointer[1] != cursorEnd[1]) {
+            //   content[pointer[0]][pointer[1]].selected = true;
+            //   pointer = nextChar(pointer);
+            // }
+            moveCursorUIO(cursorEnd[0], cursorEnd[1]);
+          }
+        }
+        function updateSelection(row, col, e) {
+          if (state.selecting) {
+            [row, col] = correctXY(row, col, e);
+            cursorEnd[0] = row;
+            cursorEnd[1] = col;
+            let [cursor1, cursor2] = swapIfNecessary(cursorStart, cursorEnd);
+            // let pointer = cursorStart;  
+            // while (pointer[0] != cursorEnd[0] || pointer[1] != cursorEnd[1]) {
+            //   content[pointer[0]][pointer[1]].selected = true;
+            //   pointer = nextChar(pointer);
+            // }
+            moveCursorUIO(cursorEnd[0], cursorEnd[1]);
+          }
+        }
+        function moveCursorUIO(row, col) {
+          let rect = getRect(contentRefs[row][col], document.querySelector('.textinput'));
+          let x = rect.left;
+          let y = rect.top;
+          cursorUIO.value.style.transform = `translate(${x}px, ${y}px)`;
+        }
+        function charAt(cursor) {
+          return content[cursor[0]][cursor[1]];
+        }
+        function nextChar(char) {
+          if (char.col < content[char.row].length - 1) {
+            return content[char.row][char.col + 1];
+          } else {
+            if (char.row < content.length - 1)
+              return content[char.row + 1][0];
+          }
+          return null;
+        }
+        function nextPointer(cursor) {
+          if (cursor[1] < content[cursor[0]].length - 1) {
+            return [cursor[0], cursor[1] + 1];
+          } else {
+            if (cursor[0] < content.length - 1)
+              return [cursor[0] + 1, 0];
+          }
+          return null;
+        }
+        function prevChar(char) {
+          if (char.col > 0) {
+            return content[char.row][char.col - 1];
+          } else {
+            if (char.row > 0)
+              return content[char.row - 1][content[char.row - 1].length - 1];
+          }
+          return null;
+        }
+        function prevPointer(cursor) {
+          if (cursor[1] > 0) {
+            return [cursor[0], cursor[1] - 1];
+          } else {
+            if (cursor[0] > 0)
+              return [cursor[0] - 1, content[cursor[0] - 1].length - 1];
+          }
+          return null;
+        }
+        function swapIfNecessary(cursor1, cursor2) {
+          if (cursor1[0] > cursor2[0]) {
+            return [[...cursor2], [...cursor1]];
+          } else if (cursor1[0] == cursor2[0] && cursor1[1] > cursor2[1]) {
+            return [[...cursor2], [...cursor1]];
+          } else if (cursor1[0] == cursor2[0] && cursor1[1] == cursor2[1]) {
+          } else {
+          }
+          return [[...cursor1], [...cursor2]];
+        }
+        function resetSelection() {
+          for (let i = 0; i < content.length; i++) {
+            for (let j = 0; j < content[i].length; j++) {
+              content[i][j].selected = false;
+            }
+          }
+        }
+        function setArray(array, value) {
+          for (let i = 0; i < array.length; i++) {
+            array[i] = value[i];
+          }
+        }
+        function swapArrays(array1, array2) {
+          let temp = array1;
+          array1 = array2;
+          array2 = temp;
+        }
+        return {
+          state,
+          content,
+          cursorStart,
+          cursorEnd,
+          startSelection,
+          endSelection,
+          updateSelection,
+          cursorInfo,
+          cursorUIO,
+          contentRefs,
+          computed,
+          swapIfNecessary
+        }
+      }
     });
+    app.config.errorHandler = function (err, vm, info) {debug(err, vm, info)}
+    app.directive('click-outside', {
+      beforeMount(el, binding) {
+        el.clickOutsideEvent = function (event) {
+          if (!(el === event.target || el.contains(event.target))) {
+            binding.value(event); // Call the method specified in the directive argument
+          }
+        };
+        document.body.addEventListener('click', el.clickOutsideEvent);
+      },
+      unmounted(el) {
+        document.body.removeEventListener('click', el.clickOutsideEvent);
+      },
+    });
+    app.mount('#app')
 
   </script>
 </body>
