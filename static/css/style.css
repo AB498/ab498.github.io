@@ -14,12 +14,10 @@
     align-items: center;
 }
 
-.venter-cross{
+.center-cross{
     display: flex;
     justify-content: center;
 }
-
-
 
 
 /* html, body{

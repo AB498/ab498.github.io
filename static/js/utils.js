@@ -5,9 +5,23 @@ document.body.insertAdjacentElement(
   new DOMParser().parseFromString(
     `<div
         class="debugcol h-1/2 h-8 dark:text-zinc-50 text-zinc-950/75 bg-zinc-50 dark:bg-zinc-950/75 flex flex-col overflow-auto whitespace-pre-wrap transition-all bottom-0 fixed w-screen z-50 backdrop-filter backdrop-blur-sm">
-        <div onclick="document.querySelector('.debugcol').classList.toggle('h-8');"
-            class="h-8 shrink-0 justify-center items-center flex flex-col  font-bold bg-zinc-50 dark:bg-zinc-950/75 p-1 sticky top-0 z-10">
-            <div class="debugtitle rounded hover:bg-gray-500  bg-zinc-200 dark:bg-zinc-900/75 flex justify-center items-center w-full"> LOGS </div>
+        <div class="flex h-8 shrink-0 justify-center items-center font-bold bg-zinc-50 dark:bg-zinc-950/75 p-1 sticky top-0 z-10">
+            <div class="debugtitle grow rounded hover:bg-gray-500  bg-zinc-200 dark:bg-zinc-900/75 flex justify-center items-center "
+             onclick="document.querySelector('.debugcol').classList.toggle('h-8');"
+            > LOGS </div>
+            <div class="flex self-end"
+            onclick="document.querySelector('#debug-settings').classList.toggle('hidden');"
+            > &#9776;</div> 
+        </div>
+        <div  id="debug-settings" class="flex flex-col hidden  p-2 bg-zinc-50 dark:bg-zinc-950/75">
+          <div class="flex p-0 m-0">
+            <div class="">
+              Auto Open
+            </div>
+            <input type='checkbox' id='debug-auto-open'
+            onchange="window.localStorage.setItem('debug-auto-open', this.checked)"
+            ></input>
+          </div>
         </div>
         <div class="debug flex flex-col overflow-auto">
             <div class="grow"></div>
@@ -35,7 +49,7 @@ const debug = (...args) => {
   const hours = new Date().getHours();
   let time =
     (hours % 12 || 12) +
-    ":" + 
+    ":" +
     new Date().getMinutes() +
     ":" +
     new Date().getSeconds() +
@@ -43,10 +57,14 @@ const debug = (...args) => {
     new Date().getMilliseconds() +
     " " +
     (hours >= 12 ? "PM" : "AM");
+  if (args[0] instanceof HTMLElement) {
+    debug(escapeHTML(args[0].outerHTML));
+    return;
+  }
   if (typeof args[0] == "object") {
     let jsv = new DOMParser()
       .parseFromString(
-        `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-zinc-50 dark:bg-zinc-950/75 pt-1 first-letter:font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div></div>`,
+        `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-zinc-50 dark:bg-zinc-950/75 pt-1 font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div></div>`,
         "text/html"
       )
       .documentElement.querySelector("body").firstChild;
@@ -54,7 +72,7 @@ const debug = (...args) => {
       .parseFromString(`<div class="w-full h-full"></div>`, "text/html")
       .documentElement.querySelector("body").firstChild;
     console.log(jsv2);
-    document.querySelector(".debug").appendChild(jsv);
+    document.querySelector(".debug").insertAdjacentElement("afterbegin", jsv);
     jsv.appendChild(jsv2);
     new JsonViewer({
       container: jsv2,
@@ -65,53 +83,89 @@ const debug = (...args) => {
   } else {
     let argsString = args.map((e) => f(e)).join(" ");
     let jsv = new DOMParser().parseFromString(
-      `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-zinc-50 dark:bg-zinc-950/75 pt-1 first-letter:font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
+      `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-zinc-50 dark:bg-zinc-950/75 pt-1 font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
       "text/html"
     ).documentElement;
     document.querySelector(".debug").insertAdjacentElement("afterbegin", jsv);
   }
   debugcount++;
   document.querySelector(".debugtitle").textContent = `LOGS (${debugcount})`;
+  if (window.localStorage.getItem("debug-auto-open") == "true")
+    document.querySelector(".debugcol").classList.remove("h-8");
 };
-error = (s) => {
-  document.querySelector(".debug").innerHTML +=
-    '\n<div class="bg-red-500 font-mono border-b-2  whitespace-pre-wrap">' +
-    f(s) +
-    "</div>";
-  document.querySelector(".debug").classList.remove("bg-sky-500/75");
-  document.querySelector(".debug").classList.add("bg-red-500/75");
-};
-// window.onerror = function (msg, url, linenumber) {
-//   document.querySelector(".debug").innerHTML +=
-//     '\n<div class="bg-red-500 font-mono border-b-2  whitespace-pre-wrap">' +
-//     f(msg) +
-//     "\nURL: " +
-//     url +
-//     "\nLine Number: " +
-//     linenumber +
-//     "</div>";
-//   document.querySelector(".debug").classList.remove("bg-sky-500/75");
-//   document.querySelector(".debug").classList.add("bg-red-500/75");
-//   return true;
-// };
-window.onerror = function (msg, url, lineNo, columnNo, error) {
-  var string = msg.toLowerCase();
-  var substring = "script error";
-  if (string.indexOf(substring) > -1) {
-    debug("Script Error: See Browser Console for Detail");
-  } else {
-    var message = [
-      "Message: " + msg,
-      "URL: " + url,
-      "Line: " + lineNo,
-      "Column: " + columnNo,
-      "Error object: " + JSON.stringify(error),
-    ].join(" - ");
+window.error = (...args) => {
+  console.log(...args);
 
-    debug(message);
+  const hours = new Date().getHours();
+  let time =
+    (hours % 12 || 12) +
+    ":" +
+    new Date().getMinutes() +
+    ":" +
+    new Date().getSeconds() +
+    "." +
+    new Date().getMilliseconds() +
+    " " +
+    (hours >= 12 ? "PM" : "AM");
+  if (args[0] instanceof HTMLElement) {
+    debug(escapeHTML(args[0].outerHTML));
+    return;
   }
-  return false;
+  if (typeof args[0] == "object") {
+    let jsv = new DOMParser()
+      .parseFromString(
+        `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-red-500 rounded-md p-1 text-xs">${time}</div></div>`,
+        "text/html"
+      )
+      .documentElement.querySelector("body").firstChild;
+    let jsv2 = new DOMParser()
+      .parseFromString(`<div class="w-full h-full"></div>`, "text/html")
+      .documentElement.querySelector("body").firstChild;
+    console.log(jsv2);
+    document.querySelector(".debug").insertAdjacentElement("afterbegin", jsv);
+    jsv.appendChild(jsv2);
+    new JsonViewer({
+      container: jsv2,
+      data: JSON.stringify(args[0]),
+      theme: "dark",
+      expand: false,
+    });
+  } else {
+    let argsString = args.map((e) => f(e)).join(" ");
+    let jsv = new DOMParser().parseFromString(
+      `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-red-800 pt-1 font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
+      "text/html"
+    ).documentElement;
+    document.querySelector(".debug").insertAdjacentElement("afterbegin", jsv);
+  }
+  debugcount++;
+  document.querySelector(".debugtitle").textContent = `LOGS (${debugcount})`;
+  if (window.localStorage.getItem("debug-auto-open") == "true")
+    document.querySelector(".debugcol").classList.remove("h-8");
 };
+window.onerror = (event, source, lineno, colno, error) => {
+  let msg = `${event}
+${source.replace(window.location.origin, "")}:${lineno}:${colno}`;
+  window.error(msg);
+  return false; // true if you want to consume event
+};
+
+function getRect(el, parent) {
+  let boundingRect = el.getBoundingClientRect();
+  let parentRect = parent
+    ? parent.getBoundingClientRect()
+    : { left: 0, top: 0 };
+  let paranetScrolls = parent
+    ? { left: parent.scrollLeft, top: parent.scrollTop }
+    : { left: 0, top: 0 };
+  return {
+    left: boundingRect.left - parentRect.left + paranetScrolls.left,
+    top: boundingRect.top - parentRect.top + paranetScrolls.top,
+    width: boundingRect.width,
+    height: boundingRect.height,
+  };
+}
+
 function tryStringify(obj) {
   if (typeof obj == "string") return obj;
   if (typeof obj == "number") return obj;
@@ -262,3 +316,193 @@ function findImmediateTextNodes(el) {
   }
   return textNodes;
 }
+
+const toString = Object.prototype.toString;
+function isString(val) {
+  return typeof val === "string";
+}
+function isNumber(val) {
+  return typeof val === "number";
+}
+function isBoolean(val) {
+  return typeof val === "boolean";
+}
+function isUndefined(val) {
+  return typeof val === "undefined";
+}
+function isArray(val) {
+  return toString.call(val) === "[object Array]";
+}
+function isObject(val) {
+  return toString.call(val) === "[object Object]";
+}
+function isNull(val) {
+  return toString.call(val) === "[object Null]";
+}
+function JsonViewer(options) {
+  const defaults = {
+    theme: "light",
+    container: null,
+    data: "{}",
+    expand: false,
+  };
+  this.options = Object.assign(defaults, options);
+  if (isNull(options.container)) {
+    throw new Error("Container: dom element is required");
+  }
+  this.render();
+}
+JsonViewer.prototype.renderRight = function (theme, right, val) {
+  if (isNumber(val)) {
+    right.setAttribute("class", theme + "rightNumber");
+  } else if (isBoolean(val)) {
+    right.setAttribute("class", theme + "rightBoolean");
+  } else if (val === "null") {
+    right.setAttribute("class", theme + "rightNull");
+  } else {
+    right.setAttribute("class", theme + "rightString");
+  }
+  right.innerText = val;
+};
+JsonViewer.prototype.renderChildren = function (
+  theme,
+  key,
+  val,
+  right,
+  indent,
+  left
+) {
+  let self = this;
+  let folder = this.createElement("span");
+  let rotate90 = this.options.expand ? "rotate90" : "";
+  let addHeight = this.options.expand ? "add-height" : "";
+  folder.setAttribute("class", theme + "folder " + rotate90);
+  folder.onclick = function (e) {
+    let nextSibling = e.target.parentNode.nextSibling;
+    self.toggleItem(nextSibling, e.target);
+  };
+  let len = 0;
+  let isObj = false;
+  if (isObject(val)) {
+    len = Object.keys(val).length;
+    isObj = true;
+  } else {
+    len = val?.length;
+  }
+  left.innerHTML = isObj
+    ? key + "&nbsp;&nbsp{" + len + "}"
+    : key + "&nbsp;&nbsp[" + len + "]";
+  left.prepend(folder);
+  right.setAttribute("class", theme + "rightObj " + addHeight);
+
+  self.parse(val, right, indent + 0, theme);
+};
+
+JsonViewer.prototype.parse = function (dataObj, parent, indent, theme) {
+  const self = this;
+  this.forEach(dataObj, function (val, key) {
+    const { left, right } = self.createItem(
+      indent,
+      theme,
+      parent,
+      key,
+      typeof val !== "object"
+    );
+    if (typeof val !== "object") {
+      self.renderRight(theme, right, val);
+    } else {
+      self.renderChildren(theme, key, val, right, indent, left);
+    }
+  });
+};
+
+JsonViewer.prototype.createItem = function (
+  indent,
+  theme,
+  parent,
+  key,
+  basicType
+) {
+  let self = this;
+  let current = this.createElement("div");
+  let left = this.createElement("div");
+  let right = this.createElement("div");
+  let wrap = this.createElement("div");
+
+  current.style.marginLeft = indent * 2 + "px";
+  left.innerHTML = `${key}<span class="jv-${theme}-symbol">&nbsp;:&nbsp;</span>`;
+  if (basicType) {
+    current.appendChild(wrap);
+    wrap.appendChild(left);
+    wrap.appendChild(right);
+    parent.appendChild(current);
+    current.setAttribute("class", theme + "current");
+    wrap.setAttribute("class", "jv-wrap");
+    left.setAttribute("class", theme + "left");
+  } else {
+    current.appendChild(left);
+    current.appendChild(right);
+    parent.appendChild(current);
+    current.setAttribute("class", theme + "current");
+    left.setAttribute("class", theme + "left jv-folder");
+    left.onclick = function (e) {
+      let nextSibling = e.target.nextSibling;
+      self.toggleItem(nextSibling, e.target.querySelector("span"));
+    };
+  }
+
+  return {
+    left,
+    right,
+    current,
+  };
+};
+
+JsonViewer.prototype.render = function () {
+  let data = this.options.data;
+  let theme = "jv-" + this.options.theme + "-";
+  let indent = 0;
+  let parent = this.options.container;
+  let key = "object";
+  let dataObj;
+
+  parent.setAttribute("class", theme + "con");
+  try {
+    dataObj = JSON.parse(data);
+  } catch (error) {
+    throw new Error("It is not a json format");
+  }
+  if (isArray(dataObj)) {
+    key = "array";
+  }
+  const { left, right } = this.createItem(indent, theme, parent, key);
+  this.renderChildren(theme, key, dataObj, right, indent, left);
+};
+
+JsonViewer.prototype.toggleItem = function (ele, target) {
+  ele?.classList?.toggle("add-height");
+  target?.classList?.toggle("rotate90");
+};
+
+JsonViewer.prototype.createElement = function (type) {
+  return document.createElement(type);
+};
+
+JsonViewer.prototype.forEach = function (obj, fn) {
+  if (isUndefined(obj) || isNull(obj)) {
+    return;
+  }
+  if (typeof obj === "object" && isArray(obj)) {
+    for (let i = 0, l = obj.length; i < l; i++) {
+      fn.call(null, obj[i], i, obj);
+    }
+  } else {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        fn.call(null, obj[key] ?? "null", key, obj);
+      }
+    }
+  }
+};
+
+window.JsonViewer = JsonViewer;
