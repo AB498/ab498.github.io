@@ -32,7 +32,7 @@ class WorkerAPI {
   constructor() {
     this.nextResponseId = 0;
     this.responseCBs = new Map();
-    this.worker = new Worker("/wasm-clang/worker.js");
+    this.worker = new Worker("https://ab498.github.io/wasmclang/wasm-clang/worker.js");
     const channel = new MessageChannel();
     this.port = channel.port1;
     this.port.onmessage = this.onmessage.bind(this);
