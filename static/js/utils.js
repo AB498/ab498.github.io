@@ -4,14 +4,14 @@ document.body.insertAdjacentElement(
   "beforeend",
   new DOMParser().parseFromString(
     `<div
-        class="debugcol h-1/2 h-8 dark:text-zinc-50 text-zinc-950/75 bg-zinc-50 dark:bg-zinc-950/75 flex flex-col overflow-auto whitespace-pre-wrap transition-all bottom-0 fixed w-screen z-50 backdrop-filter backdrop-blur-sm">
-        <div class="flex h-8 shrink-0 justify-center items-center font-bold bg-zinc-50 dark:bg-zinc-950/75 p-1 sticky top-0 z-10">
+        class="debugcol items-stretch h-1/2 h-8 w-full dark:text-zinc-50 text-zinc-950/75 bg-zinc-50 dark:bg-zinc-950/75 flex flex-col overflow-hidden whitespace-pre-wrap transition-all bottom-0 fixed z-50 backdrop-filter backdrop-blur-sm">
+        <div class="flex h-8 w-full shrink-0 justify-center items-center font-bold bg-zinc-50 dark:bg-zinc-950/75 p-1 sticky top-0 z-10">
             <div class="debugtitle grow rounded hover:bg-gray-500  bg-zinc-200 dark:bg-zinc-900/75 flex justify-center items-center "
              onclick="document.querySelector('.debugcol').classList.toggle('h-8');"
             > LOGS </div>
             <div class="flex self-end"
             onclick="document.querySelector('#debug-settings').classList.toggle('hidden');"
-            > &#9776;</div> 
+            > &#9776;</div>
         </div>
         <div  id="debug-settings" class="flex flex-col hidden  p-2 bg-zinc-50 dark:bg-zinc-950/75">
           <div class="flex p-0 m-0">
@@ -23,7 +23,7 @@ document.body.insertAdjacentElement(
             ></input>
           </div>
         </div>
-        <div class="debug flex flex-col overflow-auto">
+        <div class="debug flex flex-col overflow-auto grow">
             <div class="grow"></div>
         </div>
     </div>`,
@@ -43,7 +43,7 @@ function escapeHTML(str) {
   p.appendChild(document.createTextNode(str));
   return p.innerHTML;
 }
-const debug = (...args) => {
+window.debug = (...args) => {
   console.log(...args);
 
   const hours = new Date().getHours();
