@@ -55,10 +55,9 @@ int main() {
                 debug('onDidChangeContent');
                 runCode();
             });
-            editor.focus();
         });
         let coll;
-        function createDecor([[x1, y1], [x2, y2]]) {
+        function createDecor([[x1, y1], [x2, y2]], message) {
             coll = editor.createDecorationsCollection([
                 {
                     range: {
@@ -69,7 +68,9 @@ int main() {
                     },
                     options: {
                         isWholeLine: false,
-                        inlineClassName: "someClassName"
+                        inlineClassName: "text-red-500", 
+                        hoverMessage: {value: message || "Hover Message"},
+                        afterContentText: ' (Custom Text)', // The custom text to be displayed after the range
                     }
                 },
             ]);
@@ -95,7 +96,7 @@ int main() {
             // console.log(await api.compileLinkRun(code));
             const tree = parser.parse(code);
             await renderTree(tree);
-            
+
             // Convert the root node and its children to JSON
             // const syntaxTreeJSON = syntaxNodeToJSON(tree.rootNode);
             // debug(syntaxTreeJSON)
@@ -105,7 +106,16 @@ int main() {
         let parseCount = 0;
 
         async function renderTree(tree) {
+            isRendering++;
+            const cursor = tree.walk();
+
             let currentRenderCount = parseCount;
+            let row = '';
+            let rows = [];
+            let finishedRow = false;
+            let visitedChildren = false;
+            let indentLevel = 0;
+
             for (let i = 0; ; i++) {
                 if (i > 0 && i % 10000 === 0) {
                     await new Promise(r => setTimeout(r, 0));
@@ -163,8 +173,8 @@ int main() {
                             // debug(cursor, newcursor);
                             // cursor.reset(org); 
 
-                            createDecor([[start.row + 1, start.column + 1], [end.row + 1, end.column + 1]])
                         }
+                        createDecor([[start.row + 1, start.column + 1], [end.row + 1, end.column + 1]], displayName)
                         // console.log(displayName, start, end, id);
                         finishedRow = true;
                     }
@@ -188,22 +198,22 @@ int main() {
 
         }
 
-    function syntaxNodeToJSON(node) {
-        const jsonNode = {
-            type: node.type,
-            text: node.text,
-            start: node.startPosition,
-            end: node.endPosition,
-            children: [],
-        };
+        function syntaxNodeToJSON(node) {
+            const jsonNode = {
+                type: node.type,
+                text: node.text,
+                start: node.startPosition,
+                end: node.endPosition,
+                children: [],
+            };
 
-        for (let i = 0; i < node.childCount; i++) {
-            const child = node.child(i);
-            jsonNode.children.push(syntaxNodeToJSON(child));
+            for (let i = 0; i < node.childCount; i++) {
+                const child = node.child(i);
+                jsonNode.children.push(syntaxNodeToJSON(child));
+            }
+
+            return jsonNode;
         }
-
-        return jsonNode;
-    }
 
 
 
