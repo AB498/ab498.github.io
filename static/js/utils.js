@@ -4,7 +4,7 @@ document.body.insertAdjacentElement(
   "beforeend",
   new DOMParser().parseFromString(
     `<div
-        class="debugcol items-stretch h-1/2 h-8 w-full dark:text-zinc-50 text-zinc-950/75 bg-zinc-50 dark:bg-zinc-950/75 flex flex-col overflow-hidden whitespace-pre-wrap transition-all bottom-0 fixed z-50 backdrop-filter backdrop-blur-sm">
+        class="debugcol items-stretch h-1/2 h-8 w-full dark:text-zinc-50 text-zinc-950/75 bg-zinc-50 dark:bg-zinc-950/75 flex flex-col overflow-auto whitespace-pre-wrap transition-all bottom-0 fixed z-50 backdrop-filter backdrop-blur-sm">
         <div class="flex h-8 w-full shrink-0 justify-center items-center font-bold bg-zinc-50 dark:bg-zinc-950/75 p-1 sticky top-0 z-10">
             <div class="debugtitle grow rounded hover:bg-gray-500  bg-zinc-200 dark:bg-zinc-900/75 flex justify-center items-center "
              onclick="document.querySelector('.debugcol').classList.toggle('h-8');"
@@ -30,6 +30,7 @@ document.body.insertAdjacentElement(
     "text/html"
   ).body.firstChild
 );
+let originalLog = window.console.log;
 
 function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
@@ -44,7 +45,7 @@ function escapeHTML(str) {
   return p.innerHTML;
 }
 window.debug = (...args) => {
-  console.log(...args);
+  originalLog(...args);
 
   const hours = new Date().getHours();
   let time =
@@ -71,7 +72,6 @@ window.debug = (...args) => {
     let jsv2 = new DOMParser()
       .parseFromString(`<div class="w-full h-full"></div>`, "text/html")
       .documentElement.querySelector("body").firstChild;
-    console.log(jsv2);
     document.querySelector(".debug").insertAdjacentElement("afterbegin", jsv);
     jsv.appendChild(jsv2);
     new JsonViewer({
@@ -82,10 +82,12 @@ window.debug = (...args) => {
     });
   } else {
     let argsString = args.map((e) => f(e)).join(" ");
-    let jsv = new DOMParser().parseFromString(
-      `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-zinc-50 dark:bg-zinc-950/75 pt-1 font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
-      "text/html"
-    ).documentElement;
+    let jsv = new DOMParser()
+      .parseFromString(
+        `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-zinc-50 dark:bg-zinc-950/75 pt-1 font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
+        "text/html"
+      )
+      .documentElement.querySelector("body").firstChild;
     document.querySelector(".debug").insertAdjacentElement("afterbegin", jsv);
   }
   debugcount++;
@@ -94,7 +96,7 @@ window.debug = (...args) => {
     document.querySelector(".debugcol").classList.remove("h-8");
 };
 window.error = (...args) => {
-  console.log(...args);
+  console.error(...args);
 
   const hours = new Date().getHours();
   let time =
@@ -121,7 +123,6 @@ window.error = (...args) => {
     let jsv2 = new DOMParser()
       .parseFromString(`<div class="w-full h-full"></div>`, "text/html")
       .documentElement.querySelector("body").firstChild;
-    console.log(jsv2);
     document.querySelector(".debug").insertAdjacentElement("afterbegin", jsv);
     jsv.appendChild(jsv2);
     new JsonViewer({
@@ -132,10 +133,12 @@ window.error = (...args) => {
     });
   } else {
     let argsString = args.map((e) => f(e)).join(" ");
-    let jsv = new DOMParser().parseFromString(
-      `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-red-800 pt-1 font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
-      "text/html"
-    ).documentElement;
+    let jsv = new DOMParser()
+      .parseFromString(
+        `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-red-800 pt-1 font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
+        "text/html"
+      )
+      .documentElement.querySelector("body").firstChild;
     document.querySelector(".debug").insertAdjacentElement("afterbegin", jsv);
   }
   debugcount++;
@@ -148,6 +151,11 @@ window.onerror = (event, source, lineno, colno, error) => {
 ${source.replace(window.location.origin, "")}:${lineno}:${colno}`;
   window.error(msg);
   return false; // true if you want to consume event
+};
+
+window.console.log = (...args) => {
+  originalLog(...args);
+  debug(...args);
 };
 
 function getRect(el, parent) {
