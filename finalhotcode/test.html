@@ -14,6 +14,26 @@
         .someClassName {
             background-color: #ff0000;
         }
+
+        .redActionBox {
+            border: 0.1em solid rgb(0, 0, 0);
+            box-sizing: border-box;
+            content: "mod2";
+            background-color: rgb(255, 192, 192);
+            margin: 0.1em 0.2em 0px;
+            display: inline;
+            line-height: 1em;
+            cursor: pointer;
+        }
+
+        .blueActionBox {
+            border: 0.1em solid rgb(0, 0, 0);
+            box-sizing: border-box;
+            background-color: rgb(192, 192, 255);
+            margin: 0.1em 0.2em 0px;
+            cursor: pointer;
+            border-radius: 0.2em; 
+        }
     </style>
 </head>
 
@@ -69,12 +89,17 @@ int main() {
                     },
                     options: {
                         isWholeLine: false,
-                        inlineClassName: "text-red-500", 
-                        hoverMessage: {value: message || "Hover Message"},
-                        afterContentText: ' (Custom Text)', // The custom text to be displayed after the range
+                        hoverMessage: message ? {
+                            value: message,
+                        } : undefined,
+                        after: message ? {
+                            content: message,
+                            inlineClassName: 'blueActionBox',
+                        } : undefined
                     }
                 },
             ]);
+
         }
         const Parser = window.TreeSitter;
         let parser;
