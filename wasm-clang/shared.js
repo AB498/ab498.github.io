@@ -931,7 +931,7 @@ const API = (function () {
         "-lc",
         "-lc++",
         "-lc++abi",
-        "-lcanvas",
+        // "-lcanvas",
         "-o",
         wasm
       );

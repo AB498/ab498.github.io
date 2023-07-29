@@ -96,11 +96,18 @@ const onAnyMessage = async (event) => {
         // Stop running rAF on the previous app, if any.
         currentApp.allowRequestAnimationFrame = false;
       }
+      try {
       currentApp = await api.compileLinkRun(event.data.data);
       console.log(`finished compileLinkRun. currentApp = ${currentApp}.`);
       port.postMessage(
         { id: "runAsync", responseId, data: currentApp },
-      );
+        );
+      } catch (e) {
+        console.log(`caught exception in compileLinkRun: ${e}`);
+        port.postMessage(
+          { id: "runAsync", responseId, data: null },
+        );
+      }
       break;
 
     case "postCanvas":

@@ -62,11 +62,16 @@ class WorkerAPI {
   }
 
   async compileLinkRun(contents) {
-    window.stdMessages = [];
-    await this.runAsync("compileLinkRun", contents);
+    window.stdMessages = ""; 
+    try{
+      await this.runAsync("compileLinkRun", contents);
+
+    } catch (e) {
+      window.stdMessages+=e;
+    } 
     return window.stdMessages;
   }
-
+ 
   postCanvas(offscreenCanvas) {
     this.port.postMessage({ id: "postCanvas", data: offscreenCanvas }, [
       offscreenCanvas,
@@ -76,9 +81,9 @@ class WorkerAPI {
   onmessage(event) {
     switch (event.data.id) {
       case "write":
-        window.debug("<br/>" + event.data.data);
-        if (!window.stdMessages) window.stdMessages = [];
-        window.stdMessages.push(event.data.data);
+        // window.debug(event.data.data); 
+        if (!window.stdMessages) window.stdMessages = '';
+        window.stdMessages+=event.data.data;
         break;
 
       case "runAsync": {
