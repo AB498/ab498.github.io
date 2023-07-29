@@ -231,12 +231,11 @@ int main() {
             return null;
         }
         async function runCode(editor, parser) {
-            decorationIds = editor.deltaDecorations(decorationIds, []);
-            window.outputDecs = editor.deltaDecorations(window.outputDecs, []);
-            window.hoverDecs = editor.deltaDecorations(window.hoverDecs, []);
             let code = editor.getValue();
             const tree = parser.parse(code);
+            window.hoverDecs = editor.deltaDecorations(window.hoverDecs, []);
             let list = (await renderTree(tree));
+            decorationIds = editor.deltaDecorations(decorationIds, []);
             colorCode(editor, list);
             replacedCode = getReplacedCode(code, list);
             let outputString;
@@ -249,6 +248,7 @@ int main() {
                 debug(e);
             }
             let lineOutputs = (extractLineOutputs(outputString)); // {}
+            window.outputDecs = editor.deltaDecorations(window.outputDecs, []);
             addOutputDecors(lineOutputs, code);
             // const syntaxTreeJSON = syntaxNodeToJSON(tree.rootNode);
             // debug(syntaxTreeJSON)
@@ -261,7 +261,7 @@ int main() {
                 let startColumn = parseInt(key.split('_')[1]);
                 let endColumn = startColumn + 1;//lines[startRow].length; 
                 let line = [startRow, startColumn, endRow, endColumn];
-                let message = value;
+                let message = value.length > 15 ? value.slice(0, 15) + '...' : value;
                 window.outputDecs = [...window.outputDecs, window.editor.deltaDecorations([], [{
                     range: {
                         startLineNumber: line[0] + 1,

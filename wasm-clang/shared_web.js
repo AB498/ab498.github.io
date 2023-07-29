@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-window.addEventListener("resize", (event) => layout.updateSize());
 
 let editor;
 const run = debounceLazy(
