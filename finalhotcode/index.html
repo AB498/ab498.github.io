@@ -19,7 +19,15 @@
         href="https://golden-layout.com/files/latest/css/goldenlayout-dark-theme.css" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-
+    <style>
+        .info-plate {
+            font-size: 0.7em;
+            line-height: 0.8em;
+            position: absolute;
+            top: 70%;
+            border: 1px solid white;
+        }
+    </style>
 </head>
 
 <body class="w-screen h-screen flex flex-col">
@@ -45,7 +53,8 @@
                 </div>
             </div>
             <div class="flex flex-col  w-0 sm:basis-3/6 shrink-0">
-                <div class="terminal font-mono whitespace-pre-wrap overflow-auto  flex h-1/2 bg-blue-500 sm:translate-x-0 translate-x-full">
+                <div
+                    class="terminal font-mono whitespace-pre-wrap overflow-auto  flex h-1/2 bg-blue-500 sm:translate-x-0 translate-x-full">
                 </div>
                 <div class="flex h-1/2 bg-green-500 sm:translate-x-0 translate-x-full">
                 </div>
@@ -74,7 +83,8 @@ int main() {\n    hello();\n    int a = 4 - hello();
                 language: 'cpp',
             });
             window.decorations = [];
-            window.decorationIds = editor.deltaDecorations([], []); // Pass an empty array to get all existing IDs
+            window.decorationIds = editor.deltaDecorations([], []);
+            window.hoverDecs = editor.deltaDecorations([], []);
 
             //theme
             monaco.editor.setTheme('vs-dark');
@@ -85,7 +95,7 @@ int main() {\n    hello();\n    int a = 4 - hello();
             let parser = new TreeSitter();
             const JavaScript = await TreeSitter.Language.load('../static/wasm/tree-sitter-cpp.wasm');
             parser.setLanguage(JavaScript);
-            runCode(editor, parser) 
+            runCode(editor, parser)
             editor.getModel().onDidChangeContent((event) => {
                 runCode(editor, parser);
             });
@@ -111,12 +121,25 @@ int main() {\n    hello();\n    int a = 4 - hello();
             colorCode(editor, list);
             code = getReplacedCode(code, list);
             document.querySelector(".terminal").textContent = code;
-            debug(code);
             console.log(await api.compileLinkRun(code));
-            // const syntaxTreeJSON = syntaxNodeToJSON(tree.rootNode);
-            // debug(syntaxTreeJSON)
+            const syntaxTreeJSON = syntaxNodeToJSON(tree.rootNode);
+            debug(syntaxTreeJSON)
         }
 
+        function syntaxNodeToJSON(node) {
+            const jsonNode = {
+                type: node.type,
+                text: node.text,
+                children: [],
+            };
+
+            for (let i = 0; i < node.childCount; i++) {
+                const child = node.child(i);
+                jsonNode.children.push(syntaxNodeToJSON(child));
+            }
+
+            return jsonNode;
+        }
         function getReplacedCode(code, list) {
             let newCode = code;
             let lines = code.split('\n');
@@ -128,8 +151,8 @@ int main() {\n    hello();\n    int a = 4 - hello();
                 let replace = lines[start].substring(startColumn, endColumn)
                 lines[start] = lines[start].replace(replace, `ConvToString(${replace})`);
 
-            } 
-            let injectable = 
+            }
+            let injectable =
                 `
 #include <sstream>
 #include <string>
@@ -213,31 +236,52 @@ std::string ConvToString(const char *value)
 }
 
 	`;
-            return injectable + '\n' + lines.join('\n');    
+            return injectable + '\n' + lines.join('\n');
         }
-
-        function colorCode(editor,list){
+        function addHoverMessage(line, message) {
+            window.hoverDecs = editor.deltaDecorations([
+                ...editor.getModel().getDecorationsInRange({
+                    startLineNumber: line[0] + 1,
+                    startColumn: line[1] + 1,
+                    endLineNumber: line[2] + 1,
+                    endColumn: line[3] + 1
+                })
+            ], []);
+            window.hoverDecs = [...window.hoverDecs, editor.deltaDecorations([], [{
+                range: {
+                    startLineNumber: line[0] + 1,
+                    startColumn: line[1] + 1,
+                    endLineNumber: line[2] + 1,
+                    endColumn: line[3] + 1
+                },
+                options: {
+                    isWholeLine: false,
+                    hoverMessage: message ? {
+                        value: message,
+                    } : undefined,
+                    // after: message ? {
+                    //     content: message,
+                    //     inlineClassName: 'bg-blue-700 info-plate',
+                    // } : undefined
+                }
+            }])]
+        }
+        function colorCode(editor, list) {
             decorationIds = editor.deltaDecorations(decorationIds, []);
             for (let i = 0; i < list.length; i++) {
                 // debug(...[list[i][0], list[i][1], list[i][2], list[i][3]]);
-                window.decorationIds = [...window.decorationIds,editor.deltaDecorations([], [{
-                    range: { 
-                        startLineNumber: list[i][0]+1,
-                        startColumn: list[i][1]+1,
-                        endLineNumber: list[i][2]+1,
-                        endColumn: list[i][3]+1
+                window.decorationIds = [...window.decorationIds, editor.deltaDecorations([], [{
+                    range: {
+                        startLineNumber: list[i][0] + 1,
+                        startColumn: list[i][1] + 1,
+                        endLineNumber: list[i][2] + 1,
+                        endColumn: list[i][3] + 1
                     },
                     options: {
                         isWholeLine: false,
                         inlineClassName: 'bg-red-700',
                     }
                 }])]
-                // decorationIds ={ ...updatedDecorationIds};
-                // if (updatedDecorationIds.length > 0) {
-                // decorationIds = editor.deltaDecorations(decorationIds, updatedDecorationIds); 
-                // decorationIds.clear(); 
-                // }
-
             }
         }
 
@@ -253,7 +297,11 @@ std::string ConvToString(const char *value)
                 }
 
                 let displayName;
-                displayName = (!cursor.nodeIsNamed ? 'MISSING ' : '') + cursor.nodeType
+                if (cursor.nodeIsMissing) {
+                    displayName = `MISSING ${cursor.nodeType}`
+                } else if (cursor.nodeIsNamed) {
+                    displayName = cursor.nodeType;
+                }
 
                 if (visitedChildren) {
                     if (displayName) {
@@ -290,11 +338,12 @@ std::string ConvToString(const char *value)
                             // let parentDisplayName = newcursor.nodeType;
                             // debug(cursor, newcursor);
                             // cursor.reset(org); 
-                            catupreList.push([start.row , start.column , end.row, end.column , fieldName, displayName, id]);
+                            catupreList.push([start.row, start.column, end.row, end.column, fieldName, displayName, id]);
 
                         }
                         // createDecor([[start.row + 1, start.column + 1], [end.row + 1, end.column + 1]], displayName)
                         // console.log(displayName, start, end, id);
+                        addHoverMessage([start.row, start.column, end.row, end.column], displayName);
                         finishedRow = true;
                     }
 

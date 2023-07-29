@@ -9,6 +9,7 @@
 template <typename T>
 std::string ConvToString(const T &value)
 {
+    std::cout << "_res_";
     std::ostringstream os;
     os << value;
     return os.str();
@@ -77,20 +78,6 @@ std::string ConvToString(const char *value)
 {
     return std::string(value);
 }
-template <typename... Args>
-std::string _fne_formatted_(const std::string &format, Args... args)
-{
-    int size_s = std::snprintf(nullptr, 0, format.c_str(), args...) + 1; // Extra space for ''
-    if (size_s <= 0)
-    {
-        std::cout<<("Error during formatting.");
-        return 1;
-    }
-    auto size = static_cast<size_t>(size_s);
-    std::unique_ptr<char[]> buf(new char[size]);
-    std::snprintf(buf.get(), size, format.c_str(), args...);
-    return std::string(buf.get(), buf.get() + size - 1); // We don't want the '' inside
-}
 
 #include <iostream>
 using namespace std;
@@ -100,7 +87,8 @@ int hello()
 }
 int main()
 {
-    cout << ConvToString(hello());
+    there
+    hello();
     int a = 4 - ConvToString(hello());
     cout << "Hello World!";
     return 0;
