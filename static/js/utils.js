@@ -81,7 +81,13 @@ window.debug = (...args) => {
       expand: false,
     });
   } else {
-    let argsString = args.map((e) => f(e)).join(" ");
+    let argsString = args
+      .map((e) => f(e))
+      .join(" ")
+      .replace(
+        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+        ""
+      );
     let jsv = new DOMParser()
       .parseFromString(
         `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-zinc-50 dark:bg-zinc-950/75 pt-1 font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,
@@ -132,7 +138,13 @@ window.error = (...args) => {
       expand: false,
     });
   } else {
-    let argsString = args.map((e) => f(e)).join(" ");
+    let argsString = args
+      .map((e) => f(e))
+      .join(" ")
+      .replace(
+        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+        ""
+      );
     let jsv = new DOMParser()
       .parseFromString(
         `<div class="m-1 border-2 border-green-600/50 rounded-md p-1 flex flex-col bg-red-800 pt-1 font-mono whitespace-pre-wrap"><div class="time bg-zinc-50 dark:bg-zinc-950/75 rounded-md p-1 text-xs">${time}</div><div>${argsString}</div></div>`,

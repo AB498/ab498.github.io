@@ -410,11 +410,11 @@ const API = (function () {
         }
 
         // Write error message.
-        let msg = `\x1b[91mError: ${exn.message}`;
+        let msg = ""; // `\x1b[91mError: ${exn.message}`;
         if (writeStack) {
           msg = msg + `\n${exn.stack}`;
         }
-        msg += "\x1b[0m\n";
+        msg += ""; // "\x1b[0m\n";
         this.memfs.hostWrite(msg);
 
         // Propagate error.
@@ -801,36 +801,36 @@ const API = (function () {
         memfsFilename: options.memfs || "memfs",
       });
       this.ready = this.memfs.ready.then(() => {
-        this.getModule(this.clangFilename);
-        this.getModule(this.lldFilename);
         return this.untar(this.memfs, this.sysrootFilename);
       });
     }
 
     hostLog(message) {
-      const yellowArrow = "\x1b[1;93m>\x1b[0m ";
+      const yellowArrow = ""; // "\x1b[1;93m>\x1b[0m ";
       this.hostWrite(`${yellowArrow}${message}`);
     }
 
     async hostLogAsync(message, promise) {
       const start = +new Date();
-      this.hostLog(`${message}...`);
+      this.hostLog(`${message}`);
       const result = await promise;
       const end = +new Date();
-      this.hostWrite(" done.");
+      // this.hostWrite(" done.");
       if (this.showTiming) {
-        const green = "\x1b[92m";
-        const normal = "\x1b[0m";
+        const green = ""; // "\x1b[92m";
+        const normal = ""; // "\x1b[0m";
         this.hostWrite(` ${green}(${msToSec(start, end)}s)${normal}\n`);
       }
-      this.hostWrite("\n");
+      // this.hostWrite("\n");
       return result;
     }
 
     async getModule(name) {
       if (this.moduleCache[name]) return this.moduleCache[name];
-      const module = await this.compileStreaming(name);
-      this.hostLog(`Compiled ${name}`);
+      const module = await this.hostLogAsync(
+        '',//`Fetching and compiling ${name}`,
+        this.compileStreaming(name)
+      );
       this.moduleCache[name] = module;
       return module;
     }
@@ -841,7 +841,7 @@ const API = (function () {
         const tar = new Tar(await this.readBuffer(filename));
         tar.untar(this.memfs);
       })();
-      await promise;
+      await this.hostLogAsync(`Untarring ${filename}`, promise);
     }
 
     async compile(options) {
@@ -931,22 +931,23 @@ const API = (function () {
         "-lc",
         "-lc++",
         "-lc++abi",
-        // "-lcanvas",
+        "-lcanvas",
         "-o",
         wasm
       );
     }
 
     async run(module, ...args) {
-      // this.hostLog(`${args.join(' ')}\n`);
+      // this.hostLog(`${args.join(" ")}\n`);
       const start = +new Date();
       const app = new App(module, this.memfs, ...args);
       const instantiate = +new Date();
       const stillRunning = await app.run();
       const end = +new Date();
+      // this.hostWrite("\n");
       if (this.showTiming) {
-        const green = "\x1b[92m";
-        const normal = "\x1b[0m";
+        const green = ""; //  "\x1b[92m";
+        const normal = ""; //  "\x1b[0m";
         let msg = `${green}(${msToSec(start, instantiate)}s`;
         msg += `/${msToSec(instantiate, end)}s)${normal}\n`;
         this.hostWrite(msg);
@@ -962,7 +963,10 @@ const API = (function () {
       await this.link(obj, wasm);
 
       const buffer = this.memfs.getFileContents(wasm);
-      const testMod = await WebAssembly.compile(buffer);
+      const testMod = await this.hostLogAsync(
+        `Compiling ${wasm}`,
+        WebAssembly.compile(buffer)
+      );
       return await this.run(testMod, wasm);
     }
   }
