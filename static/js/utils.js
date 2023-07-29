@@ -154,7 +154,6 @@ ${source.replace(window.location.origin, "")}:${lineno}:${colno}`;
 };
 
 window.console.log = (...args) => {
-  originalLog(...args);
   debug(...args);
 };
 

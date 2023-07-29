@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="flex flex-col  w-0 sm:basis-3/6 shrink-0">
-                <div class="flex h-1/2 bg-blue-500 sm:translate-x-0 translate-x-full">
+                <div class="terminal font-mono whitespace-pre-wrap overflow-auto  flex h-1/2 bg-blue-500 sm:translate-x-0 translate-x-full">
                 </div>
                 <div class="flex h-1/2 bg-green-500 sm:translate-x-0 translate-x-full">
                 </div>
@@ -110,6 +110,7 @@ int main() {\n    hello();\n    int a = 4 - hello();
             // debug(list);
             colorCode(editor, list);
             code = getReplacedCode(code, list);
+            document.querySelector(".terminal").textContent = code;
             debug(code);
             console.log(await api.compileLinkRun(code));
             // const syntaxTreeJSON = syntaxNodeToJSON(tree.rootNode);
@@ -119,22 +120,99 @@ int main() {\n    hello();\n    int a = 4 - hello();
         function getReplacedCode(code, list) {
             let newCode = code;
             let lines = code.split('\n');
-            for (let i = 0; i < list.length; i++) {
+            for (let i = 0; i < 1; i++) {
                 let start = list[i][0];
                 let end = list[i][2];
                 let startColumn = list[i][1];
                 let endColumn = list[i][3];
                 let replace = lines[start].substring(startColumn, endColumn)
-                lines[start] = lines[start].replace(replace, `logTunnel(${replace})`);
+                lines[start] = lines[start].replace(replace, `ConvToString(${replace})`);
 
             } 
-            let injectable = `
+            let injectable = 
+                `
+#include <sstream>
+#include <string>
+#include <vector>
+#include <map>
 #include <iostream>
-using namespace std;
+#include <memory>
+#include <stdexcept>
+
 template <typename T>
-auto logTunnel(T t) {
-    cout << t << endl;
-}`;
+std::string ConvToString(const T &value)
+{
+  std::cout << "_res_";
+  std::ostringstream os;
+  os << value;
+  return os.str();
+}
+
+template <typename T>
+std::string ConvToString(const std::vector<T> &vec)
+{
+  std::ostringstream os;
+  os << "[";
+  for (size_t i = 0; i < vec.size(); ++i)
+  {
+    if (i > 0)
+      os << ", ";
+    os << ConvToString(vec[i]);
+  }
+  os << "]";
+  return os.str();
+}
+
+template <typename K, typename V>
+std::string ConvToString(const std::map<K, V> &map)
+{
+  std::ostringstream os;
+  os << "{";
+  for (auto it = map.begin(); it != map.end(); ++it)
+  {
+    if (it != map.begin())
+      os << ", ";
+    os << ConvToString(it->first) << ": " << ConvToString(it->second);
+  }
+  os << "}";
+  return os.str();
+}
+
+template <typename T>
+std::string ConvToString(const T *arr, size_t N)
+{
+  std::ostringstream os;
+  os << "[";
+  for (size_t i = 0; i < N; ++i)
+  {
+    if (i > 0)
+      os << ", ";
+    os << ConvToString(arr[i]);
+  }
+  os << "]";
+  return os.str();
+}
+
+template <typename T, size_t N>
+std::string ConvToString(const T (&arr)[N])
+{
+  std::ostringstream os;
+  os << "[";
+  for (size_t i = 0; i < N; i++)
+  {
+    os << ConvToString(arr[i]);
+    if (i != N - 1)
+      os << ", ";
+  }
+  os << "]";
+  return os.str();
+}
+std::string ConvToString(const char *value)
+{
+  return std::string(value);
+}
+
+	`;
             return injectable + '\n' + lines.join('\n');    
         }
 
