@@ -47,13 +47,9 @@
     <div id="code"></div>
 
     <script type="text/javascript">
-        CodeMirror.commands.autocomplete = function (cm) {
-            CodeMirror.showHint(cm, CodeMirror.hint.html);
-        }
         window.onload = function () {
             editor = CodeMirror(document.getElementById("code"), {
                 mode: "javascript",
-                theme: "neonsyntax",
                 lineWrapping: true,
                 lineNumbers: true,
                 styleActiveLine: true,
