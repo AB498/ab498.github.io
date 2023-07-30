@@ -43,7 +43,7 @@
         <div class="px-2 hover-effect">Tools</div>
     </div>
     <div class="full flex">
-        <div class="flex flex-col w-12 shrink-0 bg-red-500 items-center ">
+        <div class="flex flex-col w-12 shrink-0 bg-red-500 items-center hidden sm:flex">
             <div class="px-2 hover-effect">
                 <span class="material-symbols-outlined text-white text-2xl">
                     menu
@@ -128,7 +128,8 @@
             require.config({paths: {vs: 'monaco-editor/min/vs'}});
             await asyncRequire('vs/editor/editor.main');
             window.editor = monaco.editor.create(document.querySelector('.editor'), {
-                value:
+                            minimap: {enabled: false},
+value:
                     `
 #include <iostream>
 #include <vector>
