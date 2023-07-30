@@ -810,7 +810,7 @@ const API = (function () {
       const yellowArrow = ""; // "\x1b[1;93m>\x1b[0m ";
       this.hostWrite(`${yellowArrow}${message}`);
     }
-
+    
     async hostLogAsync(message, promise) {
       const start = +new Date();
       this.writeOnce(`${message}...`);
