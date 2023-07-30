@@ -773,6 +773,7 @@ const API = (function () {
       this.readBuffer = options.readBuffer;
       this.compileStreaming = options.compileStreaming;
       this.hostWrite = options.hostWrite;
+      this.writeOnce = options.writeOnce;
       this.clangFilename = options.clang || "clang";
       this.lldFilename = options.lld || "lld";
       this.sysrootFilename = options.sysroot || "sysroot.tar";
@@ -812,10 +813,10 @@ const API = (function () {
 
     async hostLogAsync(message, promise) {
       const start = +new Date();
-      this.hostLog(`${message}`);
+      this.writeOnce(`${message}...`);
       const result = await promise;
       const end = +new Date();
-      // this.hostWrite(" done.");
+      this.writeOnce(" done.");
       if (this.showTiming) {
         const green = ""; // "\x1b[92m";
         const normal = ""; // "\x1b[0m";
@@ -828,7 +829,7 @@ const API = (function () {
     async getModule(name) {
       if (this.moduleCache[name]) return this.moduleCache[name];
       const module = await this.hostLogAsync(
-        '',//`Fetching and compiling ${name}`,
+        `Fetching and compiling ${name}`,
         this.compileStreaming(name)
       );
       this.moduleCache[name] = module;
@@ -938,7 +939,7 @@ const API = (function () {
     }
 
     async run(module, ...args) {
-      // this.hostLog(`${args.join(" ")}\n`);
+      this.hostLogAsync(`${args.join(" ")}\n`);
       const start = +new Date();
       const app = new App(module, this.memfs, ...args);
       const instantiate = +new Date();

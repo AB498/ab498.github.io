@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 let editor;
 const run = debounceLazy(
   (editor) => api.compileLinkRun(editor.getValue()),
@@ -169,7 +168,9 @@ class WorkerAPI {
     switch (event.data.id) {
       case "write":
         window.stdResult += event.data.data;
-        debug(event.data.data);
+        break;
+      case "writeOnce":
+        console.log(event.data.data);
         break;
 
       case "runAsync": {
