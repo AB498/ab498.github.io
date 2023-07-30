@@ -169,6 +169,7 @@ class WorkerAPI {
     switch (event.data.id) {
       case "write":
         window.stdResult += event.data.data;
+        debug(event.data.data);
         break;
 
       case "runAsync": {
