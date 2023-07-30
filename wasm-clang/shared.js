@@ -932,18 +932,19 @@ const API = (function () {
         "-lc",
         "-lc++",
         "-lc++abi",
-        "-lcanvas",
+        // "-lcanvas",
         "-o",
         wasm
       );
     }
 
     async run(module, ...args) {
-      this.hostLogAsync(`${args.join(" ")}\n`);
       const start = +new Date();
       const app = new App(module, this.memfs, ...args);
       const instantiate = +new Date();
+      this.writeOnce(`${args.join(" ")}\n`);
       const stillRunning = await app.run();
+      this.writeOnce(` done`); 
       const end = +new Date();
       // this.hostWrite("\n");
       if (this.showTiming) {
