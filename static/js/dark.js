@@ -34,9 +34,14 @@ document.querySelector(".tailwind-dark-toggle").insertAdjacentElement(
     .documentElement.querySelector("body").firstChild
 );
 
-document.querySelector(".tailwind-dark-toggle").classList.add("flex");
+document
+  .querySelector(".tailwind-dark-toggle")
+  .classList.add("flex", "transition-all", "duration-500");
 
+document.querySelector("#dark-toggle").checked =
+  localStorage.getItem("theme") === "dark";
 setDarkMode(localStorage.getItem("theme") === "dark");
+
 function setDarkMode(isDark) {
   if (isDark) {
     document.documentElement.classList.add("dark");
