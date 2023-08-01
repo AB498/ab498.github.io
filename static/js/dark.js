@@ -33,3 +33,16 @@ document.querySelector(".tailwind-dark-toggle").insertAdjacentElement(
 document
   .querySelector(".tailwind-dark-toggle")
   .classList.add("flex transition-all duration-500");
+
+setDarkMode(localStorage.getItem("theme") === "dark");
+function setDarkMode(isDark) {
+  if (isDark) {
+    document.documentElement.classList.add("dark");
+    document.querySelector("#switchhelper").classList.add("grow");
+    localStorage.theme = "dark";
+  } else {
+    document.documentElement.classList.remove("dark");
+    document.querySelector("#switchhelper").classList.remove("grow");
+    localStorage.theme = "light";
+  }
+}
