@@ -29,3 +29,7 @@ document.querySelector(".tailwind-dark-toggle").insertAdjacentElement(
     "text/html"
   ).body.firstChild
 );
+
+document
+  .querySelector(".tailwind-dark-toggle")
+  .classList.add("flex transition-all duration-500");
