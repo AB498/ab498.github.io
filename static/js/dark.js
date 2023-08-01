@@ -2,8 +2,10 @@ debugcount = 0;
 
 document.querySelector(".tailwind-dark-toggle").insertAdjacentElement(
   "beforeend",
-  new DOMParser().parseFromString(
-    `
+  new DOMParser()
+    .parseFromString(
+      `
+      <div class="flex flex-col items-center justify-center">
         <input type="checkbox" class="hidden" id="dark-toggle" onchange="setDarkMode(this.checked)" />
         <label for="dark-toggle">
             <div
@@ -24,10 +26,12 @@ document.querySelector(".tailwind-dark-toggle").insertAdjacentElement(
                         </path>
                     </svg>
                 </div>
-            </div>
-        </label>`,
-    "text/html"
-  ).body.firstChild
+                </div>
+            </label>
+            </div>`,
+      "text/html"
+    )
+    .documentElement.querySelector("body").firstChild
 );
 
 document
