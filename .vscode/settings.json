@@ -1,9 +1,10 @@
 {
-    "files.associations": {
-        "*.fneh": "plaintext",
-        "*.result": "json",
-        "*.state": "json",
-        "iostream": "cpp",
-        "iosfwd": "cpp"
-    }
+  "files.associations": {
+    "*.fneh": "plaintext",
+    "*.result": "json",
+    "*.state": "json",
+    "iostream": "cpp",
+    "iosfwd": "cpp",
+    "ostream": "cpp"
+  }
 }
