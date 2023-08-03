@@ -19,6 +19,15 @@
     }
 
   </script>
+  <style>
+    .splide__pagination .splide__pagination__page.is-active {
+      background-color: #FF0000;
+    }
+
+    .splide__pagination .splide__pagination__page {
+      background-color: #AAAAAA;
+    }
+  </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
@@ -34,115 +43,205 @@
 
 </head>
 
-<body class="w-screen h-screen flex flex-col bg-gray-100 dark:bg-gray-900 dark:text-gray-200 text-gray-800">
-  <div class="nav shadow border-b-2 border-zinc-400 flex flex-col p-4 items-center bg-gray-200 dark:bg-gray-800">
-    <div class="tailwind-dark-toggle"></div>
-    <script src="static/js/dark.js"></script>
-  </div>
-
-  <div class="container">
-    <div
-      class="flex p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800">
-      <i data-feather="info" class="w-5 h-5 mr-3"></i>
-      <div>
-        <span class="font-bold">Note: </span>Temporary profile
-      </div>
+<body
+  class="transition-all duration-500 w-screen h-screen flex flex-col bg-gray-100 dark:bg-gray-900 dark:text-gray-200 text-gray-800">
+  <div class="col full overflow-auto">
+    <div class="nav shadow border-b-2 border-zinc-400 flex flex-col p-4 items-center bg-gray-200 dark:bg-gray-800">
+      <div class="tailwind-dark-toggle"></div>
+      <script src="static/js/dark.js"></script>
     </div>
 
-    <div class="flex flex-wrap">
-      <div class="w-full flex flex-col self-center px-4 lg:w-1/2">
-        <h1 class="text-base font-semibold text-gray-700 md:text-xl">
-          Hello There 👋, I'm
-          <span class="mt-1 block text-4xl font-bold text-secondary lg:text-5xl">ZUBAER AHMED</span>
-        </h1>
-        <h2 class="mb-5 text-lg font-medium text-secondary lg:text-2xl">Student in Computer Science</h2>
-        <p class="mb-7 font-medium leading-relaxed text-secondary">Learn web programming it's easy and fun
-          right? <span class="font-bold text-dark dark:text-white">Nope.</span></p>
-
-        <a href="https://github.com/AB498" target="_blank"
-          class="flex self-start space-x-2 center border p-2 px-12 rounded-md bg-green-600 text-white">
-          <img class="invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/github.svg" />
-          <div>
-            Github
-          </div>
-        </a>
-
-        <p class="mb-2 mt-7 w-xl text-lg font-bold text-secondary lg:text-2xl">
-          Favorite Tech Stack
-          <svg role="img" width="20" class="inline-block fill-current" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
-            <title>Instatus</title>
-            <path
-              d="m16.994 21.028c3.5843-1.91 5.471-5.759 5.0561-9.5637-1.3206 1.0851-2.6237 2.3203-3.8709 3.6906-2.0656 2.2694-3.7476 4.6559-4.9953 6.9817 1.2946-0.09715 2.5907-0.45868 3.8101-1.1086zm-13.394-2.5626c-1.3408 1.8191-2.3771 4.4991-1.3032 5.3066 1.5151 1.1394 8.404-2.0133 13.908-8.8051 5.504-6.7918 7.3265-13.796 4.879-14.873-1.1283-0.49644-3.486 1.083-4.8394 2.3943l0.58412 0.31415c1.332-0.85276 3.5528-1.7338 1.4995 1.9758-0.0097 0.01768-0.01962 0.03541-0.02949 0.05317-2.9067-2.2075-6.9471-2.662-10.379-0.8328-4.7026 2.506-6.4831 8.3499-3.9771 13.052 0.58979 1.1067 1.3644 2.0516 2.2655 2.8168-3.5586 2.7493-2.6905 0.35965-2.1925-0.8162z" />
-          </svg>
-        </p>
-        <div class="flex flex-wrap items-center">
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/nodedotjs.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/vuedotjs.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/tailwindcss.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/unity.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/react.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/angular.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/python.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/tensorflow.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/pytorch.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/laravel.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/django.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/express.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/dotnet.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/jquery.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/svelte.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/rubyonrails.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/googlecloud.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/googlecolab.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/amazonaws.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/flask.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/springboot.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/flutter.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/bootstrap.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/ionic.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/quasar.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/jest.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/mocha.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/electron.svg" />
-          <img class="m-2 dark:invert w-10 h-10 p-2 border border-zinc-950  rounded-full"
-            src="https://unpkg.com/simple-icons@v9/icons/solidity.svg" />
+    <div class="full col p-8">
+      <div
+        class="flex p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800">
+        <i data-feather="info" class="w-5 h-5 mr-3"></i>
+        <div>
+          <span class="font-bold">Note: </span>Temporary profile
         </div>
       </div>
-    </div>
+
+      <div class="col">
+        Hello There 👋, I'm
+        <div class="flex border border-zinc-500 bg-zinc-200 dark:bg-zinc-800 p-1 px-3 rounded-xl self-start">
+          <p>
+            <span class="font-bold text-4xl text-violet-950 dark:text-violet-400"> ZUBAER </span>
+            <span class="font-bold text-4xl text-red-900 dark:text-red-400"> AHMED </span>
+          </p>
+        </div>
+      </div>
+      <h2 class="text-lg font-medium text-zinc-600 dark:text-zinc-300">Student in Computer Science</h2>
+      <p class="mb-7 text-zinc-600 dark:text-zinc-300">Learn web programming it's easy and fun
+        right? <span class="font-medium">Nope.</span></p>
+
+      <a href="https://github.com/AB498" target="_blank"
+        class="flex shadow self-start space-x-2 center border p-4 px-12 rounded-full bg-green-600 text-white">
+        <img class="invert w-6 h-6 border-zinc-950  rounded-full"
+          src="https://unpkg.com/simple-icons@v9/icons/github.svg" />
+        <div>
+          Github
+        </div>
+      </a>
+
+      <div class="flex font-bold center text-xl self-start mt-8 mb-4">
+        <div>
+          Favorite Tech Stack
+        </div>
+        <div class="w-4 h-4 ml-2 dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/instatus.svg" />
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center overflow-auto">
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/nodedotjs.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/vuedotjs.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/tailwindcss.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/unity.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/react.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/angular.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/tensorflow.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/pytorch.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/laravel.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/django.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/express.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/dotnet.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/jquery.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/svelte.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/rubyonrails.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/googlecloud.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/googlecolab.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/amazonaws.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/flask.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/springboot.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/flutter.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/bootstrap.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/ionic.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/quasar.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/jest.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/mocha.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/electron.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/solidity.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/unrealengine.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/godotengine.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/cmake.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/jupyter.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/gnubash.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/powershell.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/sqlite.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/mysql.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/postgresql.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/redis.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/graphql.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/prisma.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/sequelize.svg" /></div>
+        <div class="icon dark:invert"><img src="https://unpkg.com/simple-icons@v9/icons/firebase.svg" /></div>
+      </div>
+
+      <div class="flex flex-wrap">
+        <div class="basis-1/2 col p-4">
+          <div class="col border shadow rounded-md overflow-hidden">
+            <img src="static/images/social.png" class="w-full aspect-video" />
+            <div class="col p-4">
+              <div class="text-xl">E-commerce Website</div>
+              <div class="text-sm">Made with Django</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="flex flex-col w-full ">
+        <div class="splide">
+          <div class="splide__track">
+            <ul class="splide__list">
+              <li class="splide__slide p-12 px-16 md:px-32 flex space-x-4">
+                <div class="grid md:grid-cols-3 grid-cols-1 w-full gap-8">
+                  <div
+                    class="relative border shadow basis-full md:basis-1/3 bg-white dark:bg-gray-900 rounded flex flex-col items-start py-4 px-4 pt-16 space-y-2">
+                    <i data-feather="user"
+                      class="bg-blue-300 shadow border-4 absolute -translate-x-6 -translate-y-1/3 top-0 right-0 w-24 h-24 rounded-full"></i>
+
+                    <div class="flex items-center text-xs text-yellow-500">
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star"></span>
+                      <span class="fa fa-star"></span>
+                      <p class="ml-2 text-md font-medium text-gray-500 dark:text-gray-400">4.95 out of 5
+                      </p>
+                    </div>
+                    <div class="text-l font-bold text-gray-900 dark:text-white">
+                      Comment Title 1
+                    </div>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 line-clamp-6">Lorem ipsum dolor sit
+                      amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi
+                      repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius
+                      sed odit fugiat iusto fuga praesentium optio, eaque rerum! </p>
+                    <div class="text-md flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700 w-full">
+                      <div class="pr-3 text-xs font-medium text-gray-900 dark:text-white break-words overflow-auto">
+                        Micheal Gough</div>
+                      <div class="pl-3 text-xs font-light text-gray-500 dark:text-gray-400">CEO at Google
+                      </div>
+                    </div>
+                  </div>
+              </li>
+              <li class="splide__slide p-12 px-16 md:px-32 flex space-x-4">
+                <div class="grid md:grid-cols-3 grid-cols-1 w-full gap-8">
+                  <div
+                    class="relative border shadow basis-full md:basis-1/3 bg-white dark:bg-gray-900 rounded flex flex-col items-start py-4 px-4 pt-16 space-y-2">
+                    <i data-feather="user"
+                      class="bg-blue-300 shadow border-4 absolute -translate-x-6 -translate-y-1/3 top-0 right-0 w-24 h-24 rounded-full"></i>
+
+                    <div class="flex items-center text-xs text-yellow-500">
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star"></span>
+                      <span class="fa fa-star"></span>
+                      <p class="ml-2 text-md font-medium text-gray-500 dark:text-gray-400">4.95 out of 5
+                      </p>
+                    </div>
+                    <div class="text-l font-bold text-gray-900 dark:text-white">
+                      Comment Title 1
+                    </div>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 line-clamp-6">Lorem ipsum dolor sit
+                      amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi
+                      repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius
+                      sed odit fugiat iusto fuga praesentium optio, eaque rerum! </p>
+                    <div class="text-md flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700 w-full">
+                      <div class="pr-3 text-xs font-medium text-gray-900 dark:text-white break-words overflow-auto">
+                        Micheal Gough</div>
+                      <div class="pl-3 text-xs font-light text-gray-500 dark:text-gray-400">CEO at Google
+                      </div>
+                    </div>
+                  </div>
+              </li>
+              <!-- Add more slides as needed -->
+            </ul>
+          </div>
+          <div class="splide__arrows">
+            <button class="splide__arrow splide__arrow--prev bg-blue-200 shadow">
+              <span class="fa fa-chevron-left"></span>
+            </button>
+            <button class="splide__arrow splide__arrow--next bg-blue-200 shadow">
+              <span class="fa fa-chevron-right"></span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div> <!-- container -->
   </div>
 
   <script>
-    feather.replace()
+    feather.replace();
+    new Splide('.splide', {
+      type: 'loop', // Set 'loop' for an infinite carousel
+      perPage: 1, // Number of slides to show at once
+      autoplay: true, // Set to true for autoplay
+      interval: 2000, // Autoplay interval in milliseconds
+      // pauseOnHover: true, // Pause autoplay on hover
+      arrows: true, // Show navigation arrows
+      // Add more options as needed
+    }).mount();
+
   </script>
 
 </body>

@@ -10,7 +10,7 @@ document.querySelector(".tailwind-dark-toggle").insertAdjacentElement(
         <label for="dark-toggle">
             <div
                 class="flex h-6 w-10 cursor-pointer items-center rounded-full bg-gray-200 dark:bg-gray-700 ring-2 dark:ring-slate-500 border-violet-400 text-zinc-950 dark:text-zinc-50">
-                <div id="switchhelper" class="transition-all grow"></div>
+                <div id="switchhelper" class="transition-all duration-200 ease-in-out grow"></div>
                 <div
                     class="toggle-circle flex h-6 w-6 items-center justify-center rounded-full bg-zinc-50 dark:bg-blue-950 border-2 border-blue-400 p-1">
                     <svg role="img" class="dark:hidden dark:invert" width="20" viewBox="0 0 24 24"
@@ -34,9 +34,7 @@ document.querySelector(".tailwind-dark-toggle").insertAdjacentElement(
     .documentElement.querySelector("body").firstChild
 );
 
-document
-  .querySelector(".tailwind-dark-toggle")
-  .classList.add("flex", "transition-all", "duration-500");
+document.querySelector(".tailwind-dark-toggle").classList.add("flex");
 
 document.querySelector("#dark-toggle").checked =
   localStorage.getItem("theme") === "dark";

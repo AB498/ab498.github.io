@@ -1,9 +1,24 @@
+.icon {
+  padding: 0.5rem;
+  margin: 0.5rem;
+  border-radius: 9999px;
+  border-color: #0f0f0f;
+  border-width: 1px;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+}
+.icon::first-child {
+}
 .container {
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  flex-direction: column;
   padding: 0px 20px;
   padding-top: 20px;
 }
