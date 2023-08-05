@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
-class Course
+class BaseClass
 {
     string name;
     int credits;
@@ -9,11 +9,11 @@ class Course
 
 public:
     int multiplier;
-    Course()
+    BaseClass()
     {
         multiplier = 5;
     }
-    Course(int creds)
+    BaseClass(int creds)
     {
         multiplier = 5;
         credits = creds;
@@ -42,9 +42,9 @@ public:
     {
         return credits;
     }
-    Course operator+(Course c)
+    BaseClass operator+(BaseClass c)
     {
-        return Course(c.getCredits() + getCredits());
+        return BaseClass(c.getCredits() + getCredits());
     }
 };
 class Mandatory
@@ -58,7 +58,7 @@ public:
     int isMandatory = 0;
 };
 // single inheritance
-class CreditlessCourse : public Course
+class CreditlessCourse : public BaseClass
 {
 public:
     CreditlessCourse(int c)
@@ -68,7 +68,7 @@ public:
     }
 };
 // single inheritance
-class BaseCourse : public Course
+class BaseCourse : public BaseClass
 {
 public:
     BaseCourse(int c)

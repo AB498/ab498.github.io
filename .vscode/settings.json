@@ -5,6 +5,10 @@
     "*.state": "json",
     "iostream": "cpp",
     "iosfwd": "cpp",
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "deque": "cpp",
+    "string": "cpp",
+    "vector": "cpp",
+    "new": "cpp"
   }
 }
