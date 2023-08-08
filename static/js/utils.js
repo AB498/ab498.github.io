@@ -1,9 +1,10 @@
 debugcount = 0;
 
-document.body.insertAdjacentElement(
-  "beforeend",
-  new DOMParser().parseFromString(
-    `<div
+window.onload = function () {
+  document.body.insertAdjacentElement(
+    "beforeend",
+    new DOMParser().parseFromString(
+      `<div
         class="debugcol items-stretch h-1/2 h-8 w-full dark:text-zinc-50 text-zinc-950/75 bg-zinc-50 dark:bg-zinc-950/75 flex flex-col overflow-auto whitespace-pre-wrap transition-all bottom-0 fixed z-50 backdrop-filter backdrop-blur-sm">
         <div class="flex h-8 w-full shrink-0 justify-center items-center font-bold bg-zinc-50 dark:bg-zinc-950/75 p-1 sticky top-0 z-10">
             <div class="debugtitle grow rounded hover:bg-gray-500  bg-zinc-200 dark:bg-zinc-900/75 flex justify-center items-center "
@@ -27,9 +28,10 @@ document.body.insertAdjacentElement(
             <div class="grow"></div>
         </div>
     </div>`,
-    "text/html"
-  ).body.firstChild
-);
+      "text/html"
+    ).body.firstChild
+  );
+};
 let originalLog = window.console.log;
 
 function uuidv4() {
@@ -46,7 +48,7 @@ function escapeHTML(str) {
 }
 window.debug = (...args) => {
   originalLog(...args);
-
+  if (!document.querySelector(".debug")) return;
   const hours = new Date().getHours();
   let time =
     (hours % 12 || 12) +
@@ -103,7 +105,7 @@ window.debug = (...args) => {
 };
 window.error = (...args) => {
   console.error(...args);
-
+  if (!document.querySelector(".debug")) return;
   const hours = new Date().getHours();
   let time =
     (hours % 12 || 12) +

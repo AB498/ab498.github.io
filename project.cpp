@@ -3,7 +3,7 @@
 
 using namespace std;
 
-class BaseClass
+class Course
 {
     string name;
     int credits;
@@ -26,47 +26,44 @@ public:
     {
         return "Generic Course: No Info";
     }
-    BaseClass(string n)
+    Course(string n)
     {
         name = n;
     }
-    BaseClass()
+    Course()
     {
     }
 };
-class DerivedClass : public BaseClass
+class EnglishCourse : public Course
 {
 public:
+    EnglishCourse(string n) : Course(n)
+    {
+    }
     string getInfo()
     {
         return "Name: " + getName() + "\nCredits: " + to_string(getCredits()) + "\nCredit Hours: " + to_string(getCreditHours());
     }
-    DerivedClass(string n) : BaseClass(n)
-    {
-    }
 };
-vector<BaseClass *> list;
+vector<Course> courses;
 int input;
 
 void showAllCourses()
 {
     cout << "Showing all courses" << endl;
-    for (int i = 0; i < list.size(); i++)
+    for (int i = 0; i < courses.size(); i++)
     {
-        cout << i + 1 << ". " << list[i]->getName() << endl;
+        cout << i + 1 << ". " << courses[i].getName() << endl;
     }
     cin >> input;
 
-    cout << list[input - 1]->getInfo();
+    cout << courses[input - 1].getInfo();
 }
 void initializeCourses()
 {
-    DerivedClass *en = new DerivedClass("ENG-1010");
-    list.push_back(en);
-    cout << en->getInfo() << endl;
-    cout << list[0]->getInfo() << endl;
-    list.push_back(new BaseClass("CSE-1100"));
-    list.push_back(new BaseClass("PHY-1200"));
+    courses.push_back(EnglishCourse("ENG-1010"));
+    courses.push_back(Course("CSE-1100"));
+    courses.push_back(Course("PHY-1200"));
 }
 
 int main()
