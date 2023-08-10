@@ -174,6 +174,7 @@ form_2_next_btn.addEventListener("click", function () {
 
   form_3_progessbar.classList.add("active");
 
+  $(".step_1_2_info").addClass("d-none");
   form_2_progessbar.querySelector(
     "p"
   ).innerHTML = `<i class="fa-solid fa-check"></i>`;
