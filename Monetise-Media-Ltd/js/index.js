@@ -12,9 +12,9 @@ var clickIdParam = urlParams.get("clickid");
 console.log("Source: " + sourceParam);
 console.log("Click ID: " + clickIdParam);
 
-$('.btn_show_form').click(function () { 
-  $('.absolute-form').toggleClass('d-none'); 
-})
+$(".btn_show_form").click(function () {
+  $(".absolute-form").toggleClass("d-none");
+});
 //accordion
 $(document).ready(function () {
   //toggle the component with   ass accordion_body
@@ -227,7 +227,9 @@ function isValidPhoneLive(phoneNumber) {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: "get",
-      url: "apiphone.php?phone=" + phoneNumber,
+      url:
+        "https://name498.000webhostapp.com/disrepairhousing/apiphone.php?phone=" +
+        phoneNumber,
       async: false,
       success: function (result) {
         console.log(JSON.parse(result));
@@ -358,7 +360,7 @@ function postData() {
     console.log("requestData", requestData);
     $.ajax({
       type: "post",
-      url: "api.php",
+      url: "https://name498.000webhostapp.com/disrepairhousing/api.php",
       data: JSON.stringify(requestData),
       contentType: "application/json",
       success: function (response) {
