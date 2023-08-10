@@ -23,9 +23,9 @@ public:
     {
         return cost;
     }
-    int getCost(int shcolarshipPercentage)
+    int getCost(int scholarshipPercentage)
     {
-        return cost * (100 - shcolarshipPercentage) / 100;
+        return cost * (100 - scholarshipPercentage) / 100;
     }
     void setCost(int c)
     {
@@ -51,10 +51,14 @@ public:
     {
         name = n;
     }
-    BaseCourse()
+    BaseCourse() {}
+    BaseCourse(BaseCourse &course)
     {
+        name = course.getName();
+        credits = course.getCredits();
+        creditHours = course.getCreditHours();
+        cost = course.getCost();
     }
-    friend void setCredits(BaseCourse &course, int credits);
     BaseCourse operator+(BaseCourse &course)
     {
         BaseCourse temp = BaseCourse();
@@ -62,6 +66,7 @@ public:
         temp.name = this->getName() + (this->getName() != "" ? " + " : "") + course.getName();
         return temp;
     }
+    friend void setCredits(BaseCourse &course, int credits);
 };
 void setCredits(BaseCourse *&course, int credits)
 {
@@ -182,9 +187,11 @@ void addCourseCosts()
 }
 void viewScholarshipApplied()
 {
+    system("cls");
     cout << "Enter scholarship percentage: " << endl;
     int scholarshipPercentage;
     cin >> scholarshipPercentage;
+    system("cls");
     cout << "Showing all courses" << endl;
     for (int i = 0; i < courses.size(); i++)
     {
@@ -202,7 +209,8 @@ void calculateCreditHours()
     for (int i = 0; i < input.size(); i++)
     {
         credHours = credHours + courses[input[i] - 1]->getCreditHours();
-        cout << "Credit hours for " << courses[input[i] - 1]->getName() << ": " << courses[input[i] - 1]->getCreditHours() << endl;
+        cout << "Credit hours for " << courses[input[i] - 1]->getName() << (courses[input[i] - 1]->getCredits() == 0 ? " (Optional)" : " (Mandatory)")
+             << ": " << courses[input[i] - 1]->getCreditHours() << endl;
     }
     cout << "Total credit hours: " << credHours << endl;
 }
