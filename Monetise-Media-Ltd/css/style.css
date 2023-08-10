@@ -1070,7 +1070,7 @@ input[type="checkbox"]:checked {
 .right_wrapper {
   position: relative;
   background: white;
-  max-width: 800px;
+  max-width: 500px;
   border-radius: 7px;
   margin: 0px 10px;
 }
