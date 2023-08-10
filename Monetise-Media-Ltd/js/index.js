@@ -12,9 +12,26 @@ var clickIdParam = urlParams.get("clickid");
 console.log("Source: " + sourceParam);
 console.log("Click ID: " + clickIdParam);
 
-$(".btn_show_form").click(function () {
-  $(".absolute-form").toggleClass("d-none");
+$(".btn_show_form").click(function (e) {
+  if ($(".absolute-form").hasClass("d-none"))
+    $(".absolute-form").removeClass("d-none");
+  e.preventDefault();
+  e.stopPropagation();
 });
+const specifiedElement = document
+  .querySelector(".absolute-form")
+  .querySelector(".wrapper");
+// I'm using "click" but it works with any event
+document.addEventListener("click", (event) => {
+  const isClickInside = specifiedElement.contains(event.target);
+
+  if (!isClickInside) {
+    if (!$(".absolute-form").hasClass("d-none"))
+      $(".absolute-form").addClass("d-none");
+    // The click was OUTSIDE the specifiedElement, do something
+  }
+});
+
 //accordion
 $(document).ready(function () {
   //toggle the component with   ass accordion_body
@@ -227,9 +244,7 @@ function isValidPhoneLive(phoneNumber) {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: "get",
-      url:
-        "https://name498.000webhostapp.com/disrepairhousing/apiphone.php?phone=" +
-        phoneNumber,
+      url: "apiphone.php?phone=" + phoneNumber,
       async: false,
       success: function (result) {
         console.log(JSON.parse(result));
@@ -360,7 +375,7 @@ function postData() {
     console.log("requestData", requestData);
     $.ajax({
       type: "post",
-      url: "https://name498.000webhostapp.com/disrepairhousing/api.php",
+      url: "api.php",
       data: JSON.stringify(requestData),
       contentType: "application/json",
       success: function (response) {
