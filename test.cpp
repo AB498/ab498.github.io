@@ -1,96 +1,87 @@
 #include <iostream>
-#include <string>
 using namespace std;
-class BaseClass
-{
-    string name;
-    int credits;
-    int creditHours;
 
-public:
-    int multiplier;
-    BaseClass()
-    {
-        multiplier = 5;
-    }
-    BaseClass(int creds)
-    {
-        multiplier = 5;
-        credits = creds;
-    }
-    int getCreditHours()
-    {
-        return credits * multiplier;
-    }
-    string getName()
-    {
-        return name;
-    }
-    void setName(string n)
-    {
-        name = n;
-    }
-    void setMultiplier(int m)
-    {
-        multiplier = m;
-    }
-    void setCredits(int c)
-    {
-        credits = c;
-    }
-    int getCredits()
-    {
-        return credits;
-    }
-    BaseClass operator+(BaseClass c)
-    {
-        return BaseClass(c.getCredits() + getCredits());
-    }
-};
-class Mandatory
+class node
 {
 public:
-    int isMandatory = 1;
-};
-class Optional
-{
-public:
-    int isMandatory = 0;
-};
-// single inheritance
-class CreditlessCourse : public BaseClass
-{
-public:
-    CreditlessCourse(int c)
+    int data;
+    node *next;
+
+    node(int val)
     {
-        setMultiplier(0);
-        setCredits(c);
+        data = val;
+        next = NULL;
     }
 };
-// single inheritance
-class BaseCourse : public BaseClass
+void insfirst(node *&head, int val)
 {
-public:
-    BaseCourse(int c)
-    {
-        setCredits(c);
-    }
-};
-// multiple inheritance: Mandatory, BaseCourse > ENG_Course
-// multi-level inheritance: Course > BaseCourse > ENG_Course
-class ENG_Course : public Mandatory, public BaseCourse
+    node *n = new node(val);
+    n->next = head;
+    head = n;
+}
+void insmiddle(node *head, int val, int position)
 {
-public:
-    ENG_Course(string n) : BaseCourse(10)
+    node *n = new node(val);
+
+    if (head == NULL)
     {
-        setName(n);
+        n->next = head;
+        head = n;
+        return;
     }
-};
+
+    node *temp = head;
+    node *temp_prev = NULL;
+
+    for (int count = 0; count < position; ++count)
+    {
+        temp_prev = temp;
+        temp = temp->next;
+    }
+    n->next = temp_prev->next;
+    temp_prev->next = n;
+}
+
+void inslast(node *&head, int val)
+{
+    node *n = new node(val);
+    if (head == NULL)
+    {
+        head = n;
+        return;
+    }
+
+    node *temp = head;
+
+    while (temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+    temp->next = n;
+}
+
+void display(node *head)
+{
+    node *temp = head;
+    while (temp != NULL)
+    {
+        cout << temp->data << " ->";
+        temp = temp->next;
+    }
+    cout << endl;
+}
 
 int main()
 {
-    ENG_Course en = ENG_Course("ENG-1100");
-    cout << en.getName() << endl;
-    cout << (en + en + en).getCreditHours() << endl;
+    node *head = NULL;
+    insfirst(head, 1);
+    inslast(head, 2);
+    inslast(head, 3);
+    inslast(head, 4);
+    insmiddle(head, 5, 2);
+    inslast(head, 6);
+    inslast(head, 7);
+    display(head);
+
     return 0;
 }

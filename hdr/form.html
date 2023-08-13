@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Disrepair Housing</title>
+    <!-- google font link -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Open+Sans:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <!-- bootstrap link -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/bootstrap.min.css.map" />
+    <!-- swiper css -->
+    <link rel="stylesheet" href="css/swiper-bundle.min.css" />
+
+    <!-- iocn link -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <!-- fontawesome icon link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- responsive css -->
+    <link rel="stylesheet" href="css/responsive.css" />
+    <!-- fav icon -->
+    <link rel="shortcut icon" href="img/fav.png" />
+
+
+    <style>
+        .inline-error {
+            color: red;
+            font-size: 12px;
+            font-weight: 400;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <div class="col-xs-12 col-sm-5 right_col">
+        <div class="right_wrapper">
+            <div class="wrapper" id="find">
+                <div class="header">
+                    <ul>
+                        <li class="active form_1_progessbar">
+                            <div>
+                                <p>1</p>
+                            </div>
+                        </li>
+                        <li class="form_2_progessbar">
+                            <div>
+                                <p>2</p>
+                            </div>
+                        </li>
+                        <li class="form_3_progessbar">
+                            <div>
+                                <p>3</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="form_wrap">
+                    <div class="form_1 data_info">
+                        <div class="formheading">
+                            <h3>Have you reported one or more of the following issues to the landlord in the
+                                last 6 months?</h3>
+                        </div>
+                        <form>
+                            <div class="form_container">
+                                <fieldset>
+
+                                    <div class="input_wrap">
+                                        <input type="checkbox" name="issue" id="leaks" class="input_select"
+                                            value="leaks" />
+                                        <label for="leaks">Active Lacks</label>
+                                    </div>
+                                    <div class="input_wrap">
+                                        <input type="checkbox" class="input_select" name="issue" id="cracks"
+                                            value="cracks" />
+                                        <label for="cracks">Cracks/Structural Damage</label>
+                                    </div>
+                                    <div class="input_wrap">
+                                        <input type="checkbox" class="input_select" name="issue" id="roof"
+                                            value="roof" />
+                                        <label for="roof">Roof Issues</label>
+                                    </div>
+                                    <div class="input_wrap">
+                                        <input type="checkbox" class="input_select" name="issue" id="severe_mould"
+                                            value="mould" />
+                                        <label for="severe_mould">Severe Mould (effecting multiple
+                                            rooms)</label>
+                                    </div>
+                                    <div class="input_wrap">
+                                        <input type="checkbox" class="input_select" name="issue" id="other"
+                                            value="other" />
+                                        <label for="other">Other
+                                            (Heating/Electrics/Rot/Asbestos)</label>
+                                    </div>
+                                </fieldset>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form_2 data_info" style="display: none;">
+
+                        <form>
+                            <div class="form_container">
+                                <h2>Are you a council or housing association tenant?</h2>
+                                <div class="switch-field first_switch">
+                                    <input type="radio" id="radio-one" name="switch-one" value="yes" checked />
+                                    <label for="radio-one">Yes</label>
+                                    <input type="radio" id="radio-two" name="switch-one" value="no" />
+                                    <label for="radio-two">No</label>
+                                </div>
+                                <h2>Have the issues been fixed?</h2>
+                                <div class="switch-field first_switch">
+                                    <input type="radio" id="radio-three" name="switch-two" value="yes" />
+                                    <label for="radio-three">Yes</label>
+                                    <input type="radio" id="radio-four" name="switch-two" value="no" checked />
+                                    <label for="radio-four">No</label>
+                                </div>
+                                <h2>How long ago did you first report the issue?</h2>
+                                <div class="switch-field monthdiv">
+                                    <input type="radio" id="radio-five" name="switch-three" value="Under 6 months" />
+                                    <label for="radio-five">
+                                        Under <br />
+                                        6 months
+                                    </label>
+                                    <input type="radio" id="radio-six" name="switch-three" value="6 to 12 months"
+                                        checked />
+                                    <label for="radio-six">
+                                        6 to 12 <br />
+                                        months
+                                    </label>
+                                    <input type="radio" id="radio-seven" name="switch-three" value="Over 1 year ago" />
+                                    <label for="radio-seven">
+                                        Over <br />
+                                        1 year ago
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form_3 data_info" style="display: none;">
+                        <h2 class="third_tittle">Great! You could be eligible for up to
+                            <span>£14,000*</span> in compensation!
+                        </h2>
+                        <p class="thirddes_p">Enter your details so we can process your claim</p>
+                        <form id="submitForm">
+                            <div class="name_div">
+                                <div class="first_name">
+                                    <p class="fst_name">First Name</p>
+                                    <input name="first-name" id="first-name" type="text" placeholder="First Name" />
+                                </div>
+                                <div class="last_name">
+                                    <p class="lst_name">Last Name</p>
+
+                                    <input name="last-name" type="text" id="last-name" placeholder="Last name" />
+                                </div>
+                            </div>
+
+                            <div class="email_div">
+                                <p class="email_p">Email Address</p>
+                                <input name="email" type="email" id="email" placeholder="Email"
+                                    oninput="isValidEmail(this.value)?document.querySelector('.email-error').innerHTML='':document.querySelector('.email-error').innerHTML='Please enter a valid email address'" />
+                                <p class="inline-error email-error"></p>
+                            </div>
+                            <div class="phone-number">
+                                <p class="phone_nump">Phone Number</p>
+                                <input name="phone-number" type="tel" id="phn-number" placeholder=""
+                                    oninput="isValidPhone(this.value)?document.querySelector('.phone-error').innerHTML='':document.querySelector('.phone-error').innerHTML='Please enter a valid phone number'"
+                                    value="+44" />
+                                <p class="inline-error phone-error"></p>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="submitteddiv" style="display: none;">
+                    <div class="success_icon">
+                        <ion-icon name="checkmark-circle"></ion-icon>
+                    </div>
+                    <div class="success_txt">
+                        <p class="thanks_txt">
+                            Thanks $Name, we’ve received your details and will contact you within the next
+                            24 hours
+                        </p>
+                        <p class="tnx_descrip">
+                            Cras eu sapien semper, ullamcorper turpis et, pulvinar justo. Ut dui elit,
+                            tincidunt vel condi
+                        </p>
+                    </div>
+                    <div class="review_div ">
+                        <div class="g_review success_review">
+                            <div class="r_text success_rev">
+                                <img src="img/review.png" alt="" />
+                                <p>After months of my Council not helping fix the problem, this service
+                                    alternatively
+                                    was super helpful! My claim handler
+                                    was very understanding and clear about what can be done moving forward.
+                                    Very much
+                                    appreciated.
+                                </p>
+                                <div class="name_loc">
+                                    <div class="profo">
+                                        <img class="girl_img" src="img/Ellipse .png" alt="" />
+                                    </div>
+                                    <div class="nameinfo submitp">
+                                        <p>Emily Nash</p>
+                                        <p class="loc_p sub_p"><i class="fa-solid fa-location-dot"></i>Southchurch,
+                                            Southend-On-Sea</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="error alert alert-success d-none" role="alert">
+                    <!-- <i class="fa fa-check-circle"></i> <strong>Success!</strong> Indicates a successful or positive action. -->
+                    <i class="fa fa-exclamation-triangle text-danger"></i>
+                    <strong class="error-text-title">Sorry!</strong>
+                    <div class="error-text">
+                        This is a success alert—check it out!
+                    </div>
+                </div>
+
+                <div class="btns_wrap">
+                    <div class="common_btns form_1_btns firstcmn_btn">
+                        <button type="button" class="btn_next firstnext_btn">
+                            Next Step 👉
+                        </button>
+                    </div>
+                    <div class="common_btns form_2_btns" style="display: none;">
+                        <button type="button" class="btn_next">
+                            Next Step 👉
+                        </button>
+                    </div>
+
+                    <div class="common_btns form_3_btns" style="display: none;">
+                        <button type="button" class="btn_done" onclick="submitForm()">Submit Your
+                            Claim 👉</button>
+                    </div>
+                </div>
+                <div class="form_txtp">
+                    <p class="btnp form_btnp"><ion-icon name="lock-closed"></ion-icon>We will never spam you
+                        or share your info with third parties</p>
+                    <p class="formPdescrib">By filling in this form you agree for Disrepair Housing to use
+                        your phone number and email address to call/text & email you about your housing
+                        disrepair claim.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="responsiveitems">
+            <p class="header_txt responsiverevdiv">
+                We force landlords to adhere to their responsibilities of household repairs, and we further
+                help victims of housing disrepair claim the compensation they deserve. <b>Find out if you
+                    qualify today!</b>
+            </p>
+            <div class="three_point responsiverevdiv">
+                <div class="no1P">
+                    <ion-icon name="checkmark-circle"></ion-icon>
+                    <p>No win, <b>no fee service</b></p>
+                </div>
+                <div class="no1P">
+                    <ion-icon name="checkmark-circle"></ion-icon>
+                    <p><b>Over 14k+</b> claims last year</p>
+                </div>
+                <div class="no1P">
+                    <ion-icon name="checkmark-circle"></ion-icon>
+                    <p>Over <b>£40M</b> paid out so far</p>
+                </div>
+            </div>
+            <p class="header_txt responsiverevdiv">
+                We force landlords to adhere to their responsibilities of household repairs, and we further
+                help victims of housing disrepair claim the compensation they deserve. <b>Find out if you
+                    qualify today!</b>
+            </p>
+
+            <div class="g_review responsiverevdiv">
+                <div class="r_text">
+                    <img src="img/review.png" alt="" />
+                    <p>After months of my Council not helping fix the problem, this service
+                        alternatively
+                        was super helpful! My claim handler
+                        was very understanding and clear about what can be done moving forward.
+                        Very much
+                        appreciated.</p>
+                    <div class="name_loc">
+                        <div class="profo">
+                            <img class="girl_img" src="img/Ellipse .png" alt="" />
+                        </div>
+                        <div class="nameinfo">
+                            <p>Emily Nash</p>
+                            <p class="loc_p"><i class="fa-solid fa-location-dot"></i> Southchurch,
+                                Southend-On-Sea
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer section end -->
+    <!-- js link -->
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/bootstrap.min.js.map"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/swiper-bundle.min.js"></script>
+    <script src="./js/swiper-bundle.min.js.map"></script>
+    <script src="./js/index.js"></script>
+</body>
+
+</html>

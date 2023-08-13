@@ -1,0 +1,4475 @@
+/*1025-1199*/
+@media only screen and (min-width: 1025px) and (max-width: 1199px) {
+    /* header section start */
+    .text_content h2 {
+        font-size: 33px;
+    }
+    .text_content h3 {
+        font-size: 24px;
+    }
+    .no1P p {
+        font-size: 11px;
+    }
+    p.header_txt {
+        font-size: 15px;
+    }
+    .r_text p {
+        font-size: 13px;
+    }
+    img.girl_img {
+        width: 100px;
+        height: 100px;
+    }
+    .col-xs-12.col-sm-5.right_col {
+        margin-right: 0px;
+        padding-right: 0;
+    }
+    .wrapper .header ul li p {
+        width: 33px;
+        height: 33px;
+
+        line-height: 31px;
+    }
+    .formheading h3 {
+        font-size: 17px;
+        line-height: 24px;
+    }
+    .wrapper .header {
+        margin-bottom: 0;
+    }
+    p.btnp.form_btnp {
+        font-size: 10px;
+    }
+    button.btn_next.firstnext_btn {
+        font-size: 20px !important;
+    }
+    label {
+        font-size: 13px;
+    }
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+    .wrapper .form_wrap .input_wrap {
+        padding: 14px 13px;
+
+        padding-right: 0;
+    }
+    .logo img {
+        width: 180px;
+    }
+    .rattig_img img {
+        width: 77px;
+        margin-top: 6px;
+    }
+    .rattig_img p {
+        font-size: 13px;
+    }
+    .wrapper {
+        padding-bottom: 30px;
+    }
+    img.heading-review {
+        margin-top: 6px;
+    }
+    /* step form responsive */
+    .switch-field label{
+        padding: 10px 62px;
+    }
+    .switch-field.monthdiv label {
+        font-size: 14px;
+        padding: 10px 21px;
+    }
+    h3.monthh{
+        font-size: 14px;
+        text-align: center;
+    }
+    h2.third_tittle{
+        font-size: 18px;
+
+    }
+    p.thirddes_p{
+        font-size: 13px;
+    }
+    .last_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 140px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .first_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 140px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .email_div input{
+        font-size: 13px;
+    }
+    p.thanks_txt {
+        color: #00639b;
+        font-size: 19px;
+        text-align: center;
+        font-weight: bold;
+        padding: 1px 0px;
+    }
+    .success_icon ion-icon {
+        font-size: 50px;
+        color: #00a3ff;
+    }
+    .r_text.success_rev .girl_img {
+        height: 80px;
+        width: 80px;
+    }
+    /* step form responsive end */
+    /* header section end */
+    /* sponsure section start */
+
+    .sponsurtxt_box p {
+        font-size: 13px;
+    }
+    .sponsurelogobox img {
+        width: 45px;
+    }
+    .sponsurtxt_box p {
+        font-size: 13px;
+    }
+    /* sponsure section end */
+    /* council section start */
+
+    .council_box p {
+        font-size: 15px;
+    }
+    .council_box marquee {
+        font-size: 18px;
+    }
+    section.council_sec {
+        padding: 24px 0px;
+    }
+
+    /* council section end */
+    /* three step section start */
+    .heading h2 {
+        font-size: 30px;
+    }
+    .heading p {
+        font-size: 18px;
+    }
+    .firststep img {
+        width: 70px;
+    }
+    .firststep h3 {
+        font-size: 21px;
+
+        padding: 13px 0px;
+
+        margin: 0;
+    }
+    p.description {
+        font-size: 13px;
+    }
+    .rattig_img.ratting_stepbtn img {
+        margin-top: 0;
+    }
+    .find_btn button {
+        font-size: 17px;
+
+        padding: 14px 35px;
+    }
+    /* three step section end */
+    /* housing disrepairing section start */
+    .first_img img {
+        width: 75px;
+        border-radius: 5px;
+    }
+    .first_img {
+        width: 215px;
+    }
+    .first_img h3 {
+        margin: 0;
+        font-family: "Inter";
+        font-size: 13px;
+        font-weight: bold;
+        color: #00639b;
+        padding-left: 26px;
+    }
+    .txt_contentbox h2 {
+        font-size: 22px;
+        padding-right: 149px;
+    }
+    p.sub_description {
+        font-size: 14px;
+        line-height: 20px;
+        padding-right: 44px;
+    }
+    p.detailsp {
+        font-size: 11px;
+    }
+    img.girl_img.boy_img {
+        width: 85px;
+        height: 85px;
+    }
+    .r_text img {
+        width: 90px;
+        margin-bottom: 6px;
+    }
+    .r_text {
+        padding-left: 21px;
+        padding-right: 0px;
+    }
+    .r_text.dis_repair p {
+        color: white;
+        font-size: 11px;
+    }
+
+    /* housing disrepairing section end */
+    /* landlord section start */
+    .text_area h2 {
+        font-size: 31px;
+    }
+    p.txt_description {
+        font-size: 21px;
+    }
+    p.subtext_descrip {
+        font-size: 13px;
+    }
+    h2.tittleh {
+        font-size: 25px;
+        padding-bottom: 13px;
+    }
+
+    .landlord_area {
+        padding: 28px 38px;
+    }
+    .first_list span {
+        font-size: 14px;
+    }
+    .first_list span i {
+        padding-right: 10px;
+        font-size: 18px;
+    }
+    .row.landlord_row {
+        align-items: center;
+    }
+
+    /* landlord section end */
+    /* claim section start */
+    .heading.claim_heading h2 {
+        font-size: 28px;
+    }
+    .heading.claim_heading p {
+        padding: 20px 183px;
+
+        font-size: 17px;
+    }
+    .firststep.claim_div img {
+        width: 110px;
+    }
+    /* claim section end */
+    /* testimonial section start */
+    .tittle h3 {
+        font-size: 17px;
+    }
+    .card {
+        padding: 0px 27px;
+        width: 332px !important;
+        padding-right: 0px;
+    }
+    .profile_img img {
+        top: -57px;
+        right: 27px;
+        width: 78px;
+    }
+    .name_loc p {
+        font-size: 13px;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 14px;
+        position: relative;
+        z-index: 1;
+        color: white;
+    }
+    .swiper-button-next::before,
+    .swiper-button-prev::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 30px;
+        background-color: #00a3ff;
+        border-radius: 50%;
+        z-index: -1;
+    }
+
+    /* testimonial section end */
+    /* image section start */
+    .firstrowimage img {
+        width: 180px;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 20px;
+        padding-bottom: 8px;
+    }
+
+    /* image section end */
+    /* footer section start */
+
+    /* footer section end */
+}
+
+/*992-1024*/
+
+@media only screen and (min-width: 992px) and (max-width: 1024px) {
+    /* header section start */
+    .text_content h2 {
+        font-size: 31px;
+    }
+    .text_content h3 {
+        font-size: 21px;
+    }
+    .no1P p {
+        font-size: 11px;
+    }
+    p.header_txt {
+        font-size: 15px;
+    }
+    .r_text p {
+        font-size: 13px;
+    }
+    img.girl_img {
+        width: 100px;
+        height: 100px;
+    }
+    .col-xs-12.col-sm-5.right_col {
+        margin-right: 0px;
+        padding-right: 0;
+    }
+    .wrapper .header ul li p {
+        width: 33px;
+        height: 33px;
+
+        line-height: 31px;
+    }
+    .formheading h3 {
+        font-size: 17px;
+        line-height: 24px;
+    }
+    .wrapper .header {
+        margin-bottom: 0;
+    }
+    p.btnp.form_btnp {
+        font-size: 10px;
+    }
+    button.btn_next.firstnext_btn {
+        font-size: 19px !important;
+    }
+    label {
+        font-size: 13px;
+    }
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+    .wrapper .form_wrap .input_wrap {
+        padding: 14px 13px;
+
+        padding-right: 0;
+    }
+    .logo img {
+        width: 170px;
+    }
+    .rattig_img img {
+        width: 75px;
+        margin-top: 0px;
+    }
+    .rattig_img p {
+        font-size: 11px;
+    }
+    .wrapper {
+        padding-bottom: 30px;
+    }
+     /* step form responsive */
+     .switch-field label{
+        padding: 10px 62px;
+    }
+    .switch-field.monthdiv label {
+        font-size: 14px;
+        padding: 10px 21px;
+    }
+    h3.monthh{
+        font-size: 14px;
+        text-align: center;
+    }
+    h2.third_tittle{
+        font-size: 18px;
+
+    }
+    p.thirddes_p{
+        font-size: 13px;
+    }
+    .last_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 140px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .first_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 140px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .email_div input{
+        font-size: 13px;
+    }
+    p.thanks_txt {
+        color: #00639b;
+        font-size: 19px;
+        text-align: center;
+        font-weight: bold;
+        padding: 1px 0px;
+    }
+    .success_icon ion-icon {
+        font-size: 50px;
+        color: #00a3ff;
+    }
+    .r_text.success_rev .girl_img {
+        height: 80px;
+        width: 80px;
+    }
+    /* step form responsive end */
+    /* header section end */
+    /* sponsure section start */
+
+    .sponsurtxt_box p {
+        font-size: 13px;
+    }
+    .sponsurelogobox img {
+        width: 45px;
+    }
+    .sponsurtxt_box p {
+        font-size: 13px;
+    }
+    /* sponsure section end */
+    /* council section start */
+
+    .council_box p {
+        font-size: 15px;
+    }
+    .council_box marquee {
+        font-size: 18px;
+    }
+    section.council_sec {
+        padding: 24px 0px;
+    }
+
+    /* council section end */
+    /* three step section start */
+    .heading h2 {
+        font-size: 29px;
+    }
+    .heading p {
+        font-size: 18px;
+    }
+    .firststep img {
+        width: 70px;
+    }
+    .firststep h3 {
+        font-size: 21px;
+
+        padding: 13px 0px;
+
+        margin: 0;
+    }
+    p.description {
+        font-size: 13px;
+    }
+    .rattig_img.ratting_stepbtn img {
+        margin-top: 0;
+    }
+    .find_btn button {
+        font-size: 17px;
+
+        padding: 14px 35px;
+    }
+    /* three step section end */
+    /* housing disrepairing section start */
+    .first_img img {
+        width: 75px;
+        border-radius: 5px;
+    }
+    .first_img {
+        width: 215px;
+    }
+    .first_img h3 {
+        margin: 0;
+        font-family: "Inter";
+        font-size: 13px;
+        font-weight: bold;
+        color: #00639b;
+        padding-left: 26px;
+    }
+    .txt_contentbox h2 {
+        font-size: 22px;
+        padding-right: 149px;
+    }
+    p.sub_description {
+        font-size: 14px;
+        line-height: 20px;
+        padding-right: 44px;
+    }
+    p.detailsp {
+        font-size: 11px;
+    }
+    img.girl_img.boy_img {
+        width: 85px;
+        height: 85px;
+    }
+    .r_text img {
+        width: 90px;
+        margin-bottom: 6px;
+    }
+    .r_text {
+        padding-left: 21px;
+        padding-right: 0px;
+    }
+    .r_text.dis_repair p {
+        color: white;
+        font-size: 11px;
+    }
+    .right_content {
+        padding-left: 20px;
+    }
+    /* housing disrepairing section end */
+    /* housing disrepairing section start */
+    .first_img img {
+        width: 75px;
+        border-radius: 5px;
+    }
+    .first_img {
+        width: 215px;
+    }
+    .first_img h3 {
+        margin: 0;
+        font-family: "Inter";
+        font-size: 13px;
+        font-weight: bold;
+        color: #00639b;
+        padding-left: 26px;
+    }
+    .txt_contentbox h2 {
+        font-size: 22px;
+        padding-right: 149px;
+    }
+    p.sub_description {
+        font-size: 14px;
+        line-height: 20px;
+        padding-right: 44px;
+    }
+    p.detailsp {
+        font-size: 11px;
+    }
+    img.girl_img.boy_img {
+        width: 85px;
+        height: 85px;
+    }
+    .r_text img {
+        width: 90px;
+        margin-bottom: 6px;
+    }
+    .r_text {
+        padding-left: 21px;
+        padding-right: 0px;
+    }
+    .r_text.dis_repair p {
+        color: white;
+        font-size: 11px;
+    }
+
+    /* housing disrepairing section end */
+    /* landlord section start */
+    .text_area h2 {
+        font-size: 31px;
+    }
+    p.txt_description {
+        font-size: 21px;
+    }
+    p.subtext_descrip {
+        font-size: 13px;
+    }
+    h2.tittleh {
+        font-size: 25px;
+        padding-bottom: 13px;
+    }
+
+    .landlord_area {
+        padding: 28px 38px;
+    }
+    .first_list span {
+        font-size: 14px;
+    }
+    .first_list span i {
+        padding-right: 10px;
+        font-size: 18px;
+    }
+    .row.landlord_row {
+        align-items: center;
+    }
+
+    /* landlord section end */
+    /* claim section start */
+    .heading.claim_heading h2 {
+        font-size: 28px;
+    }
+    .heading.claim_heading p {
+        padding: 20px 183px;
+
+        font-size: 17px;
+    }
+    .firststep.claim_div img {
+        width: 110px;
+    }
+    /* claim section end */
+    /* testimonial section start */
+    .tittle h3 {
+        font-size: 17px;
+    }
+    .card {
+        padding: 0px 27px;
+        width: 332px !important;
+        padding-right: 0px;
+    }
+    .profile_img img {
+        top: -57px;
+        right: 27px;
+        width: 78px;
+    }
+    .name_loc p {
+        font-size: 13px;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 14px;
+        position: relative;
+        z-index: 1;
+        color: white;
+    }
+    .swiper-button-next::before,
+    .swiper-button-prev::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 30px;
+        background-color: #00a3ff;
+        border-radius: 50%;
+        z-index: -1;
+    }
+    .slider-container {
+        margin: 0px;
+        padding: 60px;
+        padding-top: 0px;
+        padding-bottom: 75px;
+        width: 100%;
+    }
+    .text_content h3 {
+        font-size: 19px;
+    }
+    .text_content h2 {
+        font-size: 30px;
+        padding-bottom: 0px !important;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 24px;
+        padding-bottom: 8px;
+    }
+    .text_content.textpoint_box {
+        padding-bottom: 20px;
+    }
+
+    /* testimonial section end */
+    /* image section start */
+    .firstrowimage img {
+        width: 180px;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 20px;
+        padding-bottom: 8px;
+    }
+
+    /* image section end */
+}
+/*768-991*/
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    /* header section start */
+    .text_content h2 {
+        font-size: 31px;
+        text-align: center;
+        padding: 20px 90px;
+        padding-bottom: 0px;
+    }
+    .text_content h3 {
+        font-size: 21px;
+        text-align: center;
+        padding: 10px 54px;
+    }
+    .no1P p {
+        font-size: 13px;
+    }
+    p.header_txt {
+        font-size: 15px;
+    }
+    .r_text p {
+        font-size: 13px;
+    }
+    img.girl_img {
+        width: 100px;
+        height: 100px;
+    }
+    .col-xs-12.col-sm-5.right_col {
+        margin-right: 0px;
+        padding-right: 0;
+    }
+    .wrapper .header ul li p {
+        width: 33px;
+        height: 33px;
+
+        line-height: 31px;
+    }
+    .formheading h3 {
+        font-size: 17px;
+        line-height: 24px;
+    }
+    .wrapper .header {
+        margin-bottom: 0;
+    }
+    p.btnp.form_btnp {
+        font-size: 13px;
+    }
+    button.btn_next.firstnext_btn {
+        font-size: 19px !important;
+    }
+    label {
+        font-size: 13px;
+    }
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+    .wrapper .form_wrap .input_wrap {
+        padding: 14px 13px;
+
+        padding-right: 0;
+    }
+    .logo img {
+        width: 170px;
+    }
+    .rattig_img img {
+        width: 75px;
+        margin-top: -2px;
+    }
+    .rattig_img p {
+        font-size: 11px;
+    }
+    .wrapper {
+        padding-bottom: 30px;
+    }
+    img.heading-review {
+        margin-top: 6px;
+    }
+    .row.header_row {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-7.leftcol {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-5.right_col {
+        width: 100%;
+        padding-top: 60px;
+    }
+
+    .img_ratting {
+        justify-content: center;
+    }
+    p.formPdescrib {
+        font-size: 12px;
+    }
+     /* step form responsive */
+     .switch-field label{
+        padding: 10px 103px;
+    }
+    .switch-field.monthdiv label {
+        font-size: 17px;
+        padding: 11px 40px;
+    }
+    h3.monthh{
+        font-size: 18px;
+        text-align: center;
+    }
+    h2.third_tittle{
+        font-size: 18px;
+
+    }
+    p.thirddes_p{
+        font-size: 13px;
+    }
+    .last_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 280px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .first_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 280px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .email_div input{
+        font-size: 13px;
+    }
+    p.thanks_txt {
+        color: #00639b;
+        font-size: 19px;
+        text-align: center;
+        font-weight: bold;
+        padding: 1px 0px;
+    }
+    .success_icon ion-icon {
+        font-size: 50px;
+        color: #00a3ff;
+    }
+    .r_text.success_rev .girl_img {
+        height: 80px;
+        width: 80px;
+    }
+    /* step form responsive end */
+    /* header section end */
+    /* sponsure section start */
+
+    .sponsurtxt_box p {
+        font-size: 13px;
+    }
+    .sponsurelogobox img {
+        width: 45px;
+    }
+    .sponsurtxt_box p {
+        font-size: 13px;
+    }
+    /* sponsure section end */
+    /* council section start */
+
+    .council_box p {
+        font-size: 15px;
+    }
+    .council_box marquee {
+        font-size: 18px;
+    }
+    section.council_sec {
+        padding: 24px 0px;
+    }
+
+    /* council section end */
+    /* three step section start */
+    .heading h2 {
+        font-size: 26px;
+    }
+    .heading p {
+        font-size: 16px;
+    }
+    .firststep img {
+        width: 70px;
+    }
+    .firststep h3 {
+        font-size: 15px;
+        padding: 13px 0px;
+        margin: 0;
+    }
+    p.description {
+        font-size: 11px;
+    }
+    .rattig_img.ratting_stepbtn img {
+        margin-top: 0;
+    }
+    .find_btn button {
+        font-size: 16px;
+        padding: 14px 35px;
+    }
+    /* three step section end */
+    /* housing disrepairing section start */
+    .first_img img {
+        width: 75px;
+        border-radius: 5px;
+    }
+    .first_img {
+        width: 317px;
+    }
+    .first_img h3 {
+        margin: 0;
+        font-family: "Inter";
+        font-size: 13px;
+        font-weight: bold;
+        color: #00639b;
+        padding-left: 26px;
+    }
+    .txt_contentbox h2 {
+        font-size: 24px;
+        padding-right: 149px;
+        padding-top: 50px;
+    }
+    p.sub_description {
+        font-size: 14px;
+        line-height: 20px;
+        padding-right: 44px;
+    }
+    p.detailsp {
+        font-size: 13px;
+    }
+    img.girl_img.boy_img {
+        width: 85px;
+        height: 85px;
+    }
+    .r_text img {
+        width: 90px;
+        margin-bottom: 6px;
+    }
+    .r_text {
+        padding-left: 21px;
+        padding-right: 0px;
+    }
+    .r_text.dis_repair p {
+        color: white;
+        font-size: 12px;
+    }
+    .right_content {
+        padding-left: 20px;
+    }
+    .row.repair_row {
+        display: block;
+    }
+
+    .left_content {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .col-xs-12.col-sm-6.repair_col {
+        width: 100%;
+    }
+    /* housing disrepairing section end */
+    /* housing disrepairing section start */
+    .first_img img {
+        width: 75px;
+        border-radius: 5px;
+    }
+    .first_img {
+        width: 215px;
+    }
+    .first_img h3 {
+        margin: 0;
+        font-family: "Inter";
+        font-size: 13px;
+        font-weight: bold;
+        color: #00639b;
+        padding-left: 26px;
+    }
+    .txt_contentbox h2 {
+        font-size: 22px;
+        padding-right: 149px;
+    }
+    p.sub_description {
+        font-size: 14px;
+        line-height: 20px;
+        padding-right: 44px;
+    }
+    p.detailsp {
+        font-size: 11px;
+    }
+    img.girl_img.boy_img {
+        width: 85px;
+        height: 85px;
+    }
+    .r_text img {
+        width: 90px;
+        margin-bottom: 6px;
+    }
+    .r_text {
+        padding-left: 21px;
+        padding-right: 0px;
+    }
+    .r_text.dis_repair p {
+        color: white;
+        font-size: 11px;
+    }
+
+    /* housing disrepairing section end */
+    /* landlord section start */
+    .text_area h2 {
+        font-size: 31px;
+    }
+    p.txt_description {
+        font-size: 21px;
+    }
+    p.subtext_descrip {
+        font-size: 15px;
+    }
+    h2.tittleh {
+        font-size: 25px;
+
+        padding-bottom: 13px;
+
+        text-align: center;
+    }
+
+    .landlord_area {
+        padding: 28px 38px;
+        margin-top: 25px;
+    }
+    .first_list span {
+        font-size: 14px;
+    }
+    .first_list span i {
+        padding-right: 10px;
+        font-size: 18px;
+    }
+    .row.landlord_row {
+        align-items: center;
+        display: block;
+    }
+    .col-xs-12.col-sm-6.landcol {
+        width: 100%;
+    }
+
+    .ratting_btn.txtarea_ratting.landlordnonediv {
+        display: none;
+    }
+    .list_content {
+        display: flex;
+        justify-content: space-around;
+    }
+    .landlordresponsivediv {
+        display: block;
+        text-align: center;
+    }
+    div#ratingdiv {
+        text-align: center;
+        padding-top: 25px;
+    }
+    /* landlord section end */
+    /* claim section start */
+    .heading.claim_heading h2 {
+        font-size: 24px;
+    }
+    .heading.claim_heading p {
+        padding: 20px 64px;
+        font-size: 16px;
+    }
+    .firststep.claim_div img {
+        width: 104px;
+    }
+    /* claim section end */
+    /* testimonial section start */
+    .tittle h3 {
+        font-size: 17px;
+    }
+    .card {
+        padding: 0px 27px;
+        width: 50% !important;
+        padding-right: 0px;
+    }
+    .profile_img img {
+        top: -57px;
+        right: 27px;
+        width: 78px;
+    }
+    .name_loc p {
+        font-size: 13px;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 14px;
+        position: relative;
+        z-index: 1;
+        color: white;
+    }
+    .swiper-button-next::before,
+    .swiper-button-prev::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 30px;
+        background-color: #00a3ff;
+        border-radius: 50%;
+        z-index: -1;
+    }
+    .slider-container {
+        margin: 0px;
+        padding: 60px 55px;
+        padding-top: 0px;
+        padding-bottom: 75px;
+        width: 100%;
+    }
+    .text_content h3 {
+        font-size: 21px;
+    }
+    .text_content h2 {
+        font-size: 30px;
+        padding-bottom: 0px !important;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 24px;
+        padding-bottom: 8px;
+    }
+    .text_content.textpoint_box {
+        padding-bottom: 20px;
+    }
+
+    /* testimonial section end */
+    /* accordion section start */
+
+    .faqleftbox h2 {
+        font-size: 33px;
+    }
+    p.subtext {
+        font-size: 18px;
+    }
+    .accordion_head {
+        font-size: 14px;
+    }
+    .plusminus {
+        width: 24px;
+        height: 24px;
+        font-size: 18px;
+        line-height: 24px;
+        margin-right: 10px;
+    }
+    .accordion_body p {
+        font-size: 12px;
+    }
+
+    /* accordion section end */
+    /* image section start */
+    .firstrowimage img {
+        width: 131px;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 20px;
+        padding-bottom: 8px;
+    }
+    h2.img_h2 {
+        font-size: 22px;
+        text-align: left;
+        line-height: 26px;
+    }
+
+    h3.img_h {
+        padding: 0;
+        text-align: left;
+        line-height: 30px;
+    }
+    .no1P.textp p {
+        padding-left: 7px;
+        font-size: 12px;
+    }
+    .textpointbox {
+        padding-left: 0px;
+    }
+    /* image section end */
+}
+/*576-767*/
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+    /* header section start */
+    .text_content h2 {
+        font-size: 30px;
+        text-align: center;
+        padding: 20px 7px;
+        padding-bottom: 0px;
+    }
+    .text_content h3 {
+        font-size: 21px;
+        text-align: center;
+        padding: 10px 28px;
+    }
+    .no1P p {
+        font-size: 17px;
+    }
+    p.header_txt {
+        font-size: 15px;
+        display: none;
+    }
+    .r_text p {
+        font-size: 13px;
+    }
+    img.girl_img {
+        width: 100px;
+        height: 90px;
+        width: 90px !important;
+    }
+    .col-xs-12.col-sm-5.right_col {
+        margin-right: 0px;
+        padding-right: 0;
+    }
+    .wrapper .header ul li p {
+        width: 33px;
+        height: 33px;
+
+        line-height: 31px;
+    }
+    .formheading h3 {
+        font-size: 17px;
+        line-height: 24px;
+    }
+    .wrapper .header {
+        margin-bottom: 0;
+    }
+    p.btnp.form_btnp {
+        font-size: 13px;
+    }
+    button.btn_next.firstnext_btn {
+        font-size: 19px !important;
+    }
+    label {
+        font-size: 13px;
+    }
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+    .wrapper .form_wrap .input_wrap {
+        padding: 14px 13px;
+
+        padding-right: 0;
+    }
+    .logo img {
+        width: 170px;
+    }
+    .rattig_img img {
+        width: 75px;
+        margin-top: -2px;
+    }
+    .rattig_img p {
+        font-size: 11px;
+    }
+    .wrapper {
+        padding-bottom: 30px;
+    }
+    img.heading-review {
+        margin-top: 6px;
+    }
+    .row.header_row {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-7.leftcol {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-5.right_col {
+        width: 100%;
+        padding-top: 29px;
+        padding-right: 10px;
+    }
+
+    .img_ratting {
+        justify-content: center;
+    }
+    p.formPdescrib {
+        font-size: 12px;
+    }
+    .ratting {
+        display: none;
+    }
+
+    .three_point {
+        display: none;
+    }
+
+    .g_review {
+        display: none;
+    }
+    .responsiverevdiv {
+        display: block;
+        padding-top: 10px;
+        padding-bottom: 0;
+    }
+    .left_wrapper {
+        text-align: center;
+    }
+
+    p.header_txt.responsiverevdiv {
+        display: block !important;
+        padding-bottom: 13px;
+    }
+    .responsiveitems {
+        padding: 10px 13px;
+    }
+    .no1P {
+        padding-bottom: 14px;
+    }
+    p.loc_p {
+        padding: 0;
+    }
+    .r_text {
+        padding: 0;
+    }
+    .name_loc {
+        align-items: center;
+    }
+
+    .nameinfo {
+        padding-left: 18px;
+    }
+    .g_review.success_review {
+        display: block;
+    }
+     /* step form responsive */
+     .switch-field label{
+        padding: 16px 94px;
+    }
+    .switch-field.monthdiv label {
+        font-size: 15px;
+        padding: 10px 40px;
+    }
+    h3.monthh{
+        font-size: 18px;
+        text-align: center;
+    }
+    h2.third_tittle{
+        font-size: 18px;
+
+    }
+    p.thirddes_p{
+        font-size: 13px;
+    }
+    .last_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 200px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .first_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 200px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .email_div input{
+        font-size: 14px;
+    }
+    p.thanks_txt {
+        color: #00639b;
+        font-size: 19px;
+        text-align: center;
+        font-weight: bold;
+        padding: 1px 0px;
+    }
+    .success_icon ion-icon {
+        font-size: 50px;
+        color: #00a3ff;
+    }
+    .r_text.success_rev .girl_img {
+        height: 80px;
+        width: 80px;
+        height: 80px !important;
+        width: 80px !important;
+    }
+    /* step form responsive end */
+    /* header section end */
+    /* sponsure section start */
+
+    .sponsurtxt_box p {
+        font-size: 13px;
+    }
+    .sponsurelogobox img {
+        width: 45px;
+    }
+    .sponsurtxt_box p {
+        font-size: 16px;
+
+        text-align: center;
+
+        padding-bottom: 19px;
+    }
+    .row.sponsure_row {
+        display: block;
+        padding: 1px 15px;
+    }
+
+    .col-md-5.col-sm-4.col-12.second_col {
+        width: 100%;
+        padding-right: 0;
+        padding-bottom: 19px;
+    }
+
+    .col-md-5.col-sm-4.col-12.third_col {
+        width: 100%;
+        padding-left: 0;
+    }
+    .col-md-2.col-sm-4.col-12.txtcolsponsure {
+        width: 100%;
+    }
+    /* sponsure section end */
+    /* council section start */
+
+    .council_box p {
+        font-size: 15px;
+    }
+    .council_box marquee {
+        font-size: 18px;
+    }
+    section.council_sec {
+        padding: 24px 0px;
+    }
+
+    /* council section end */
+    /* three step section start */
+    .heading h2 {
+        font-size: 26px;
+    }
+    .heading p {
+        font-size: 16px;
+    }
+    .firststep img {
+        width: 70px;
+    }
+    .firststep h3 {
+        font-size: 19px;
+        padding: 13px 0px;
+        margin: 0;
+    }
+    p.description {
+        font-size: 14px;
+        padding: 1px 87px;
+    }
+    .rattig_img.ratting_stepbtn img {
+        margin-top: 0;
+    }
+    .find_btn button {
+        font-size: 16px;
+        padding: 14px 35px;
+    }
+
+    .row.threesteprow {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-4.fst_step {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-4.snd_stp {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-4.third_stp {
+        width: 100%;
+    }
+    .firststep {
+        padding-bottom: 20px;
+    }
+
+    .firststep.second_step {
+        padding-bottom: 20px;
+    }
+
+    /* three step section end */
+    /* housing disrepairing section start */
+    .first_img img {
+        width: 88px;
+        border-radius: 5px;
+    }
+    .first_img {
+        width: 100%;
+    }
+    .first_img h3 {
+        margin: 0;
+        font-family: "Inter";
+        font-size: 15px;
+        font-weight: bold;
+        color: #00639b;
+        padding-left: 26px;
+    }
+    .txt_contentbox h2 {
+        font-size: 24px;
+        padding-right: 149px;
+        padding-top: 50px;
+    }
+    p.sub_description {
+        font-size: 14px;
+        line-height: 20px;
+        padding-right: 44px;
+    }
+    p.detailsp {
+        font-size: 13px;
+    }
+    img.girl_img.boy_img {
+        width: 85px;
+        height: 85px;
+    }
+    .r_text img {
+        width: 90px;
+        margin-bottom: 6px;
+    }
+    .r_text {
+        padding-left: 21px;
+        padding-right: 0px;
+    }
+    .r_text.dis_repair p {
+        color: white;
+        font-size: 12px;
+    }
+    .right_content {
+        padding-left: 20px;
+    }
+    .row.repair_row {
+        display: block;
+    }
+
+    .left_content {
+        display: block;
+        padding-top: 15px;
+    }
+
+    .col-xs-12.col-sm-6.repair_col {
+        width: 100%;
+    }
+    .four_img {
+        padding-bottom: 27px;
+    }
+    .g_review.disrepair_sec {
+        display: none;
+    }
+    .g_review.responsiverevdiv.imgsectiondiv p {
+        color: white;
+        font-size: 15px;
+    }
+
+    .g_review.responsiverevdiv.imgsectiondiv .r_text {
+        padding: 0 !important;
+        padding-left: 0px;
+        margin: 0;
+    }
+    .responsivetxtrepair {
+        display: block;
+    }
+    .txt-contentrep {
+        display: none;
+    }
+    .responsivetxtrepair {
+        display: block;
+        text-align: center;
+    }
+    .responsivetxtrepair h2 {
+        font-family: "Inter";
+        font-size: 29px;
+        font-weight: 600;
+        font-family: "Inter";
+        color: white;
+        padding-right: 0px;
+        padding-bottom: 13px;
+    }
+    /* housing disrepairing section end */
+    /* landlord section start */
+    .text_area h2 {
+        font-size: 29px;
+    }
+    p.txt_description {
+        font-size: 21px;
+    }
+    p.subtext_descrip {
+        font-size: 15px;
+    }
+    h2.tittleh {
+        font-size: 25px;
+
+        padding-bottom: 13px;
+
+        text-align: center;
+    }
+
+    .landlord_area {
+        padding: 28px 38px;
+        margin-top: 25px;
+    }
+    .first_list span {
+        font-size: 14px;
+    }
+    .first_list span i {
+        padding-right: 10px;
+        font-size: 18px;
+    }
+    .row.landlord_row {
+        align-items: center;
+        display: block;
+    }
+    .col-xs-12.col-sm-6.landcol {
+        width: 100%;
+    }
+
+    .ratting_btn.txtarea_ratting.landlordnonediv {
+        display: none;
+    }
+    .list_content {
+        display: flex;
+        justify-content: space-around;
+    }
+    .landlordresponsivediv {
+        display: block;
+        text-align: center;
+    }
+    div#ratingdiv {
+        text-align: center;
+        padding-top: 25px;
+    }
+    /* landlord section end */
+    /* claim section start */
+    .heading.claim_heading h2 {
+        font-size: 24px;
+    }
+    .heading.claim_heading p {
+        padding: 6px 8px;
+        font-size: 15px;
+    }
+    .firststep.claim_div img {
+        width: 104px;
+    }
+    .col-xs-12.col-sm-4.claim_col {
+        width: 100%;
+    }
+    /* claim section end */
+    /* testimonial section start */
+    .tittle h3 {
+        font-size: 16px;
+    }
+    .card {
+        padding: 0px 27px;
+        width: 70% !important;
+        padding-right: 0px;
+    }
+    .profile_img img {
+        top: -57px;
+        right: 27px;
+        width: 78px;
+    }
+    .name_loc p {
+        font-size: 13px;
+        padding-right: 10px;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 14px;
+        position: relative;
+        z-index: 1;
+        color: white;
+    }
+    .swiper-button-next::before,
+    .swiper-button-prev::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 30px;
+        background-color: #00a3ff;
+        border-radius: 50%;
+        z-index: -1;
+    }
+    .slider-container {
+        margin: 0px;
+        padding: 60px 55px;
+        padding-top: 0px;
+        padding-bottom: 75px;
+        width: 100%;
+        margin: auto;
+    }
+    .text_content h3 {
+        font-size: 19px;
+    }
+    .text_content h2 {
+        font-size: 30px;
+        padding-bottom: 0px !important;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 24px;
+        padding-bottom: 8px;
+    }
+    .text_content.textpoint_box {
+        padding-bottom: 20px;
+    }
+
+    /* testimonial section end */
+    /* accordion section start */
+
+    .faqleftbox h2 {
+        font-size: 33px;
+        text-align: center;
+    }
+    p.subtext {
+        font-size: 18px;
+        text-align: center;
+    }
+    .accordion_head {
+        font-size: 18px;
+    }
+    .plusminus {
+        width: 24px;
+        height: 24px;
+        font-size: 18px;
+        line-height: 24px;
+        margin-right: 10px;
+    }
+    .accordion_body p {
+        font-size: 14px;
+    }
+    .row.accordion_row {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-6.faq_col {
+        width: 100%;
+    }
+    .accordion_container {
+        padding: 28px;
+
+        padding-bottom: 0px;
+    }
+
+    /* accordion section end */
+    /* image section start */
+    .firstrowimage img {
+        width: 131px;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 20px;
+        padding-bottom: 8px;
+    }
+    h2.img_h2 {
+        font-size: 22px;
+        text-align: left;
+        line-height: 26px;
+    }
+
+    h3.img_h {
+        padding: 0;
+        text-align: left;
+        line-height: 30px;
+    }
+    .no1P.textp p {
+        padding-left: 7px;
+        font-size: 15px;
+    }
+    .textpointbox {
+        padding: 24px 15px;
+        padding-bottom: 0;
+    }
+    .row.textdivrow {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-6.imgsec_col {
+        width: 100%;
+    }
+
+    .imgsec_box {
+        display: block;
+    }
+
+    .firstrowimage {
+        display: flex;
+        justify-content: space-around;
+    }
+    .firstrowimage.two_img {
+        width: 67%;
+        margin: auto;
+    }
+    .r_text {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    /* image section end */
+    /* footer section start */
+    .footerbox p {
+        font-size: 13px;
+
+        padding: 0px 14px;
+        padding-top: 30px;
+    }
+    .footerbox img {
+        width: 175px;
+    }
+
+    /* footer section end */
+}
+/*480-575*/
+@media only screen and (min-width: 480px) and (max-width: 575px) {
+    /* header section start */
+    .text_content h2 {
+        font-size: 27px;
+        text-align: center;
+        padding: 20px 0px;
+        padding-bottom: 0px;
+        line-height: 36px;
+    }
+    .text_content h3 {
+        font-size: 18px;
+        text-align: center;
+        padding: 10px 28px;
+        line-height: 27px;
+    }
+    .no1P p {
+        font-size: 16px;
+    }
+    p.header_txt {
+        font-size: 15px;
+        display: none;
+    }
+    .r_text p {
+        font-size: 15px;
+        line-height: 25px;
+    }
+    img.girl_img {
+        width: 100px;
+        height: 100px;
+        width: 100px !important;
+    }
+    .col-xs-12.col-sm-5.right_col {
+        margin-right: 0px;
+        padding-right: 0;
+    }
+    .wrapper .header ul li p {
+        width: 33px;
+        height: 33px;
+
+        line-height: 31px;
+    }
+    .formheading h3 {
+        font-size: 20px;
+        line-height: 28px;
+        padding: 15px 22px;
+        padding-top: 1px;
+    }
+    .wrapper .header {
+        margin-bottom: 0;
+    }
+    p.btnp.form_btnp {
+        font-size: 12px;
+    }
+    button.btn_next.firstnext_btn {
+        font-size: 19px !important;
+    }
+    label {
+        font-size: 13px;
+    }
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+    .wrapper .form_wrap .input_wrap {
+        padding: 14px 13px;
+
+        padding-right: 0;
+    }
+    .logo img {
+        width: 170px;
+        margin-bottom: 10px;
+    }
+    .rattig_img img {
+        width: 75px;
+        margin-top: -2px;
+    }
+    .rattig_img p {
+        font-size: 11px;
+    }
+    .wrapper {
+        padding-bottom: 30px;
+    }
+    img.heading-review {
+        margin-top: 6px;
+    }
+    .row.header_row {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-7.leftcol {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-5.right_col {
+        width: 100%;
+        padding-top: 29px;
+        padding-right: 10px;
+    }
+
+    .img_ratting {
+        justify-content: center;
+    }
+    p.formPdescrib {
+        font-size: 12px;
+    }
+    .ratting {
+        display: none;
+    }
+
+    .three_point {
+        display: none;
+    }
+
+    .g_review {
+        display: none;
+    }
+    .responsiverevdiv {
+        display: block;
+    }
+    .left_wrapper {
+        text-align: center;
+    }
+    .responsiverevdiv {
+        display: block;
+        padding-top: 10px;
+        padding-bottom: 0;
+    }
+    p.header_txt.responsiverevdiv {
+        display: block !important;
+        padding-bottom: 13px;
+    }
+    .responsiveitems {
+        padding: 10px 13px;
+    }
+    .no1P {
+        padding-bottom: 14px;
+    }
+    p.loc_p {
+        padding: 0;
+    }
+    .r_text {
+        padding: 0;
+    }
+    .name_loc {
+        align-items: center;
+    }
+
+    .nameinfo {
+        padding-left: 18px;
+    }
+    .g_review.success_review {
+        display: block;
+    }
+     /* step form responsive */
+     .switch-field label{
+        padding: 15px 80px;
+    }
+    .switch-field.monthdiv label {
+        font-size: 14px;
+        padding: 10px 32px;
+    }
+    h3.monthh{
+        font-size: 14px;
+        text-align: center;
+    }
+    h2.third_tittle{
+        font-size: 18px;
+
+    }
+    p.thirddes_p{
+        font-size: 13px;
+    }
+    .last_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 175px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .first_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 175px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .email_div input{
+        font-size: 13px;
+    }
+    p.thanks_txt {
+        color: #00639b;
+        font-size: 19px;
+        text-align: center;
+        font-weight: bold;
+        padding: 1px 0px;
+    }
+    .success_icon ion-icon {
+        font-size: 50px;
+        color: #00a3ff;
+    }
+    .r_text.success_rev .girl_img {
+        height: 80px;
+        width: 80px;
+        width: 80px !important;
+    }
+    /* step form responsive end */
+    /* header section end */
+    /* sponsure section start */
+
+    .sponsurtxt_box p {
+        font-size: 13px;
+    }
+    .sponsurelogobox img {
+        width: 45px;
+    }
+    .sponsurtxt_box p {
+        font-size: 16px;
+
+        text-align: center;
+
+        padding-bottom: 19px;
+    }
+    .row.sponsure_row {
+        display: block;
+        padding: 1px 40px;
+    }
+
+    .col-md-5.col-sm-4.col-12.second_col {
+        width: 100%;
+        padding-right: 0;
+        padding-bottom: 19px;
+    }
+
+    .col-md-5.col-sm-4.col-12.third_col {
+        width: 100%;
+        padding-left: 0;
+    }
+    .col-md-2.col-sm-4.col-12.txtcolsponsure {
+        width: 100%;
+    }
+    /* sponsure section end */
+    /* council section start */
+
+    .council_box p {
+        font-size: 15px;
+    }
+    .council_box marquee {
+        font-size: 18px;
+    }
+    section.council_sec {
+        padding: 24px 0px;
+    }
+
+    /* council section end */
+    /* three step section start */
+    .heading h2 {
+        font-size: 26px;
+    }
+    .heading p {
+        font-size: 16px;
+    }
+    .firststep img {
+        width: 70px;
+    }
+    .firststep h3 {
+        font-size: 19px;
+        padding: 13px 0px;
+        margin: 0;
+    }
+    p.description {
+        font-size: 14px;
+        padding: 1px 87px;
+    }
+    .rattig_img.ratting_stepbtn img {
+        margin-top: 0;
+    }
+    .find_btn button {
+        font-size: 16px;
+        padding: 14px 35px;
+    }
+
+    .row.threesteprow {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-4.fst_step {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-4.snd_stp {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-4.third_stp {
+        width: 100%;
+    }
+    .firststep {
+        padding-bottom: 20px;
+    }
+
+    .firststep.second_step {
+        padding-bottom: 20px;
+    }
+
+    /* three step section end */
+    /* housing disrepairing section start */
+    .first_img img {
+        width: 88px;
+        border-radius: 5px;
+    }
+    .first_img {
+        width: 100%;
+    }
+    .first_img h3 {
+        margin: 0;
+        font-family: "Inter";
+        font-size: 15px;
+        font-weight: bold;
+        color: #00639b;
+        padding-left: 26px;
+    }
+    .txt_contentbox h2 {
+        font-size: 24px;
+        padding-right: 149px;
+        padding-top: 50px;
+    }
+    p.sub_description {
+        font-size: 14px;
+        line-height: 20px;
+        padding-right: 44px;
+    }
+    p.detailsp {
+        font-size: 13px;
+    }
+    img.girl_img.boy_img {
+        width: 85px;
+        height: 85px;
+    }
+    .r_text img {
+        width: 90px;
+        margin-bottom: 6px;
+    }
+    .r_text {
+        padding-left: 21px;
+        padding-right: 0px;
+    }
+    .r_text.dis_repair p {
+        color: white;
+        font-size: 12px;
+    }
+    .right_content {
+        padding-left: 20px;
+    }
+    .row.repair_row {
+        display: block;
+    }
+
+    .left_content {
+        display: block;
+        padding-top: 15px;
+    }
+
+    .col-xs-12.col-sm-6.repair_col {
+        width: 100%;
+    }
+    .four_img {
+        padding-bottom: 27px;
+    }
+    .g_review.disrepair_sec {
+        display: none;
+    }
+    .g_review.responsiverevdiv.imgsectiondiv p {
+        color: white;
+        font-size: 15px;
+    }
+
+    .g_review.responsiverevdiv.imgsectiondiv .r_text {
+        padding: 0 !important;
+        padding-left: 0px;
+        margin: 0;
+    }
+    .responsivetxtrepair {
+        display: block;
+    }
+    .txt-contentrep {
+        display: none;
+    }
+    .responsivetxtrepair {
+        display: block;
+        text-align: center;
+    }
+    .responsivetxtrepair h2 {
+        font-family: "Inter";
+        font-size: 29px;
+        font-weight: 600;
+        font-family: "Inter";
+        color: white;
+        padding-right: 0px;
+        padding-bottom: 13px;
+    }
+    /* housing disrepairing section end */
+    /* landlord section start */
+    .text_area h2 {
+        font-size: 31px;
+    }
+    p.txt_description {
+        font-size: 21px;
+    }
+    p.subtext_descrip {
+        font-size: 15px;
+    }
+    h2.tittleh {
+        font-size: 25px;
+
+        padding-bottom: 13px;
+
+        text-align: center;
+    }
+
+    .landlord_area {
+        padding: 28px 38px;
+        margin-top: 25px;
+    }
+    .first_list span {
+        font-size: 14px;
+    }
+    .first_list span i {
+        padding-right: 10px;
+        font-size: 18px;
+    }
+    .row.landlord_row {
+        align-items: center;
+        display: block;
+    }
+    .col-xs-12.col-sm-6.landcol {
+        width: 100%;
+    }
+
+    .ratting_btn.txtarea_ratting.landlordnonediv {
+        display: none;
+    }
+    .list_content {
+        display: flex;
+        justify-content: space-around;
+    }
+    .landlordresponsivediv {
+        display: block;
+        text-align: center;
+    }
+    div#ratingdiv {
+        text-align: center;
+        padding-top: 25px;
+    }
+    /* landlord section end */
+    /* claim section start */
+    .heading.claim_heading h2 {
+        font-size: 24px;
+    }
+    .heading.claim_heading p {
+        padding: 6px 8px;
+        font-size: 15px;
+    }
+    .firststep.claim_div img {
+        width: 104px;
+    }
+    .col-xs-12.col-sm-4.claim_col {
+        width: 100%;
+    }
+    /* claim section end */
+    /* testimonial section start */
+    .tittle h3 {
+        font-size: 17px;
+    }
+    .card {
+        padding: 0px 23px;
+        width: 347px !important;
+        padding-right: 0px;
+        margin: 0px 0px;
+    }
+    .profile_img img {
+        top: -57px;
+        right: 27px;
+        width: 78px;
+    }
+    .name_loc p {
+        font-size: 13px;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 14px;
+        position: relative;
+        z-index: 1;
+        color: white;
+    }
+    .swiper-button-next::before,
+    .swiper-button-prev::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 30px;
+        background-color: #00a3ff;
+        border-radius: 50%;
+        z-index: -1;
+    }
+    .slider-container {
+        margin: 0px;
+        padding: 60px 51px;
+        padding-top: 0px;
+        padding-bottom: 75px;
+        width: 100%;
+        margin: auto;
+    }
+    .text_content h3 {
+        font-size: 19px;
+    }
+    .text_content h2 {
+        font-size: 30px;
+        padding-bottom: 0px !important;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 24px;
+        padding-bottom: 8px;
+    }
+    .text_content.textpoint_box {
+        padding-bottom: 20px;
+    }
+    .card.swiper-slide {
+        margin-right: 32.5px !important;
+    }
+    
+    /* testimonial section end */
+    /* accordion section start */
+
+    .faqleftbox h2 {
+        font-size: 33px;
+        text-align: center;
+    }
+    p.subtext {
+        font-size: 18px;
+        text-align: center;
+    }
+    .accordion_head {
+        font-size: 18px;
+    }
+    .plusminus {
+        width: 24px;
+        height: 24px;
+        font-size: 18px;
+        line-height: 24px;
+        margin-right: 10px;
+    }
+    .accordion_body p {
+        font-size: 14px;
+    }
+    .row.accordion_row {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-6.faq_col {
+        width: 100%;
+    }
+    .accordion_container {
+        padding: 28px;
+
+        padding-bottom: 0px;
+    }
+
+    /* accordion section end */
+    /* image section start */
+    .firstrowimage img {
+        width: 131px;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 19px;
+        padding-bottom: 8px;
+    }
+    h2.img_h2 {
+        font-size: 22px;
+        text-align: left;
+        line-height: 26px;
+    }
+
+    h3.img_h {
+        padding: 0;
+        text-align: left;
+        line-height: 30px;
+    }
+    .no1P.textp p {
+        padding-left: 7px;
+        font-size: 15px;
+    }
+    .textpointbox {
+        padding: 24px 15px;
+        padding-bottom: 0;
+    }
+    .row.textdivrow {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-6.imgsec_col {
+        width: 100%;
+    }
+
+    .imgsec_box {
+        display: block;
+    }
+
+    .firstrowimage {
+        display: flex;
+        justify-content: space-around;
+    }
+    .firstrowimage.two_img {
+        width: 67%;
+        margin: auto;
+    }
+    .r_text {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    /* image section end */
+    /* footer section start */
+    .footerbox p {
+        font-size: 13px;
+
+        padding: 0px 14px;
+        padding-top: 30px;
+    }
+    .footerbox img {
+        width: 175px;
+    }
+
+    /* footer section end */
+}
+
+/*425-479*/
+@media only screen and (min-width: 425px) and (max-width: 479px) {
+    /* header section start */
+    .text_content h2 {
+        font-size: 26px;
+        text-align: center;
+        padding: 20px 0px;
+        padding-bottom: 0px;
+        line-height: 36px;
+    }
+    .text_content h3 {
+        font-size: 17px;
+        text-align: center;
+        padding: 10px 15px;
+        line-height: 27px;
+    }
+    .no1P p {
+        font-size: 17px;
+    }
+    p.header_txt {
+        font-size: 15px;
+        display: none;
+    }
+    .r_text p {
+        font-size: 15px;
+    }
+    img.girl_img {
+        width: 100px;
+        height: 100px;
+        width: 100px !important;
+    }
+    .col-xs-12.col-sm-5.right_col {
+        margin-right: 0px;
+        padding-right: 0;
+    }
+    .wrapper .header ul li p {
+        width: 33px;
+        height: 33px;
+
+        line-height: 31px;
+    }
+    .formheading h3 {
+        font-size: 17px;
+        line-height: 24px;
+    }
+    .wrapper .header {
+        margin-bottom: 0;
+    }
+    p.btnp.form_btnp {
+        font-size: 12px;
+    }
+    button.btn_next.firstnext_btn {
+        font-size: 19px !important;
+    }
+    label {
+        font-size: 13px;
+    }
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+    .wrapper .form_wrap .input_wrap {
+        padding: 14px 13px;
+
+        padding-right: 0;
+    }
+    .logo img {
+        width: 170px;
+        margin-bottom: 10px;
+    }
+    .rattig_img img {
+        width: 75px;
+        margin-top: -2px;
+    }
+    .rattig_img p {
+        font-size: 11px;
+    }
+    .wrapper {
+        padding-bottom: 30px;
+    }
+    img.heading-review {
+        margin-top: 6px;
+    }
+    .row.header_row {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-7.leftcol {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-5.right_col {
+        width: 100%;
+        padding-top: 29px;
+        padding-right: 10px;
+    }
+
+    .img_ratting {
+        justify-content: center;
+    }
+    p.formPdescrib {
+        font-size: 12px;
+    }
+    .ratting {
+        display: none;
+    }
+
+    .three_point {
+        display: none;
+    }
+
+    .g_review {
+        display: none;
+    }
+    .responsiverevdiv {
+        display: block;
+    }
+    .left_wrapper {
+        text-align: center;
+    }
+    .responsiverevdiv {
+        display: block;
+        padding-top: 10px;
+        padding-bottom: 0;
+    }
+    p.header_txt.responsiverevdiv {
+        display: block !important;
+        padding-bottom: 13px;
+        font-size: 15px;
+    }
+    .responsiveitems {
+        padding: 10px 13px;
+    }
+    .no1P {
+        padding-bottom: 14px;
+    }
+    p.loc_p {
+        padding: 0;
+    }
+    .r_text {
+        padding: 0;
+    }
+    .name_loc {
+        align-items: center;
+    }
+
+    .nameinfo {
+        padding-left: 18px;
+    }
+    .g_review.success_review {
+        display: block;
+    }
+     /* step form responsive */
+     .switch-field label{
+        padding: 10px 62px;
+    }
+    .switch-field.monthdiv label {
+        font-size: 14px;
+        padding: 10px 21px;
+    }
+    h3.monthh{
+        font-size: 14px;
+        text-align: center;
+    }
+    h2.third_tittle{
+        font-size: 18px;
+
+    }
+    p.thirddes_p{
+        font-size: 13px;
+    }
+    .last_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 150px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .first_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 150px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .email_div input{
+        font-size: 13px;
+    }
+    p.thanks_txt {
+        color: #00639b;
+        font-size: 19px;
+        text-align: center;
+        font-weight: bold;
+        padding: 1px 0px;
+    }
+    .success_icon ion-icon {
+        font-size: 50px;
+        color: #00a3ff;
+    }
+    .r_text.success_rev .girl_img {
+        height: 80px;
+        width: 80px;
+        width: 80px !important;
+    }
+    /* step form responsive end */
+    /* header section end */
+    /* sponsure section start */
+
+    .sponsurtxt_box p {
+        font-size: 13px;
+    }
+    .sponsurelogobox img {
+        width: 45px;
+    }
+    .sponsurtxt_box p {
+        font-size: 20px;
+
+        text-align: center;
+
+        padding-bottom: 19px;
+    }
+    .row.sponsure_row {
+        display: block;
+        padding: 1px 40px;
+    }
+
+    .col-md-5.col-sm-4.col-12.second_col {
+        width: 100%;
+        padding-right: 0;
+        padding-bottom: 19px;
+    }
+
+    .col-md-5.col-sm-4.col-12.third_col {
+        width: 100%;
+        padding-left: 0;
+    }
+    .col-md-2.col-sm-4.col-12.txtcolsponsure {
+        width: 100%;
+    }
+    /* sponsure section end */
+    /* council section start */
+
+    .council_box p {
+        font-size: 13px;
+        padding: 1px 52px;
+    }
+    .council_box marquee {
+        font-size: 18px;
+    }
+    section.council_sec {
+        padding: 24px 0px;
+    }
+
+    /* council section end */
+    /* three step section start */
+    .heading h2 {
+        font-size: 20px;
+    }
+    .heading p {
+        font-size: 15px;
+    }
+    .firststep img {
+        width: 70px;
+    }
+    .firststep h3 {
+        font-size: 19px;
+        padding: 13px 0px;
+        margin: 0;
+    }
+    p.description {
+        font-size: 15px;
+        padding: 1px 30px;
+    }
+    .rattig_img.ratting_stepbtn img {
+        margin-top: 0;
+    }
+    .find_btn button {
+        font-size: 16px;
+        padding: 14px 35px;
+        width: 100%;
+    }
+
+    .row.threesteprow {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-4.fst_step {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-4.snd_stp {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-4.third_stp {
+        width: 100%;
+    }
+    .firststep {
+        padding-bottom: 20px;
+    }
+
+    .firststep.second_step {
+        padding-bottom: 20px;
+    }
+
+    /* three step section end */
+    /* housing disrepairing section start */
+    .first_img img {
+        width: 88px;
+        border-radius: 5px;
+    }
+    .first_img {
+        width: 100%;
+    }
+    .first_img h3 {
+        margin: 0;
+        font-family: "Inter";
+        font-size: 15px;
+        font-weight: bold;
+        color: #00639b;
+        padding-left: 26px;
+    }
+    .txt_contentbox h2 {
+        font-size: 24px;
+        padding-right: 149px;
+        padding-top: 50px;
+    }
+    p.sub_description {
+        font-size: 14px;
+        line-height: 20px;
+        padding-right: 0px;
+    }
+    p.detailsp {
+        font-size: 13px;
+    }
+    img.girl_img.boy_img {
+        width: 85px;
+        height: 85px;
+    }
+    .r_text img {
+        width: 90px;
+        margin-bottom: 6px;
+    }
+    .r_text {
+        padding-left: 21px;
+        padding-right: 0px;
+    }
+    .r_text.dis_repair p {
+        color: white;
+        font-size: 12px;
+    }
+    .right_content {
+        padding-left: 20px;
+    }
+    .row.repair_row {
+        display: block;
+    }
+
+    .left_content {
+        display: block;
+        padding-top: 15px;
+    }
+
+    .col-xs-12.col-sm-6.repair_col {
+        width: 100%;
+    }
+    .four_img {
+        padding-bottom: 27px;
+    }
+    .g_review.disrepair_sec {
+        display: none;
+    }
+    .g_review.responsiverevdiv.imgsectiondiv p {
+        color: white;
+        font-size: 15px;
+    }
+
+    .g_review.responsiverevdiv.imgsectiondiv .r_text {
+        padding: 0 !important;
+        padding-left: 0px;
+        margin: 0;
+    }
+    .responsivetxtrepair {
+        display: block;
+    }
+    .txt-contentrep {
+        display: none;
+    }
+    .responsivetxtrepair {
+        display: block;
+        text-align: center;
+    }
+    .responsivetxtrepair h2 {
+        font-family: "Inter";
+        font-size: 29px;
+        font-weight: 600;
+        font-family: "Inter";
+        color: white;
+        padding-right: 0px;
+        padding-bottom: 13px;
+    }
+    /* housing disrepairing section end */
+    /* landlord section start */
+    .text_area h2 {
+        font-size: 27px;
+    }
+    p.txt_description {
+        font-size: 21px;
+        color: #00639b;
+    }
+    p.subtext_descrip {
+        font-size: 15px;
+    }
+    h2.tittleh {
+        font-size: 27px;
+        padding-bottom: 20px;
+    }
+
+    .landlord_area {
+        padding: 28px 38px;
+        margin-top: 25px;
+    }
+    .first_list span {
+        font-size: 17px;
+    }
+    .first_list span i {
+        padding-right: 10px;
+        font-size: 18px;
+    }
+    .row.landlord_row {
+        align-items: center;
+        display: block;
+    }
+    .col-xs-12.col-sm-6.landcol {
+        width: 100%;
+    }
+
+    .ratting_btn.txtarea_ratting.landlordnonediv {
+        display: none;
+    }
+    .list_content {
+        display: block;
+    }
+    .landlordresponsivediv {
+        display: block;
+        text-align: center;
+    }
+    div#ratingdiv {
+        text-align: center;
+        padding-top: 25px;
+    }
+
+    /* landlord section end */
+    /* claim section start */
+    .heading.claim_heading h2 {
+        font-size: 24px;
+    }
+    .heading.claim_heading p {
+        padding: 6px 8px;
+        font-size: 15px;
+    }
+    .firststep.claim_div img {
+        width: 104px;
+    }
+    .col-xs-12.col-sm-4.claim_col {
+        width: 100%;
+    }
+    p.claim_btntxt {
+        font-size: 14px;
+    }
+    /* claim section end */
+    /* testimonial section start */
+    .tittle h3 {
+        font-size: 15px;
+    }
+    .card {
+        padding: 0px 18px;
+        width: 100%!important;
+        padding-right: 0px;
+        margin: 0px 0px;
+    }
+    .profile_img img {
+        top: -57px;
+
+        right: 27px;
+
+        width: 70px;
+    }
+    .name_loc p {
+        font-size: 13px;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 14px;
+        position: relative;
+        z-index: 1;
+        color: white;
+    }
+    .swiper-button-next::before,
+    .swiper-button-prev::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 30px;
+        background-color: #00a3ff;
+        border-radius: 50%;
+        z-index: -1;
+    }
+    .slider-container {
+        margin: 0px;
+        padding: 60px 51px;
+        padding-top: 0px;
+        padding-bottom: 75px;
+        width: 100%;
+        margin: auto;
+    }
+    .text_content h3 {
+        font-size: 17px;
+    }
+    .text_content h2 {
+        font-size: 26px;
+        padding-bottom: 0px !important;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 24px;
+        padding-bottom: 8px;
+    }
+    .text_content.textpoint_box {
+        padding-bottom: 20px;
+    }
+    .card.swiper-slide {
+        margin-right: 25px !important;
+    }
+    .review-img img {
+        width: 80px;
+        margin-top: 15px;
+    }
+    p.loc_p {
+        padding-left: 14px;
+    }
+    /* testimonial section end */
+    /* accordion section start */
+
+    .faqleftbox h2 {
+        font-size: 33px;
+        text-align: center;
+    }
+    p.subtext {
+        font-size: 18px;
+        text-align: center;
+    }
+    .accordion_head {
+        font-size: 17px;
+    }
+    .plusminus {
+        width: 35px;
+        height: 31px;
+        font-size: 18px;
+        line-height: 29px;
+        margin-right: 15px;
+    }
+    .accordion_body p {
+        font-size: 14px;
+        padding-right: 0px;
+    }
+    .row.accordion_row {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-6.faq_col {
+        width: 100%;
+    }
+    .accordion_container {
+        padding: 28px;
+
+        padding-bottom: 0px;
+    }
+
+    /* accordion section end */
+    /* image section start */
+    .firstrowimage img {
+        width: 110px;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 17px;
+        padding-bottom: 8px;
+        line-height: 29px;
+    }
+    h2.img_h2 {
+        font-size: 24px;
+        text-align: left;
+        line-height: 30px;
+    }
+
+    h3.img_h {
+        padding: 0;
+        text-align: left;
+        line-height: 30px;
+    }
+    .no1P.textp p {
+        padding-left: 3px;
+        font-size: 15px;
+    }
+    .textpointbox {
+        padding: 24px 15px;
+        padding-bottom: 0;
+    }
+    .row.textdivrow {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-6.imgsec_col {
+        width: 100%;
+    }
+
+    .imgsec_box {
+        display: block;
+    }
+
+    .firstrowimage {
+        display: flex;
+        justify-content: space-around;
+    }
+    .firstrowimage.two_img {
+        width: 67%;
+        margin: auto;
+    }
+    .r_text {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    /* image section end */
+    /* footer section start */
+    .footerbox p {
+        font-size: 13px;
+
+        padding: 0px 0px;
+
+        padding-top: 30px;
+    }
+    .footerbox img {
+        width: 169px;
+    }
+
+    /* footer section end */
+}
+/*375-424*/
+@media only screen and (min-width: 375px) and (max-width: 424px) {
+    /* header section start */
+    .text_content h2 {
+        font-size: 23px;
+        text-align: center;
+        padding: 20px 0px;
+        padding-bottom: 0px;
+        line-height: 33px;
+    }
+    .text_content h3 {
+        font-size: 16px;
+        text-align: center;
+        padding: 10px 2px;
+        line-height: 27px;
+    }
+    .no1P p {
+        font-size: 13px;
+    }
+    p.header_txt {
+        font-size: 15px;
+        display: none;
+    }
+    .r_text p {
+        font-size: 13px;
+    }
+    img.girl_img {
+        width: 100px;
+        height: 85px;
+        width: 85px !important;
+    }
+    .col-xs-12.col-sm-5.right_col {
+        margin-right: 0px;
+        padding-right: 0;
+    }
+    .wrapper .header ul li p {
+        width: 33px;
+        height: 33px;
+
+        line-height: 31px;
+    }
+    .formheading h3 {
+        font-size: 17px;
+        line-height: 24px;
+    }
+    .wrapper .header {
+        margin-bottom: 0;
+    }
+    p.btnp.form_btnp {
+        font-size: 12px;
+    }
+    button.btn_next.firstnext_btn {
+        font-size: 19px !important;
+    }
+    label {
+        font-size: 13px;
+        padding-left: 7px;
+    }
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+    .wrapper .form_wrap .input_wrap {
+        padding: 14px 13px;
+
+        padding-right: 0;
+    }
+    .logo img {
+        width: 170px;
+        margin-bottom: 10px;
+    }
+    .rattig_img img {
+        width: 75px;
+        margin-top: -2px;
+    }
+    .rattig_img p {
+        font-size: 11px;
+    }
+    .wrapper {
+        padding-bottom: 30px;
+        padding: 30px 18px;
+    }
+    img.heading-review {
+        margin-top: 6px;
+    }
+    .row.header_row {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-7.leftcol {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-5.right_col {
+        width: 100%;
+        padding-top: 29px;
+        padding-right: 10px;
+    }
+
+    .img_ratting {
+        justify-content: center;
+    }
+    p.formPdescrib {
+        font-size: 12px;
+    }
+    .ratting {
+        display: none;
+    }
+
+    .three_point {
+        display: none;
+    }
+
+    .g_review {
+        display: none;
+    }
+    .responsiverevdiv {
+        display: block;
+    }
+    .left_wrapper {
+        text-align: center;
+    }
+
+    .rattig_img.ratting_stepbtn.responsiverevdiv span {
+        font-size: 12px;
+        padding-left: 8px;
+    }
+
+    .rattig_img.ratting_stepbtn.responsiverevdiv img {
+        width: 67px;
+    }
+    .responsiverevdiv {
+        display: block;
+        padding-top: 10px;
+        padding-bottom: 0;
+    }
+    p.header_txt.responsiverevdiv {
+        display: block !important;
+        padding-bottom: 13px;
+        font-size: 15px;
+    }
+    .responsiveitems {
+        padding: 10px 13px;
+    }
+    .no1P {
+        padding-bottom: 14px;
+    }
+    p.loc_p {
+        padding: 0;
+    }
+    .r_text {
+        padding: 0;
+    }
+    .name_loc {
+        align-items: center;
+    }
+
+    .nameinfo {
+        padding-left: 18px;
+    }
+    .g_review.success_review {
+        display: block;
+    }
+     /* step form responsive */
+     .switch-field label{
+        padding: 10px 58px;
+    }
+    .switch-field.monthdiv label {
+        font-size: 14px;
+        padding: 10px 18px;
+    }
+    h3.monthh{
+        font-size: 13px;
+        text-align: center;
+    }
+    h2.third_tittle{
+        font-size: 18px;
+
+    }
+    p.thirddes_p{
+        font-size: 13px;
+    }
+    .last_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 140px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .first_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 140px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .email_div input{
+        font-size: 13px;
+    }
+    p.thanks_txt {
+        color: #00639b;
+        font-size: 19px;
+        text-align: center;
+        font-weight: bold;
+        padding: 1px 0px;
+    }
+    .success_icon ion-icon {
+        font-size: 50px;
+        color: #00a3ff;
+    }
+    .r_text.success_rev .girl_img {
+        height: 80px;
+        width: 80px;
+    }
+    /* step form responsive end */
+    /* header section end */
+    /* sponsure section start */
+
+    .sponsurtxt_box p {
+        font-size: 13px;
+    }
+    .sponsurelogobox img {
+        width: 45px;
+    }
+    .sponsurtxt_box p {
+        font-size: 20px;
+
+        text-align: center;
+
+        padding-bottom: 19px;
+    }
+    .row.sponsure_row {
+        display: block;
+        padding: 1px 30px;
+    }
+
+    .col-md-5.col-sm-4.col-12.second_col {
+        width: 100%;
+        padding-right: 0;
+        padding-bottom: 19px;
+    }
+
+    .col-md-5.col-sm-4.col-12.third_col {
+        width: 100%;
+        padding-left: 0;
+    }
+    .col-md-2.col-sm-4.col-12.txtcolsponsure {
+        width: 100%;
+    }
+    /* sponsure section end */
+    /* council section start */
+
+    .council_box p {
+        font-size: 15px;
+    }
+    .council_box marquee {
+        font-size: 18px;
+    }
+    section.council_sec {
+        padding: 24px 0px;
+    }
+
+    /* council section end */
+    /* three step section start */
+    .heading h2 {
+        font-size: 19px;
+        padding: 7px 0px;
+        line-height: 25px;
+    }
+    .heading p {
+        font-size: 19px;
+    }
+    .firststep img {
+        width: 70px;
+    }
+    .firststep h3 {
+        font-size: 19px;
+        padding: 13px 0px;
+        margin: 0;
+    }
+    p.description {
+        font-size: 15px;
+        padding: 1px 30px;
+    }
+    .rattig_img.ratting_stepbtn img {
+        margin-top: 0;
+        width: 61px;
+    }
+    .find_btn button {
+        font-size: 16px;
+        padding: 14px 35px;
+        width: 100%;
+    }
+
+    .row.threesteprow {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-4.fst_step {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-4.snd_stp {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-4.third_stp {
+        width: 100%;
+    }
+    .firststep {
+        padding-bottom: 20px;
+    }
+
+    .firststep.second_step {
+        padding-bottom: 20px;
+    }
+
+    /* three step section end */
+    /* housing disrepairing section start */
+    .first_img img {
+        width: 88px;
+        border-radius: 5px;
+    }
+    .first_img {
+        width: 100%;
+    }
+    .first_img h3 {
+        margin: 0;
+        font-family: "Inter";
+        font-size: 15px;
+        font-weight: bold;
+        color: #00639b;
+        padding-left: 26px;
+    }
+    .txt_contentbox h2 {
+        font-size: 24px;
+        padding-right: 149px;
+        padding-top: 50px;
+    }
+    p.sub_description {
+        font-size: 14px;
+        line-height: 20px;
+        padding-right: 0px;
+    }
+    p.detailsp {
+        font-size: 13px;
+    }
+    img.girl_img.boy_img {
+        width: 85px;
+        height: 85px;
+    }
+    .r_text img {
+        width: 90px;
+        margin-bottom: 6px;
+    }
+    .r_text {
+        padding-left: 21px;
+        padding-right: 0px;
+    }
+    .r_text.dis_repair p {
+        color: white;
+        font-size: 12px;
+    }
+    .right_content {
+        padding-left: 20px;
+    }
+    .row.repair_row {
+        display: block;
+    }
+
+    .left_content {
+        display: block;
+        padding-top: 15px;
+    }
+
+    .col-xs-12.col-sm-6.repair_col {
+        width: 100%;
+    }
+    .four_img {
+        padding-bottom: 27px;
+    }
+    .g_review.disrepair_sec {
+        display: none;
+    }
+    .g_review.responsiverevdiv.imgsectiondiv p {
+        color: white;
+        font-size: 13px;
+        padding-left: 0;
+    }
+
+    .g_review.responsiverevdiv.imgsectiondiv .r_text {
+        padding: 0 !important;
+        padding-left: 0px;
+        margin: 0;
+    }
+    .responsivetxtrepair {
+        display: block;
+    }
+    .txt-contentrep {
+        display: none;
+    }
+    .responsivetxtrepair {
+        display: block;
+        text-align: center;
+    }
+    .responsivetxtrepair h2 {
+        font-family: "Inter";
+        font-size: 29px;
+        font-weight: 600;
+        font-family: "Inter";
+        color: white;
+        padding-right: 0px;
+        padding-bottom: 13px;
+    }
+    .text_area {
+        padding: 10px;
+    }
+    /* housing disrepairing section end */
+    /* landlord section start */
+    .text_area h2 {
+        font-size: 26px;
+    }
+    p.txt_description {
+        font-size: 18px;
+        color: #00639b;
+    }
+    p.subtext_descrip {
+        font-size: 15px;
+    }
+    h2.tittleh {
+        font-size: 27px;
+        padding-bottom: 20px;
+    }
+
+    .landlord_area {
+        padding: 28px 38px;
+        margin-top: 25px;
+    }
+    .first_list span {
+        font-size: 17px;
+    }
+    .first_list span i {
+        padding-right: 10px;
+        font-size: 18px;
+    }
+    .row.landlord_row {
+        align-items: center;
+        display: block;
+    }
+    .col-xs-12.col-sm-6.landcol {
+        width: 100%;
+    }
+
+    .ratting_btn.txtarea_ratting.landlordnonediv {
+        display: none;
+    }
+    .list_content {
+        display: block;
+    }
+    .landlordresponsivediv {
+        display: block;
+        text-align: center;
+    }
+    div#ratingdiv {
+        text-align: center;
+        padding-top: 25px;
+    }
+
+    /* landlord section end */
+    /* claim section start */
+    .heading.claim_heading h2 {
+        font-size: 23px;
+    }
+    .heading.claim_heading p {
+        padding: 6px 8px;
+        font-size: 15px;
+    }
+    .firststep.claim_div img {
+        width: 104px;
+    }
+    .col-xs-12.col-sm-4.claim_col {
+        width: 100%;
+    }
+    p.claim_btntxt {
+        font-size: 14px;
+    }
+    /* claim section end */
+    /* testimonial section start */
+    .tittle h3 {
+        font-size: 14px;
+    }
+    .card {
+        padding: 0px 16px;
+        padding-right: 0px;
+        margin: 0px 0px;
+        width: 100% !important;
+    }
+    .profile_img img {
+        top: -57px;
+
+        right: 27px;
+
+        width: 70px;
+    }
+    .name_loc p {
+        font-size: 12px;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 14px;
+        position: relative;
+        z-index: 1;
+        color: white;
+    }
+    .swiper-button-next::before,
+    .swiper-button-prev::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 26px;
+        height: 26px;
+        background-color: #00a3ff;
+        border-radius: 50%;
+        z-index: -1;
+    }
+    .slider-container {
+        margin: 0px;
+        padding: 60px 41px;
+        padding-top: 0px;
+        padding-bottom: 75px;
+        width: 100%;
+        margin: auto;
+        margin: 0px;
+    }
+    .text_content h3 {
+        font-size: 16px;
+    }
+    .text_content h2 {
+        font-size: 23px;
+        padding-bottom: 0px !important;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 24px;
+        padding-bottom: 8px;
+    }
+    .text_content.textpoint_box {
+        padding-bottom: 20px;
+    }
+    .card.swiper-slide {
+        margin-right: 25px !important;
+    }
+    .review-img img {
+        width: 80px;
+        margin-top: 15px;
+    }
+    p.loc_p {
+        padding-left: 14px;
+        padding-left: 15px;
+    }
+    /* testimonial section end */
+    /* accordion section start */
+
+    .faqleftbox h2 {
+        font-size: 33px;
+        text-align: center;
+    }
+    p.subtext {
+        font-size: 18px;
+        text-align: center;
+    }
+    .accordion_head {
+        font-size: 17px;
+    }
+    .plusminus {
+        width: 35px;
+        height: 27px;
+        font-size: 18px;
+        line-height: 26px;
+        margin-right: 15px;
+    }
+    .accordion_body p {
+        font-size: 14px;
+        padding-right: 0px;
+    }
+    .row.accordion_row {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-6.faq_col {
+        width: 100%;
+    }
+    .accordion_container {
+        padding: 28px;
+
+        padding-bottom: 0px;
+    }
+
+    /* accordion section end */
+    /* image section start */
+    .firstrowimage img {
+        width: 96px;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 15px;
+        padding-bottom: 8px;
+        line-height: 24px;
+    }
+    h2.img_h2 {
+        font-size: 24px;
+        text-align: left;
+        line-height: 30px;
+    }
+
+    h3.img_h {
+        padding: 0;
+        text-align: left;
+        line-height: 30px;
+    }
+    .no1P.textp p {
+        padding-left: 3px;
+        font-size: 13px;
+    }
+    .textpointbox {
+        padding: 24px 15px;
+        padding-bottom: 0;
+    }
+    .row.textdivrow {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-6.imgsec_col {
+        width: 100%;
+    }
+
+    .imgsec_box {
+        display: block;
+    }
+
+    .firstrowimage {
+        display: flex;
+        justify-content: space-around;
+    }
+    .firstrowimage.two_img {
+        width: 67%;
+        margin: auto;
+    }
+    .r_text {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .rattig_img.ratting_stepbtn span {
+        font-size: 12px;
+    }
+    /* image section end */
+    /* footer section start */
+    .footerbox p {
+        font-size: 13px;
+
+        padding: 0px 13px;
+
+        padding-top: 30px;
+    }
+    .footerbox img {
+        width: 167px;
+    }
+
+    /* footer section end */
+}
+/*320-374*/
+@media only screen and (min-width: 320px) and (max-width: 374px) {
+    /* header section start */
+    .text_content h2 {
+        font-size: 23px;
+        text-align: center;
+        padding: 20px 0px;
+        padding-bottom: 0px;
+        line-height: 33px;
+    }
+    .text_content h3 {
+        font-size: 16px;
+        text-align: center;
+        padding: 10px 2px;
+        line-height: 27px;
+    }
+    .no1P p {
+        font-size: 13px;
+    }
+    p.header_txt {
+        font-size: 15px;
+        display: none;
+    }
+    .r_text p {
+        font-size: 13px;
+    }
+    img.girl_img {
+        width: 100px;
+        height: 75px;
+        width: 75px !important;
+    }
+    .col-xs-12.col-sm-5.right_col {
+        margin-right: 0px;
+        padding-right: 0;
+    }
+    .wrapper .header ul li p {
+        width: 33px;
+        height: 33px;
+
+        line-height: 31px;
+    }
+    .formheading h3 {
+        font-size: 17px;
+        line-height: 24px;
+    }
+    .wrapper .header {
+        margin-bottom: 0;
+    }
+    p.btnp.form_btnp {
+        font-size: 12px;
+    }
+    button.btn_next.firstnext_btn {
+        font-size: 19px !important;
+    }
+    label {
+        font-size: 13px;
+    }
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+    .wrapper .form_wrap .input_wrap {
+        padding: 14px 13px;
+
+        padding-right: 0;
+    }
+    .logo img {
+        width: 170px;
+        margin-bottom: 10px;
+    }
+    .rattig_img img {
+        width: 75px;
+        margin-top: -2px;
+    }
+    .rattig_img p {
+        font-size: 11px;
+    }
+    .wrapper {
+        padding-bottom: 30px;
+    }
+    img.heading-review {
+        margin-top: 6px;
+    }
+    .row.header_row {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-7.leftcol {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-5.right_col {
+        width: 100%;
+        padding-top: 29px;
+        padding-right: 10px;
+    }
+
+    .img_ratting {
+        justify-content: center;
+    }
+    p.formPdescrib {
+        font-size: 12px;
+    }
+    .ratting {
+        display: none;
+    }
+
+    .three_point {
+        display: none;
+    }
+
+    .g_review {
+        display: none;
+    }
+    .responsiverevdiv {
+        display: block;
+    }
+    .left_wrapper {
+        text-align: center;
+    }
+
+    .rattig_img.ratting_stepbtn.responsiverevdiv span {
+        font-size: 12px;
+        padding-left: 8px;
+    }
+
+    .rattig_img.ratting_stepbtn.responsiverevdiv img {
+        width: 67px;
+    }
+    .responsiverevdiv {
+        display: block;
+        padding-top: 10px;
+        padding-bottom: 0;
+    }
+    p.header_txt.responsiverevdiv {
+        display: block !important;
+        padding-bottom: 13px;
+        font-size: 15px;
+    }
+    .responsiveitems {
+        padding: 10px 13px;
+    }
+    .no1P {
+        padding-bottom: 14px;
+    }
+    p.loc_p {
+        padding: 0;
+    }
+    .r_text {
+        padding: 0;
+    }
+    .name_loc {
+        align-items: center;
+    }
+
+    .nameinfo {
+        padding-left: 18px;
+    }
+    .g_review.success_review {
+        display: block;
+    }
+     /* step form responsive */
+     .switch-field label{
+        padding: 10px 39px;
+    }
+    .switch-field.monthdiv label {
+        font-size: 12px;
+        padding: 10px 10px;
+    }
+    h3.monthh{
+        font-size: 14px;
+        text-align: center;
+    }
+    h2.third_tittle{
+        font-size: 18px;
+
+    }
+    p.thirddes_p{
+        font-size: 13px;
+    }
+    .last_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 98px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .first_name input {
+        font-size: 13px;
+        padding: 8px 5px;
+        padding-left: 13px;
+        padding-right: 0px;
+        width: 98px;
+        border: 1px solid #aac3cf;
+        border-radius: 4px;
+    }
+    .email_div input{
+        font-size: 13px;
+    }
+    p.thanks_txt {
+        color: #00639b;
+        font-size: 19px;
+        text-align: center;
+        font-weight: bold;
+        padding: 1px 0px;
+    }
+    .success_icon ion-icon {
+        font-size: 50px;
+        color: #00a3ff;
+    }
+    .r_text.success_rev .girl_img {
+        height: 70px;
+        width: 80px;
+        width: 70px !important;
+    }
+    /* step form responsive end */
+    /* header section end */
+    /* sponsure section start */
+
+    .sponsurtxt_box p {
+        font-size: 13px;
+    }
+    .sponsurelogobox img {
+        width: 45px;
+    }
+    .sponsurtxt_box p {
+        font-size: 20px;
+
+        text-align: center;
+
+        padding-bottom: 19px;
+    }
+    .row.sponsure_row {
+        display: block;
+        padding: 1px 30px;
+    }
+
+    .col-md-5.col-sm-4.col-12.second_col {
+        width: 100%;
+        padding-right: 0;
+        padding-bottom: 19px;
+    }
+
+    .col-md-5.col-sm-4.col-12.third_col {
+        width: 100%;
+        padding-left: 0;
+    }
+    .col-md-2.col-sm-4.col-12.txtcolsponsure {
+        width: 100%;
+    }
+    /* sponsure section end */
+    /* council section start */
+
+    .council_box p {
+        font-size: 15px;
+    }
+    .council_box marquee {
+        font-size: 18px;
+    }
+    section.council_sec {
+        padding: 24px 0px;
+    }
+
+    /* council section end */
+    /* three step section start */
+    .heading h2 {
+        font-size: 26px;
+    }
+    .heading p {
+        font-size: 16px;
+    }
+    .firststep img {
+        width: 70px;
+    }
+    .firststep h3 {
+        font-size: 19px;
+        padding: 13px 0px;
+        margin: 0;
+    }
+    p.description {
+        font-size: 15px;
+        padding: 1px 0px;
+    }
+    .rattig_img.ratting_stepbtn img {
+        margin-top: 0;
+    }
+    .find_btn button {
+        font-size: 16px;
+        padding: 14px 35px;
+        width: 100%;
+    }
+
+    .row.threesteprow {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-4.fst_step {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-4.snd_stp {
+        width: 100%;
+    }
+
+    .col-xs-12.col-sm-4.third_stp {
+        width: 100%;
+    }
+    .firststep {
+        padding-bottom: 20px;
+    }
+
+    .firststep.second_step {
+        padding-bottom: 20px;
+    }
+
+    /* three step section end */
+    /* housing disrepairing section start */
+    .first_img img {
+        width: 88px;
+        border-radius: 5px;
+    }
+    .first_img {
+        width: 100%;
+    }
+    .first_img h3 {
+        margin: 0;
+        font-family: "Inter";
+        font-size: 15px;
+        font-weight: bold;
+        color: #00639b;
+        padding-left: 26px;
+    }
+    .txt_contentbox h2 {
+        font-size: 24px;
+        padding-right: 149px;
+        padding-top: 50px;
+    }
+    p.sub_description {
+        font-size: 14px;
+        line-height: 20px;
+        padding-right: 0;
+    }
+    p.detailsp {
+        font-size: 13px;
+    }
+    img.girl_img.boy_img {
+        width: 85px;
+        height: 85px;
+    }
+    .r_text img {
+        width: 90px;
+        margin-bottom: 6px;
+    }
+    .r_text {
+        padding-left: 21px;
+        padding-right: 0px;
+    }
+    .r_text.dis_repair p {
+        color: white;
+        font-size: 12px;
+    }
+    .right_content {
+        padding-left: 20px;
+    }
+    .row.repair_row {
+        display: block;
+    }
+
+    .left_content {
+        display: block;
+        padding-top: 15px;
+    }
+
+    .col-xs-12.col-sm-6.repair_col {
+        width: 100%;
+    }
+    .four_img {
+        padding-bottom: 27px;
+    }
+    .g_review.disrepair_sec {
+        display: none;
+    }
+    .g_review.responsiverevdiv.imgsectiondiv p {
+        color: white;
+        font-size: 15px;
+    }
+
+    .g_review.responsiverevdiv.imgsectiondiv .r_text {
+        padding: 0 !important;
+        padding-left: 0px;
+        margin: 0;
+    }
+    .responsivetxtrepair {
+        display: block;
+    }
+    .txt-contentrep {
+        display: none;
+    }
+    .responsivetxtrepair {
+        display: block;
+        text-align: center;
+    }
+    .responsivetxtrepair h2 {
+        font-family: "Inter";
+        font-size: 29px;
+        font-weight: 600;
+        font-family: "Inter";
+        color: white;
+        padding-right: 0px;
+        padding-bottom: 13px;
+    }
+    /* housing disrepairing section end */
+    /* landlord section start */
+    .text_area h2 {
+        font-size: 27px;
+    }
+    p.txt_description {
+        font-size: 21px;
+        color: #00639b;
+    }
+    p.subtext_descrip {
+        font-size: 15px;
+    }
+    h2.tittleh {
+        font-size: 21px;
+
+        padding-bottom: 20px;
+    }
+
+    .landlord_area {
+        padding: 28px 29px;
+        margin-top: 25px;
+    }
+    .first_list span {
+        font-size: 17px;
+    }
+    .first_list span i {
+        padding-right: 10px;
+        font-size: 18px;
+    }
+    .row.landlord_row {
+        align-items: center;
+        display: block;
+    }
+    .col-xs-12.col-sm-6.landcol {
+        width: 100%;
+    }
+
+    .ratting_btn.txtarea_ratting.landlordnonediv {
+        display: none;
+    }
+    .list_content {
+        display: block;
+    }
+    .landlordresponsivediv {
+        display: block;
+        text-align: center;
+    }
+    div#ratingdiv {
+        text-align: center;
+        padding-top: 25px;
+    }
+
+    /* landlord section end */
+    /* claim section start */
+    .heading.claim_heading h2 {
+        font-size: 20px;
+    }
+    .heading.claim_heading p {
+        padding: 6px 8px;
+        font-size: 15px;
+    }
+    .firststep.claim_div img {
+        width: 104px;
+    }
+    .col-xs-12.col-sm-4.claim_col {
+        width: 100%;
+    }
+    p.claim_btntxt {
+        font-size: 14px;
+    }
+    /* claim section end */
+    /* testimonial section start */
+    .tittle h3 {
+        font-size: 14px;
+    }
+    .card {
+        padding: 0px 16px;
+        padding-right: 0px;
+        margin: 0px 0px;
+        width: 100% !important;
+    }
+    .profile_img img {
+        top: -57px;
+
+        right: 27px;
+
+        width: 70px;
+    }
+    .name_loc p {
+        font-size: 12px;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 14px;
+        position: relative;
+        z-index: 1;
+        color: white;
+    }
+    .swiper-button-next::before,
+    .swiper-button-prev::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 26px;
+        height: 26px;
+        background-color: #00a3ff;
+        border-radius: 50%;
+        z-index: -1;
+    }
+    .slider-container {
+        margin: 0px;
+        padding: 60px 41px;
+        padding-top: 0px;
+        padding-bottom: 75px;
+        width: 100%;
+        margin: auto;
+        margin: 0px;
+    }
+    .text_content h3 {
+        font-size: 19px;
+    }
+    .text_content h2 {
+        font-size: 20px;
+        padding-bottom: 0px !important;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 24px;
+        padding-bottom: 8px;
+    }
+    .text_content.textpoint_box {
+        padding-bottom: 20px;
+    }
+    .card.swiper-slide {
+        margin-right: 25px !important;
+    }
+    .review-img img {
+        width: 80px;
+        margin-top: 15px;
+    }
+    p.loc_p {
+        padding-left: 14px;
+    }
+    /* testimonial section end */
+    /* accordion section start */
+
+    .faqleftbox h2 {
+        font-size: 28px;
+        text-align: center;
+    }
+    p.subtext {
+        font-size: 18px;
+        text-align: center;
+    }
+    .accordion_head {
+        font-size: 17px;
+    }
+    .plusminus {
+        width: 38px;
+        height: 26px;
+        font-size: 18px;
+        line-height: 26px;
+        margin-right: 15px;
+    }
+    .accordion_body p {
+        font-size: 14px;
+        padding-right: 0px;
+    }
+    .row.accordion_row {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-6.faq_col {
+        width: 100%;
+    }
+    .accordion_container {
+        padding: 13px;
+        padding-bottom: 0px;
+    }
+
+    /* accordion section end */
+    /* image section start */
+    .firstrowimage img {
+        width: 84px;
+    }
+    .text_content.textpoint_box h3 {
+        font-size: 15px;
+        padding-bottom: 8px;
+        line-height: 24px;
+    }
+    h2.img_h2 {
+        font-size: 22px;
+        text-align: left;
+        line-height: 30px;
+    }
+
+    h3.img_h {
+        padding: 0;
+        text-align: left;
+        line-height: 30px;
+    }
+    .no1P.textp p {
+        padding-left: 3px;
+        font-size: 12px;
+    }
+    .textpointbox {
+        padding: 24px 0px;
+
+        padding-bottom: 0;
+    }
+    .row.textdivrow {
+        display: block;
+    }
+
+    .col-xs-12.col-sm-6.imgsec_col {
+        width: 100%;
+    }
+
+    .imgsec_box {
+        display: block;
+        padding: 0;
+    }
+
+    .firstrowimage {
+        display: flex;
+        justify-content: space-around;
+    }
+    .firstrowimage.two_img {
+        width: 67%;
+        margin: auto;
+    }
+    .r_text {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .rattig_img.ratting_stepbtn span {
+        font-size: 11px;
+    }
+    .rattig_img.ratting_stepbtn img {
+        width: 66px;
+    }
+    /* image section end */
+    /* footer section start */
+    .footerbox p {
+        font-size: 13px;
+
+        padding: 0px 11px;
+
+        padding-top: 30px;
+    }
+    .footerbox img {
+        width: 158px;
+    }
+
+    /* footer section end */
+}

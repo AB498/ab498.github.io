@@ -11,6 +11,9 @@
     "vector": "cpp",
     "new": "cpp",
     "limits": "cpp",
-    "*.tcc": "cpp"
+    "*.tcc": "cpp",
+    "array": "cpp",
+    "string_view": "cpp",
+    "initializer_list": "cpp"
   }
 }
