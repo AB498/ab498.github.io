@@ -1,87 +1,63 @@
 #include <iostream>
 using namespace std;
+struct TreeNode
+{
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
 
-class node
+class Solution
 {
 public:
-    int data;
-    node *next;
-
-    node(int val)
+    bool isSubtree(TreeNode *root, TreeNode *subRoot)
     {
-        data = val;
-        next = NULL;
+        if (root == nullptr && subRoot == nullptr)
+            return true;
+        if (root == nullptr || subRoot == nullptr)
+            return false;
+        // cout << root->val << ":" << subRoot->val << endl;
+        bool res = dfs(root, subRoot);
+        // cout << "res " << res << endl;
+        if (!res)
+        {
+            return isSubtree(root->left, subRoot) || isSubtree(root->right, subRoot);
+        }
+        else
+        {
+            return true;
+        }
+    }
+    bool dfs(TreeNode *root1, TreeNode *root2)
+    {
+
+        if (root1 == nullptr && root2 == nullptr)
+            return true;
+        if (root1 == nullptr || root2 == nullptr)
+            return false;
+        // cout << root1->val << ":" << root2->val << endl;
+        if (root1->val == root2->val)
+            if (dfs(root1->left, root2->left) && dfs(root1->right, root2->right))
+                return true;
+        return false;
     }
 };
-void insfirst(node *&head, int val)
+
+int main(int argc, char const *argv[])
 {
-    node *n = new node(val);
-    n->next = head;
-    head = n;
-}
-void insmiddle(node *head, int val, int position)
-{
-    node *n = new node(val);
+    // Input: root = [3,4,5,1,2,null,null,null,null,0], subRoot = [4,1,2]
+    TreeNode *root = new TreeNode(4,
+                                  new TreeNode(5),
+                                  new TreeNode(4,
+                                               new TreeNode(1),
+                                               new TreeNode(2)));
+    TreeNode *subTree = new TreeNode(4,
+                                     new TreeNode(1),
+                                     new TreeNode(2));
 
-    if (head == NULL)
-    {
-        n->next = head;
-        head = n;
-        return;
-    }
-
-    node *temp = head;
-    node *temp_prev = NULL;
-
-    for (int count = 0; count < position; ++count)
-    {
-        temp_prev = temp;
-        temp = temp->next;
-    }
-    n->next = temp_prev->next;
-    temp_prev->next = n;
-}
-
-void inslast(node *&head, int val)
-{
-    node *n = new node(val);
-    if (head == NULL)
-    {
-        head = n;
-        return;
-    }
-
-    node *temp = head;
-
-    while (temp->next != NULL)
-    {
-        temp = temp->next;
-    }
-    temp->next = n;
-}
-
-void display(node *head)
-{
-    node *temp = head;
-    while (temp != NULL)
-    {
-        cout << temp->data << " ->";
-        temp = temp->next;
-    }
-    cout << endl;
-}
-
-int main()
-{
-    node *head = NULL;
-    insfirst(head, 1);
-    inslast(head, 2);
-    inslast(head, 3);
-    inslast(head, 4);
-    insmiddle(head, 5, 2);
-    inslast(head, 6);
-    inslast(head, 7);
-    display(head);
-
+    cout << Solution().isSubtree(root, subTree);
     return 0;
 }

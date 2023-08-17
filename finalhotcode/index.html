@@ -5,461 +5,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js">
+    </script>
+    <script type="text/javascript" src="https://golden-layout.com/files/latest/js/goldenlayout.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-base.css" />
+    <link type="text/css" rel="stylesheet"
+        href="https://golden-layout.com/files/latest/css/goldenlayout-dark-theme.css" />
+
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="../static/js/utils.js"></script>
+    <script src="../static/js/utils.js"></script>
+
+    <script src="initTerminal.js"></script>
+    <script src="initLayout.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.2.1/lib/xterm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.7.0/lib/xterm-addon-fit.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@4.19.0/css/xterm.css" />
+    <script src="monaco-editor/min/vs/loader.js"></script>
+
+
     <script src="../wasm-clang/shared.js"></script>
     <script src="../wasm-clang/shared_web.js"></script>
     <script src="../static/js/tree-sitter.js"></script>
+
+
     <link rel="stylesheet" href="../static/css/style.css">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js">
-    </script>
-    <script src="
-    https://cdn.jsdelivr.net/npm/xterm@5.2.1/lib/xterm.min.js
-    "></script>
-    <script src="
-    https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.7.0/lib/xterm-addon-fit.min.js
-    "></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@4.19.0/css/xterm.css" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <style>
-        .info-plate {
-            font-size: 0.8em;
-            line-height: 0.8em;
-            padding: 0em 0.4em 0em 0.4em;
-            position: absolute;
-            top: 70%;
-            border: 1px solid white;
-        }
-    </style>
 </head>
 
-<body class="w-screen h-screen flex flex-col">
-
-    <div class="flex px-1 space-x-2 shadow-md">
-        <div class="px-2 hover-effect">File</div>
-        <div class="px-2 hover-effect">Edit</div>
-        <div class="px-2 hover-effect">Run</div>
-        <div class="px-2 hover-effect">Tools</div>
+<body class="w-screen h-screen">
+    <div class="terminal w-full h-full"></div>
+    <div class="editor w-full h-full"></div>
+    <div id="wrapper" class="w-full h-full flex flex-col">
+        <ul id="menuContainer" class="w-full h-12 bg-blue-500"></ul>
+        <div id="layoutContainer" class="w-full grow "></div>
     </div>
-    <div class="full flex">
-        <div class="flex flex-col w-12 shrink-0 bg-red-500 items-center hidden sm:flex">
-            <div class="px-2 hover-effect">
-                <span class="material-symbols-outlined text-white text-2xl">
-                    menu
-                </span>
-            </div>
-        </div>
-        <div class="flex grow bg-zinc-800 shrink-0 border-2 border-red-500">
-            <!-- Use relative and absolute positioning to avoid child affecting parent's size -->
-            <div class="relative basis-full sm:basis-3/6 shrink-0">
-                <div class="absolute editor full">
-                </div>
-            </div>
-            <div class="flex flex-col w-0 sm:basis-3/6 shrink-0 ">
-                <div
-                    class="terminal shrink-0 grow-0 overflow-auto basis-1/2 text-xs bg-zinc-500 text-zinc-50 sm:translate-x-0 translate-x-full">
-                </div>
-                <div class="flex basis-1/2 shrink-0 grow-0 bg-green-500 sm:translate-x-0 translate-x-full">
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="monaco-editor/min/vs/loader.js"></script>
     <script>
 
-        function asyncRequire(path) {
-            return new Promise((resolve, reject) => {
-                require([path], resolve, reject);
-            });
-        }
-        function processCommand(command) {
-            if (command.trim() == 'clear') {
-                window.term.clear();
-            }
-            else if (command == 'help') {
-            }
-            else if (command == 'run') {
-            }
-            else if (command == 'compile') {
-            }
-            else if (command == 'exit') {
-            } else {
-                window.term.write('\nNot found: ' + command);
-            }
-            window.term.write('\n\x1B[1;3;31m >> \x1B[0m');
-            window.terminal_history.push(command);
-        }
-        window.current_command = '';
-        window.terminal_history = [];
 
         (async () => {
-            window.term = new Terminal({convertEol: true, fontSize: 12});
-            const fitAddon = new FitAddon.FitAddon();
-            window.term.loadAddon(fitAddon);
-            window.term.onData((data) => {
-                if (data.charCodeAt(0) == 13) {
-                    window.processCommand(window.current_command);
-                    window.current_command = '';
-                    return;
-                } else if (data.charCodeAt(0) == 127) {
-                    window.current_command = window.current_command.slice(0, -1);
-                    window.term.write('\b \b');
-                    return;
-                } else if (data.charCodeAt(0) == 27) {
-                    window.term.write(Array(window.current_command.length).join('\b \b'))
-                    window.current_command = window.terminal_history[window.terminal_history.length - 1];
-                    window.terminal_history.pop();
-                    window.term.write(window.current_command);
-                    return;
-                }
-                console.log(window.current_command)
-                window.current_command += data;
-                window.term.write(data);
-            });
-            window.term.onResize((size) => {
-                fitAddon.fit();
-            });
-            window.term.open(document.querySelector('.terminal'));
-            window.term.write('Welcome to \x1B[1;3;31mHotCode - C++\x1B[0m')
-            window.term.write('\n\x1B[1;3;31m >> \x1B[0m');
-            fitAddon.fit();
 
-            require.config({paths: {vs: 'monaco-editor/min/vs'}});
+            await window.initLayout();
+            window.injectable = await (await fetch('injectable.cpp')).text();
+            window.placeholderCode = await (await fetch('placeholderCode.cpp')).text();
+
+            function asyncRequire(path) {
+                return new Promise((resolve, reject) => {
+                    require([path], resolve, reject);
+                });
+            }
+            require.config({ paths: { vs: 'monaco-editor/min/vs' } });
             await asyncRequire('vs/editor/editor.main');
             window.editor = monaco.editor.create(document.querySelector('.editor'), {
-                            minimap: {enabled: false},
-value:
-                    `
-#include <iostream>
-#include <vector>
-#include<stdio.h>
-
-using namespace std;
-class Solution
-{
-public:
-    vector<int> runningSum(const vector<int> &nums)
-    {
-        return {1,2};
-    }
-    // int main(int argc, char const *argv[])
-    // {
-	// Solution().runningSum(const std::vector<int>{1, 2, 4, 5});
-
-    //     /* code */
-    //     3; 
-    //     return 0;
-    // }
-    	std::vector<int> runningSum2(std::vector<int> &nums)
-	{
-		return std::vector<int>{1, 2, 3, 4, 5};
-	}
-};
-class Solution2 {
-    vector<int> runningSum3(vector<int>& nums) {
-        324*64665; 324*64665; 324*64665;
-        "rdfdhf";
-        return {1,2};
-
-    }
-		/* cod
-
-
-e */
-};
-int hello(){
-    return 1;
-}
-std::vector<int> hello2(){
-    return {23,432,5,2,53,254};
-} 
-int main() {
-    Solution().runningSum({1});
-    hello2();
-    int a2 = 4 - hello();
-    cout << "Hello World!";
-        int a;
-    int b = a * a;
-    vector<int> {3,4,5};
-    new int[1] {43};
-    b*= b++; //b dsidobad
-    b;
-    return 0;
-    a = 2;  
-    b = a * a;
-    std::cout << 32 << std::endl;  
-    // std::cin >> 32;  
-
-    // printf("%s", "hello world");
-    return 0;
-}
-
-`,
+                minimap: { enabled: false },
+                value: window.placeholderCode,
                 language: 'cpp',
             });
-            // console.log(window.editor)
             window.decorations = [];
             window.decorationIds = window.editor.deltaDecorations([], []);
             window.hoverDecs = window.editor.deltaDecorations([], []);
             window.outputDecs = window.editor.deltaDecorations([], []);
-
-            //theme
             monaco.editor.setTheme('vs-dark');
-            window.addEventListener('resize', () => {
-                window.editor.layout();
+
+            await initTerminal();
+
+            window.addEventListener("resize", () => {
+                window.myLayout.updateSize(); // Resize the entire layout
             });
             await TreeSitter.init();
-            let parser = new TreeSitter();
+            window.window.parser = new TreeSitter();
             const JavaScript = await TreeSitter.Language.load('../static/wasm/tree-sitter-cpp.wasm');
-            parser.setLanguage(JavaScript);
-            runCode(window.editor, parser)
+            window.parser.setLanguage(JavaScript);
+            await window.runCode(window.editor, window.parser)
             window.editor.getModel().onDidChangeContent((event) => {
-                runCode(window.editor, parser);
+                window.runCode(window.editor, window.parser)
             });
+
         })().catch(console.error);
 
-        function findDecoration(startRow, startColumn, endRow, endColumn) {
-            for (let i = 0; i < decorations.length; i++) {
-                const decoration = decorations[i];
-                if (decoration.startRow === startRow &&
-                    decoration.startColumn === startColumn &&
-                    decoration.endRow === endRow &&
-                    decoration.endColumn === endColumn) {
-                    return decoration;
-                }
-            }
-            return null;
-        }
-        async function runCode(editor, parser) {
-            let code = editor.getValue();
-            const tree = parser.parse(code);
-            window.hoverDecs = editor.deltaDecorations(window.hoverDecs, []);
-            let list = (await renderTree(tree));
-            decorationIds = editor.deltaDecorations(decorationIds, []);
+
+        window.runCode = async () => {
+            debug("Compiling and running ...");
+            let code = window.editor.getValue();
+            const tree = window.parser.parse(code);
+            window.hoverDecs = window.editor.deltaDecorations(window.hoverDecs, []);
+            let list = (await traverseTree(tree, [['function_definition', 'primitive_type']]));
+            // decorationIds = editor.deltaDecorations(decorationIds, []);
             colorCode(editor, list);
-            replacedCode = getReplacedCode(code, list);
-            let outputString;
-            try {
-                outputString = (await api.compileLinkRun(replacedCode));
-            } catch (e) {
-                outputString = e;
-                window.term.write('\n' + outputString + '\n');
-                window.term.write('\n\x1B[1;3;31m >> \x1B[0m');
-                debug(e);
-            }
-            let lineOutputs = (extractLineOutputs(outputString)); // {}
-            window.outputDecs = editor.deltaDecorations(window.outputDecs, []);
-            addOutputDecors(lineOutputs, code);
-            // const syntaxTreeJSON = syntaxNodeToJSON(tree.rootNode);
-            // debug(syntaxTreeJSON)
+            // replacedCode = getReplacedCode(code, list);
+            // let outputString;
+            // try {
+            //     outputString = (await api.compileLinkRun(replacedCode));
+            // } catch (e) {
+            //     outputString = e;
+            //     window.term.write('\n' + outputString + '\n');
+            //     window.term.write('\n\x1B[1;3;31m >> \x1B[0m');
+            //     debug(e);
+            // }
+            // let lineOutputs = (extractLineOutputs(outputString)); // {}
+            // window.outputDecs = editor.deltaDecorations(window.outputDecs, []);
+            // addOutputDecors(lineOutputs, code);
+            const syntaxTreeJSON = syntaxNodeToJSON(tree.rootNode, { path: [] });
+            // console.log(syntaxTreeJSON)
         }
-        function addOutputDecors(lineOutputs, code) {
-            let lines = code.split('\n');
-            for (const [key, value] of Object.entries(lineOutputs)) {
-                let startRow = parseInt(key.split('_')[0]);
-                let endRow = startRow;
-                let startColumn = parseInt(key.split('_')[1]);
-                let endColumn = startColumn + 1;//lines[startRow].length; 
-                let line = [startRow, startColumn, endRow, endColumn];
-                let message = value.length > 15 ? value.slice(0, 15) + '...' : value;
-                window.outputDecs = [...window.outputDecs, window.editor.deltaDecorations([], [{
-                    range: {
-                        startLineNumber: line[0] + 1,
-                        startColumn: line[1] + 1,
-                        endLineNumber: line[2] + 1,
-                        endColumn: line[3] + 1
-                    },
-                    options: {
-                        isWholeLine: false,
-                        after: message ? {
-                            content: message,
-                            inlineClassName: 'bg-blue-700 info-plate',
-                        } : undefined,
-                    }
-                }])]
-
-            }
-        }
-        function extractLineOutputs(outputString) {
-            let matches = findRegexMatches(outputString, /__res_start__(\d+)_(\d+)__.*?__res_end__(\d+)_(\d+)__/gs);
-            let lineOutputs = {};
-            matches.forEach((match) => {
-                let prefix = match.match(/__res_start__(\d+)_(\d+)__/);
-                let lineNum = prefix[1];
-                let col = prefix[2];
-                let suffix = match.match(/__res_end__(\d+)_(\d+)__/)[1];
-                let line = match.match(/__res_start__(\d+)_(\d+)__(.*?)__res_end__(\d+)_(\d+)__/s)[3];
-                lineOutputs[lineNum + "_" + col] = line.trim();
-            });
-            return lineOutputs;
-        }
-
-        function findRegexMatches(string, regex) {
-            let matches = [];
-            let match;
-            while (match = regex.exec(string)) {
-                matches.push(match[0]);
-            }
-            return matches;
-        }
-        function syntaxNodeToJSON(node) {
+        function syntaxNodeToJSON(node, parent) {
             const jsonNode = {
                 type: node.type,
                 text: node.text,
+                path: [...parent.path, node.type],
                 children: [],
             };
 
             for (let i = 0; i < node.childCount; i++) {
                 const child = node.child(i);
-                jsonNode.children.push(syntaxNodeToJSON(child));
+                jsonNode.children.push(syntaxNodeToJSON(child, jsonNode));
             }
+            found = true;
+            ['function_definition', 'primitive_type'].forEach((element, idx) => {
+                // recusive json tree.func_name
+                if (jsonNode.path.slice(-2)[idx] == element) {
+                } else
+                    found = false;
+            });
+            if (found)
+                console.log(jsonNode.path)
 
             return jsonNode;
         }
-        function sortAscendingByCharNumber(list) {
-            list.sort(function (a, b) {
-                return a[0] == b[0] ? a[1] - b[1] : a[0] - b[0];
-            });
-        }
-        function getReplacedCode(code, list) {
-            let newCode = code;
-            let lines = code.split('\n');
-            sortAscendingByCharNumber(list)
-            for (let i = list.length - 1; i >= 0; i--) {
-                let start = list[i][0];
-                let end = list[i][2];
-                let startColumn = list[i][1];
-                let endColumn = list[i][3];
-                let replace = lines[start].substring(startColumn, endColumn)
-                // lines[start].slice(startColumn, endColumn);
-                lines[start] = lines[start].substring(0, startColumn) + `ConvToString(${replace}, ${start}, ${startColumn})` + lines[start].substring(endColumn);
-                // lines[start] = lines[start].replace(replace, `ConvToString(${replace}, ${start})`);
-            }
-            let injectable =
-                `
-                #include <sstream>
-#include <string>
-#include <vector>
-#include <map>
-#include <iostream>
-#include <memory>
-#include <stdexcept>
 
-std::string __sprecial_print(std::string str, int lineNum, int col)
-{
-    std::cout << "__res_start__"+std::to_string(lineNum)+"_"+std::to_string(col)+"__";
-    std::cout << str << std::endl;
-    std::cout << "__res_end__"+std::to_string(lineNum)+"_"+std::to_string(col)+"__";
-    return str;
-}
-
-template <typename T>
-T ConvToStringNonPrint(const T& value) {
-    std::ostringstream os;
-    os << value;
-    return value;
-}
-
-template <typename T>   
-std::vector<T> ConvToString(const std::vector<T> &vec, int lineNum, int col)
-{
-  std::ostringstream os;
-  os << "[";
-  for (size_t i = 0; i < vec.size(); ++i)
-  {
-    if (i > 0)
-      os << ", ";
-    os << (vec[i]);
-  }
-  os << "]";
-  __sprecial_print(os.str(), lineNum, col);
-  return vec;
-}
-
-template <typename K, typename V>
-std::map<K, V> ConvToString(std::map<K, V> &map, int lineNum, int col)
-{
-  std::ostringstream os;
-  os << "{";
-  for (auto it = map.begin(); it != map.end(); ++it)
-  {
-    if (it != map.begin())
-      os << ", ";
-    os << ConvToString(it->first) << ": " << ConvToString(it->second);
-  }
-  os << "}";
-  __sprecial_print(os.str(), lineNum, col);
-  return map;
-}
-
-template <typename T>
-T ConvToString(T *arr, size_t N, int lineNum, int col)
-{
-  std::ostringstream os;
-  os << "[";
-  for (size_t i = 0; i < N; ++i)
-  {
-    if (i > 0)
-      os << ", ";
-    os << ConvToString(arr[i]);
-  }
-  os << "]";
-  __sprecial_print(os.str(), lineNum, col);
-  return arr;
-}
-
-template <typename T, size_t N>
-T ConvToString(T (&arr)[N], int lineNum, int col)
-{
-  std::ostringstream os;
-  os << "[";
-  for (size_t i = 0; i < N; i++)
-  {
-    os << ConvToString(arr[i]);
-    if (i != N - 1)
-      os << ", ";
-  }
-  os << "]";
-  __sprecial_print(os.str(), lineNum, col);
-  return arr;
-}
-char* ConvToString(char *value, int lineNum, int col)
-{
-  __sprecial_print(std::string(value), lineNum, col);
-  return value;
-}
-template <typename T>
-T ConvToString(const T& value, int lineNum, int col) {
-    std::ostringstream os;
-    os << value;
-    __sprecial_print(os.str(), lineNum, col);
-    return value;
-} 
-
-	`;
-            return injectable + '\n' + lines.join('\n');
-        }
-        function addHoverMessage(line, message) {
-            window.hoverDecs = [...window.hoverDecs, window.editor.deltaDecorations([], [{
-                range: {
-                    startLineNumber: line[0] + 1,
-                    startColumn: line[1] + 1,
-                    endLineNumber: line[2] + 1,
-                    endColumn: line[3] + 1
-                },
-                options: {
-                    isWholeLine: false,
-                    hoverMessage: message ? {
-                        value: message,
-                    } : undefined,
-                    // after: message ? {
-                    //     content: message,
-                    //     inlineClassName: 'bg-blue-700 info-plate',
-                    // } : undefined
-                }
-            }])]
-        }
         function colorCode(editor, list) {
             for (let i = 0; i < list.length; i++) {
                 // debug(...[list[i][0], list[i][1], list[i][2], list[i][3]]);
@@ -477,19 +152,30 @@ T ConvToString(const T& value, int lineNum, int col) {
                     }
                 }])]
             }
+            // var decorationsInRange = window.editor.getModel().getDecorationsInRange({
+            //     startLineNumber: list[i][0] + 1,
+            //     startColumn: list[i][1] + 1,
+            //     endLineNumber: list[i][2] + 1,
+            //     endColumn: list[i][3] + 1
+            // });
+            //  console.log(decorationsInRange);
+            // window.hoverDecs = window.editor.deltaDecorations(decorationsInRange, []);
         }
 
-        async function renderTree(tree) {
+        async function traverseTree(tree, matchMap) {
             const catupreList = [];
             const cursor = tree.walk();
             let finishedRow = false;
             let visitedChildren = false;
             let indentLevel = 0;
+            let curr_path = [];
 
             for (let i = 0; ; i++) {
                 if (i > 0 && i % 10000 === 0) {
                     await new Promise(r => setTimeout(r, 0));
                 }
+                const start = cursor.startPosition;
+                const end = cursor.endPosition;
 
                 let displayName;
                 if (cursor.nodeIsMissing) {
@@ -497,26 +183,61 @@ T ConvToString(const T& value, int lineNum, int col) {
                 } else if (cursor.nodeIsNamed) {
                     displayName = cursor.nodeType;
                 }
-
                 if (visitedChildren) {
                     if (displayName) {
                         finishedRow = true;
                     }
                     if (cursor.gotoNextSibling()) {
+                        curr_path.pop();
                         visitedChildren = false;
+
+                        curr_path.push(displayName)
+                        indentLevel++;
+                        let code = window.editor.getValue();
+                        let lines = code.split('\n');
+                        let text = (start.row != end.row ? [
+                            lines[start.row].substring(start.column),
+                            ...lines.slice(start.row + 1, end.row - 1),
+                            lines[end.row].substring(0, end.column)
+                        ] :
+                            [lines[start.row].substring(start.column, end.column)]
+                        ).join('\n');
+                        if (indentLevel > 0) {
+                            // console.log(text, curr_path)
+                        }
+                        let found = true;
+                        matchMap.forEach((targetPath, idx) => {
+                            targetPath.forEach((element, idx) => {
+                                if (curr_path.slice(-targetPath.length)[idx] == element) {
+                                } else
+                                    found = false;
+                            });
+                        });
+                        // ['function_definition'].forEach((element, idx) => {
+                        //     if (curr_path.slice(-1)[idx] == element) {
+                        //         console.log(traverseTree(cursor.getNode(), ['primitive_type']));
+                        //     }
+                        // });
+
+                        if (found) {
+                            if (!catupreList.find(a => a[0] === start.row && a[1] === start.column
+                            )) {
+                                catupreList.push([start.row, start.column, end.row, end.column, displayName]);
+                            }
+                        }
                     } else if (cursor.gotoParent()) {
                         visitedChildren = true;
                         indentLevel--;
+                        curr_path.pop();
                     } else {
                         break;
                     }
                 } else {
+
                     if (displayName) {
                         if (finishedRow) {
                             finishedRow = false;
                         }
-                        const start = cursor.startPosition;
-                        const end = cursor.endPosition;
                         const id = cursor.nodeId;
                         let fieldName = cursor.currentFieldName();
                         if (fieldName) {
@@ -524,20 +245,21 @@ T ConvToString(const T& value, int lineNum, int col) {
                         } else {
                             fieldName = '';
                         }
-                        if (displayName === 'call_expression') {
-                            // let org = cursor.currentNode();
-                            // const newcursor = {...cursor};
-                            // newcursor.reset(org);
-                            // newcursor.gotoParent();
-                            // cursor.gotoParent();
-                            // let parentDisplayName = newcursor.nodeType;
-                            // debug(cursor, newcursor);
-                            // cursor.reset(org); 
-                            if (!catupreList.find(a => a[0] === start.row && a[1] === start.column
-                            )) {
-                                catupreList.push([start.row, start.column, end.row, end.column, fieldName, displayName, id]);
-                            }
-                        }
+                        // if (displayName === 'call_expression') {
+                        //     // let org = cursor.currentNode();
+                        //     // const newcursor = {...cursor};
+                        //     // newcursor.reset(org);
+                        //     // newcursor.gotoParent();
+                        //     // cursor.gotoParent();
+                        //     // let parentDisplayName = newcursor.nodeType;
+                        //     // debug(cursor, newcursor);
+                        //     // cursor.reset(org); 
+                        //     if (!catupreList.find(a => a[0] === start.row && a[1] === start.column
+                        //     )) {
+                        //         catupreList.push([start.row, start.column, end.row, end.column, fieldName, displayName, id]);
+                        //     }
+                        // }
+
                         // createDecor([[start.row + 1, start.column + 1], [end.row + 1, end.column + 1]], displayName)
                         // console.log(displayName, start, end, id);
                         addHoverMessage([start.row, start.column, end.row, end.column], displayName);
@@ -546,22 +268,66 @@ T ConvToString(const T& value, int lineNum, int col) {
 
                     if (cursor.gotoFirstChild()) {
                         visitedChildren = false;
+                        curr_path.push(displayName)
                         indentLevel++;
+                        let code = window.editor.getValue();
+                        let lines = code.split('\n');
+                        let text = (start.row != end.row ? [
+                            lines[start.row].substring(start.column),
+                            ...lines.slice(start.row + 1, end.row - 1),
+                            lines[end.row].substring(0, end.column)
+                        ] :
+                            [lines[start.row].substring(start.column, end.column)]
+                        ).join('\n');
+                        if (indentLevel > 0) {
+                            // console.log(text, curr_path)
+                        }
+                        let found = true;
+                        matchMap.forEach((targetPath, idx) => {
+                            targetPath.forEach((element, idx) => {
+                                if (curr_path.slice(-targetPath.length)[idx] == element) {
+                                } else
+                                    found = false;
+                            });
+                        });
+                        if (found) {
+                            if (!catupreList.find(a => a[0] === start.row && a[1] === start.column
+                            )) {
+                                catupreList.push([start.row, start.column, end.row, end.column, displayName]);
+                            }
+                        }
                     } else {
                         visitedChildren = true;
                     }
                 }
+
             }
             if (finishedRow) {
             }
+
 
             cursor.delete();
 
             return catupreList;
         }
 
+        function addHoverMessage(line, message) {
 
-
+            window.hoverDecs = [...window.hoverDecs, window.editor.deltaDecorations([], [{
+                range: {
+                    startLineNumber: line[0] + 1,
+                    startColumn: line[1] + 1,
+                    endLineNumber: line[2] + 1,
+                    endColumn: line[3] + 1
+                },
+                options: {
+                    isWholeLine: false,
+                    hoverMessage: message ? {
+                        value: message,
+                    } : undefined,
+                }
+            }])]
+        }
     </script>
 </body>
 
