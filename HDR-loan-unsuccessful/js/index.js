@@ -26,11 +26,17 @@ $("#email").val(emailURLParam);
 $("#phn-number").val(phoneURLParam);
 
 $(".btn_show_form").click(function (e) {
+  showForm(e);
+});
+
+function showForm(e) {
   if ($(".absolute-form").hasClass("d-none"))
     $(".absolute-form").removeClass("d-none");
-  e.preventDefault();
-  e.stopPropagation();
-});
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+}
 const specifiedElement = document
   .querySelector(".absolute-form")
   .querySelector(".wrapper");
@@ -286,7 +292,8 @@ function isValidPhoneLive(phoneNumber) {
           console.log(JSON.parse(result));
           resolve(JSON.parse(result));
         } catch (e) {
-          console.error(e);
+          console.error("Failed to reach API", e);
+          resolve(false);
         }
       },
       error: function (error) {
@@ -347,7 +354,7 @@ async function submitForm() {
   }
   try {
     if (
-      (await isValidPhoneLive(form_3_data["phone-number"])).status != "Valid"
+      (await isValidPhoneLive(form_3_data["phone-number"]))?.status != "Valid"
     ) {
       showError("Please enter a valid phone number");
       return;
