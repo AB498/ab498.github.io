@@ -21,7 +21,7 @@ var phoneURLParam = urlParams.get("phone");
 
 $("#first-name").val(firstnameURLParam);
 $("#last-name").val(lastnameURLParam);
-$("#postcode").val(emailURLParam);
+$("#postcode").val(postcodeURLParam);
 $("#email").val(emailURLParam);
 $("#phn-number").val(phoneURLParam);
 
