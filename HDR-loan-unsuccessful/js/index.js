@@ -293,7 +293,7 @@ function isValidPhoneLive(phoneNumber) {
           resolve(JSON.parse(result));
         } catch (e) {
           console.error("Failed to reach API", e);
-          resolve(false);
+          resolve({ error: "Failed to reach API" });
         }
       },
       error: function (error) {
@@ -353,10 +353,9 @@ async function submitForm() {
     return;
   }
   try {
-    if (
-      (await isValidPhoneLive(form_3_data["phone-number"]))?.status != "Valid"
-    ) {
-      showError("Please enter a valid phone number");
+    let validPhone = await isValidPhoneLive(form_3_data["phone-number"]);
+    if (!validPhone?.error || validPhone?.status != "Valid") {
+      showError(validPhone?.error || "Please enter a valid phone number");
       return;
     }
     let [errors, response] = await postData();
