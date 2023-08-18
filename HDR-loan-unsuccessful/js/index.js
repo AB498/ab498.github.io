@@ -30,12 +30,14 @@ $(".btn_show_form").click(function (e) {
 });
 
 function showForm(e) {
-  if ($(".absolute-form").hasClass("d-none"))
-    $(".absolute-form").removeClass("d-none");
   if (e) {
     e.preventDefault();
     e.stopPropagation();
   }
+  setTimeout(() => {
+    if ($(".absolute-form").hasClass("d-none"))
+      $(".absolute-form").removeClass("d-none");
+  }, 0);
 }
 const specifiedElement = document
   .querySelector(".absolute-form")
