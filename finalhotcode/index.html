@@ -33,6 +33,18 @@
 
 
     <link rel="stylesheet" href="../static/css/style.css">
+
+
+    <style>
+        .info-plate {
+            font-size: 0.8em;
+            line-height: 0.8em;
+            padding: 0em 0.4em 0em 0.4em;
+            position: absolute;
+            top: 70%;
+            border: 1px solid white;
+        }
+    </style>
 </head>
 
 <body class="w-screen h-screen">
@@ -89,28 +101,111 @@
         window.runCode = async () => {
             debug("Compiling and running ...");
             let code = window.editor.getValue();
-            const tree = window.parser.parse(code);
+            let tree = window.parser.parse(code);
             window.hoverDecs = window.editor.deltaDecorations(window.hoverDecs, []);
-            let list = (await traverseTree(tree, [['function_definition', 'primitive_type']]));
-            // decorationIds = editor.deltaDecorations(decorationIds, []);
-            colorCode(editor, list);
-            // replacedCode = getReplacedCode(code, list);
-            // let outputString;
-            // try {
-            //     outputString = (await api.compileLinkRun(replacedCode));
-            // } catch (e) {
-            //     outputString = e;
-            //     window.term.write('\n' + outputString + '\n');
-            //     window.term.write('\n\x1B[1;3;31m >> \x1B[0m');
-            //     debug(e);
-            // }
-            // let lineOutputs = (extractLineOutputs(outputString)); // {}
-            // window.outputDecs = editor.deltaDecorations(window.outputDecs, []);
-            // addOutputDecors(lineOutputs, code);
-            const syntaxTreeJSON = syntaxNodeToJSON(tree.rootNode, { path: [] });
-            // console.log(syntaxTreeJSON)
+
+            let [syntaxTreeJSON, globalData] = syntaxNodeToJSON(tree.rootNode, { path: [] }, {});
+            window.decorationIds = window.editor.deltaDecorations(window.decorationIds, []);
+            colorCode(window.editor, globalData.functionCallSlices);
+            code = replaceExprs(code, globalData.functionCallSlices, globalData.binaryRights);
+
+
+            code = injectable + code;
+            // console.log(globalData.binaryRights);
+
+            try {
+                outputString = (await api.compileLinkRun(code));
+            } catch (e) {
+                outputString = e;
+                window.term.write('\n' + outputString + '\n');
+                window.term.write('\n\x1B[1;3;31m >> \x1B[0m');
+                debug(e);
+            }
+            let lineOutputs = (extractLineOutputs(outputString)); // {}
+            window.outputDecs = window.editor.deltaDecorations(window.outputDecs, []);
+            addOutputDecors(lineOutputs, code);
+            // console.log("found", globalData.functionToReturnMap);
+            // console.log(syntaxTreeJSON) 
         }
-        function syntaxNodeToJSON(node, parent) {
+        function addOutputDecors(lineOutputs, code) {
+            let lines = code.split('\n');
+
+            for (const [key, value] of Object.entries(lineOutputs)) {
+                const startPosition = window.editor.getModel().getPositionAt(parseInt(key.split('_')[0]));
+                const endPosition = window.editor.getModel().getPositionAt(parseInt(key.split('_')[1]));
+                const range = new monaco.Range(startPosition.lineNumber, startPosition.column, endPosition.lineNumber, endPosition.column);
+
+                let message = value.length > 15 ? value.slice(0, 15) + '...' : value;
+                window.outputDecs = [...window.outputDecs, window.editor.deltaDecorations([], [{
+                    range,
+                    options: {
+                        isWholeLine: false,
+                        after: message ? {
+                            content: message,
+                            inlineClassName: 'bg-blue-700 info-plate',
+                            inlineClassNameAffectsLetterSpacing: true,
+                        } : undefined,
+                    }
+                }])]
+
+            }
+        }
+        function findRegexMatches(string, regex) {
+            let matches = [];
+            let match;
+            while (match = regex.exec(string)) {
+                matches.push(match[0]);
+            }
+            return matches;
+        }
+        function extractLineOutputs(outputString) {
+            let matches = findRegexMatches(outputString, /__res_start__(\d+)_(\d+)__.*?__res_end__(\d+)_(\d+)__/gs);
+            let lineOutputs = {};
+            matches.forEach((match) => {
+                let prefix = match.match(/__res_start__(\d+)_(\d+)__/);
+                let lineNum = prefix[1];
+                let col = prefix[2];
+                let suffix = match.match(/__res_end__(\d+)_(\d+)__/)[1];
+                let line = match.match(/__res_start__(\d+)_(\d+)__(.*?)__res_end__(\d+)_(\d+)__/s)[3];
+                lineOutputs[lineNum + "_" + col] = (lineOutputs[lineNum + "_" + col] ? lineOutputs[lineNum + "_" + col] + " | " : "") + line.trim();
+            });
+            return lineOutputs;
+        }
+        function replaceExprs(s, callNodes, binaryNodes) {
+            let mergedNodes = [...callNodes, ...binaryNodes].sort((a, b) => { return a.startIndex - b.startIndex });
+            mergedNodes.reverse().forEach(node => {
+                if (node.isBin) {
+                    // console.log('node', node.children);
+                    let prefix = s.substring(0, node.startIndex);
+                    let postfix = s.substring(node.endIndex, s.length);
+                    let replace = s.substring(node.startIndex, node.endIndex);
+                    s = prefix + `ConvToString(${replace}, ${node.startIndex}, ${node.endIndex})` + postfix;
+                    return;
+                }
+                let func_name = node.children.find(e => ['identifier', 'field_identifier'].includes(e.type))?.text;
+                let args = node.children.find(e => ['argument_list'].includes(e.type))?.text;
+                let prefix = s.substring(0, node.startIndex);
+                let postfix = s.substring(node.endIndex, s.length);
+                let replace = s.substring(node.startIndex, node.endIndex);
+                if (func_name == "printf") {
+                    s = prefix + `FormatString(${node.startIndex}, ${node.endIndex}, ${args.slice(1, args.length - 1)})` + postfix;
+                }
+                else
+                    s = prefix + `ConvToString(${replace}, ${node.startIndex}, ${node.endIndex})` + postfix;
+            });
+            return s;
+        }
+        function replaceBinaryRights(s, nodes) {
+            nodes.reverse().forEach(node => {
+                // console.log('node', node.children);
+                let prefix = s.substring(0, node.startIndex);
+                let postfix = s.substring(node.endIndex, s.length);
+                let replace = s.substring(node.startIndex, node.endIndex);
+                s = prefix + `ConvToString(${replace}, ${node.startIndex}, ${node.endIndex})` + postfix;
+            });
+            return s;
+        }
+        function syntaxNodeToJSON(node, parent, globalData) {
             const jsonNode = {
                 type: node.type,
                 text: node.text,
@@ -120,30 +215,92 @@
 
             for (let i = 0; i < node.childCount; i++) {
                 const child = node.child(i);
-                jsonNode.children.push(syntaxNodeToJSON(child, jsonNode));
+                jsonNode.children.push(syntaxNodeToJSON(child, jsonNode, globalData)[0]);
             }
+            globalData.functionToReturnMap = globalData.functionToReturnMap || {};
+            globalData.functionCallSlices = globalData.functionCallSlices || [];
+            globalData.binaryRights = globalData.binaryRights || [];
             found = true;
-            ['function_definition', 'primitive_type'].forEach((element, idx) => {
-                // recusive json tree.func_name
+            ['function_definition'].forEach((element, idx) => {
+                if (jsonNode.path.slice(-1)[idx] == element) {
+                } else
+                    found = false;
+            });
+            if (found) {
+                let func_name = jsonNode.children.find(e => e.type == 'function_declarator')?.children.find(e => ['identifier', 'field_identifier'].includes(e.type))?.text;
+                let ret_type = jsonNode.children.find(e => ['primitive_type', 'qualified_identifier', 'template_type'].includes(e.type))?.text;
+                globalData.functionToReturnMap[func_name] = ret_type;
+            }
+            // call
+            found = true;
+            ['expression_statement', 'call_expression'].forEach((element, idx) => {
                 if (jsonNode.path.slice(-2)[idx] == element) {
                 } else
                     found = false;
             });
-            if (found)
-                console.log(jsonNode.path)
-
-            return jsonNode;
+            if (found) {
+                let callexpr = node;
+                if ([...Object.entries(globalData.functionToReturnMap).filter(el => el[1] != 'void'), ['printf', 'int']].some(el =>
+                    [callexpr
+                        .children.find(e => ['identifier', 'field_identifier'].includes(e.type))?.text,
+                    callexpr
+                        .children.find(e => ['field_expression'].includes(e.type))
+                        ?.children.find(e => ['field_identifier'].includes(e.type))?.text
+                    ].includes(el[0])
+                ))
+                    globalData.functionCallSlices.push(callexpr);
+                console.log(globalData.functionToReturnMap, 'callexpr', callexpr
+                    .children.find(e => ['field_expression'].includes(e.type))
+                    ?.children.find(e => ['field_identifier'].includes(e.type))?.text)
+            }
+            //binary expr
+            found = true;
+            ['binary_expression'].forEach((element, idx) => {
+                if (jsonNode.path.slice(-1)[idx] == element) {
+                } else
+                    found = false;
+            });
+            if (found) {
+                let right = node.children.find(e => [''].includes(e.type));
+                if (right) {
+                    globalData.binaryRights.push(right);
+                }
+            }
+            found = true;
+            ['assignment_expression'].forEach((element, idx) => {
+                if (jsonNode.path.slice(-1)[idx] == element) {
+                } else
+                    found = false;
+            });
+            if (found) {
+                // console.log('assignment_expression', node.childForFieldName("right").walk().nodeType, node.childForFieldName("right").walk().nodeText)
+                globalData.binaryRights.push(node.childForFieldName("right"));
+            }
+            found = true;
+            ['binary_expression'].forEach((element, idx) => {
+                if (jsonNode.path.slice(-1)[idx] == element) {
+                } else
+                    found = false;
+            });
+            if (found) {
+                let operand = node.children.find(e => e.type == "<<")?.text;
+                let right = node.childForFieldName("right");
+                console.log(operand, 'right', right)
+                if (right.text != "endl" && right.text != "std::endl" && operand == "<<")
+                    globalData.binaryRights.push(right);
+            }
+            globalData.binaryRights.forEach(e => { e.isBin = true; })
+            return [jsonNode, globalData];
         }
 
-        function colorCode(editor, list) {
-            for (let i = 0; i < list.length; i++) {
-                // debug(...[list[i][0], list[i][1], list[i][2], list[i][3]]);
+        function colorCode(editor, nodesList) {
+            for (let i = 0; i < nodesList.length; i++) {
                 window.decorationIds = [...window.decorationIds, window.editor.deltaDecorations([], [{
                     range: {
-                        startLineNumber: list[i][0] + 1,
-                        startColumn: list[i][1] + 1,
-                        endLineNumber: list[i][2] + 1,
-                        endColumn: list[i][3] + 1
+                        startLineNumber: nodesList[i].startPosition.row + 1,
+                        startColumn: nodesList[i].startPosition.column + 1,
+                        endLineNumber: nodesList[i].endPosition.row + 1,
+                        endColumn: nodesList[i].endPosition.column + 1
                     },
                     options: {
                         isWholeLine: false,
@@ -152,182 +309,10 @@
                     }
                 }])]
             }
-            // var decorationsInRange = window.editor.getModel().getDecorationsInRange({
-            //     startLineNumber: list[i][0] + 1,
-            //     startColumn: list[i][1] + 1,
-            //     endLineNumber: list[i][2] + 1,
-            //     endColumn: list[i][3] + 1
-            // });
-            //  console.log(decorationsInRange);
-            // window.hoverDecs = window.editor.deltaDecorations(decorationsInRange, []);
         }
 
-        async function traverseTree(tree, matchMap) {
-            const catupreList = [];
-            const cursor = tree.walk();
-            let finishedRow = false;
-            let visitedChildren = false;
-            let indentLevel = 0;
-            let curr_path = [];
-
-            for (let i = 0; ; i++) {
-                if (i > 0 && i % 10000 === 0) {
-                    await new Promise(r => setTimeout(r, 0));
-                }
-                const start = cursor.startPosition;
-                const end = cursor.endPosition;
-
-                let displayName;
-                if (cursor.nodeIsMissing) {
-                    displayName = `MISSING ${cursor.nodeType}`
-                } else if (cursor.nodeIsNamed) {
-                    displayName = cursor.nodeType;
-                }
-                if (visitedChildren) {
-                    if (displayName) {
-                        finishedRow = true;
-                    }
-                    if (cursor.gotoNextSibling()) {
-                        curr_path.pop();
-                        visitedChildren = false;
-
-                        curr_path.push(displayName)
-                        indentLevel++;
-                        let code = window.editor.getValue();
-                        let lines = code.split('\n');
-                        let text = (start.row != end.row ? [
-                            lines[start.row].substring(start.column),
-                            ...lines.slice(start.row + 1, end.row - 1),
-                            lines[end.row].substring(0, end.column)
-                        ] :
-                            [lines[start.row].substring(start.column, end.column)]
-                        ).join('\n');
-                        if (indentLevel > 0) {
-                            // console.log(text, curr_path)
-                        }
-                        let found = true;
-                        matchMap.forEach((targetPath, idx) => {
-                            targetPath.forEach((element, idx) => {
-                                if (curr_path.slice(-targetPath.length)[idx] == element) {
-                                } else
-                                    found = false;
-                            });
-                        });
-                        // ['function_definition'].forEach((element, idx) => {
-                        //     if (curr_path.slice(-1)[idx] == element) {
-                        //         console.log(traverseTree(cursor.getNode(), ['primitive_type']));
-                        //     }
-                        // });
-
-                        if (found) {
-                            if (!catupreList.find(a => a[0] === start.row && a[1] === start.column
-                            )) {
-                                catupreList.push([start.row, start.column, end.row, end.column, displayName]);
-                            }
-                        }
-                    } else if (cursor.gotoParent()) {
-                        visitedChildren = true;
-                        indentLevel--;
-                        curr_path.pop();
-                    } else {
-                        break;
-                    }
-                } else {
-
-                    if (displayName) {
-                        if (finishedRow) {
-                            finishedRow = false;
-                        }
-                        const id = cursor.nodeId;
-                        let fieldName = cursor.currentFieldName();
-                        if (fieldName) {
-                            fieldName += ': ';
-                        } else {
-                            fieldName = '';
-                        }
-                        // if (displayName === 'call_expression') {
-                        //     // let org = cursor.currentNode();
-                        //     // const newcursor = {...cursor};
-                        //     // newcursor.reset(org);
-                        //     // newcursor.gotoParent();
-                        //     // cursor.gotoParent();
-                        //     // let parentDisplayName = newcursor.nodeType;
-                        //     // debug(cursor, newcursor);
-                        //     // cursor.reset(org); 
-                        //     if (!catupreList.find(a => a[0] === start.row && a[1] === start.column
-                        //     )) {
-                        //         catupreList.push([start.row, start.column, end.row, end.column, fieldName, displayName, id]);
-                        //     }
-                        // }
-
-                        // createDecor([[start.row + 1, start.column + 1], [end.row + 1, end.column + 1]], displayName)
-                        // console.log(displayName, start, end, id);
-                        addHoverMessage([start.row, start.column, end.row, end.column], displayName);
-                        finishedRow = true;
-                    }
-
-                    if (cursor.gotoFirstChild()) {
-                        visitedChildren = false;
-                        curr_path.push(displayName)
-                        indentLevel++;
-                        let code = window.editor.getValue();
-                        let lines = code.split('\n');
-                        let text = (start.row != end.row ? [
-                            lines[start.row].substring(start.column),
-                            ...lines.slice(start.row + 1, end.row - 1),
-                            lines[end.row].substring(0, end.column)
-                        ] :
-                            [lines[start.row].substring(start.column, end.column)]
-                        ).join('\n');
-                        if (indentLevel > 0) {
-                            // console.log(text, curr_path)
-                        }
-                        let found = true;
-                        matchMap.forEach((targetPath, idx) => {
-                            targetPath.forEach((element, idx) => {
-                                if (curr_path.slice(-targetPath.length)[idx] == element) {
-                                } else
-                                    found = false;
-                            });
-                        });
-                        if (found) {
-                            if (!catupreList.find(a => a[0] === start.row && a[1] === start.column
-                            )) {
-                                catupreList.push([start.row, start.column, end.row, end.column, displayName]);
-                            }
-                        }
-                    } else {
-                        visitedChildren = true;
-                    }
-                }
-
-            }
-            if (finishedRow) {
-            }
 
 
-            cursor.delete();
-
-            return catupreList;
-        }
-
-        function addHoverMessage(line, message) {
-
-            window.hoverDecs = [...window.hoverDecs, window.editor.deltaDecorations([], [{
-                range: {
-                    startLineNumber: line[0] + 1,
-                    startColumn: line[1] + 1,
-                    endLineNumber: line[2] + 1,
-                    endColumn: line[3] + 1
-                },
-                options: {
-                    isWholeLine: false,
-                    hoverMessage: message ? {
-                        value: message,
-                    } : undefined,
-                }
-            }])]
-        }
     </script>
 </body>
 

@@ -36,6 +36,19 @@
     "cwchar": "cpp",
     "exception": "cpp",
     "stdexcept": "cpp",
-    "map": "cpp"
+    "map": "cpp",
+    "cctype": "cpp",
+    "clocale": "cpp",
+    "concepts": "cpp",
+    "cstdarg": "cpp",
+    "cstddef": "cpp",
+    "cstdint": "cpp",
+    "cstdio": "cpp",
+    "cstdlib": "cpp",
+    "cwctype": "cpp",
+    "iterator": "cpp",
+    "memory": "cpp",
+    "utility": "cpp",
+    "numbers": "cpp"
   }
 }

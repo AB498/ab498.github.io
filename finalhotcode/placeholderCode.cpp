@@ -63,12 +63,14 @@ int main()
     new int[1]{43};
     b *= b++; // b dsidobad
     b;
-    return 0;
     a = 2;
     b = a * a;
     std::cout << 32 << std::endl;
     // std::cin >> 32;
+    for (int i = 0; i < 10; i++)
+    {
+        printf("%s %d", "hello world", i);
+    }
 
-    // printf("%s", "hello world");
     return 0;
 }

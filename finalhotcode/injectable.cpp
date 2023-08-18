@@ -1,3 +1,6 @@
+#include <cstdarg>
+#include <cstdio>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -13,7 +16,13 @@ std::string __sprecial_print(std::string str, int lineNum, int col)
     std::cout << "__res_end__" + std::to_string(lineNum) + "_" + std::to_string(col) + "__";
     return str;
 }
-
+std::string ConvToString(const std::string &value, int lineNum, int col)
+{
+    std::ostringstream os;
+    os << value;
+    __sprecial_print(os.str(), lineNum, col);
+    return value;
+}
 template <typename T>
 T ConvToStringNonPrint(const T &value)
 {
@@ -71,13 +80,13 @@ T ConvToString(T *arr, size_t N, int lineNum, int col)
 }
 
 template <typename T, size_t N>
-T ConvToString(T (&arr)[N], int lineNum, int col)
+T *ConvToString(T (&arr)[N], int lineNum, int col)
 {
     std::ostringstream os;
     os << "[";
     for (size_t i = 0; i < N; i++)
     {
-        os << ConvToString(arr[i]);
+        os << std::to_string(arr[i]);
         if (i != N - 1)
             os << ", ";
     }
@@ -98,10 +107,38 @@ T ConvToString(const T &value, int lineNum, int col)
     __sprecial_print(os.str(), lineNum, col);
     return value;
 }
+char *ConvToString(const char *value, int lineNum, int col)
+{
+    std::ostringstream os;
+    os << value;
+    __sprecial_print(os.str(), lineNum, col);
+    return const_cast<char *>(value);
+}
 void ConvToString()
 {
     std::ostringstream os;
     os << "void";
     __sprecial_print(os.str(), 0, 0);
     return;
+}
+int FormatString(int lineNum, int col, const char *format, ...)
+{
+    va_list args1, args2;
+    va_start(args1, format);
+
+    // Calculate size and format into dynamic buffer
+    int size = vsnprintf(nullptr, 0, format, args1) + 1;
+    std::unique_ptr<char[]> buffer(new char[size]);
+    vsprintf(buffer.get(), format, args1);
+
+    va_end(args1);
+
+    std::string str1 = std::string(buffer.get());
+    __sprecial_print(str1, lineNum, col);
+
+    va_start(args2, format);
+    int printedChars = vprintf(format, args2); // Print to stdout
+    va_end(args2);
+
+    return printedChars;
 }
