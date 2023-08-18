@@ -282,8 +282,12 @@ function isValidPhoneLive(phoneNumber) {
       url: "apiphone.php?phone=" + phoneNumber,
       async: false,
       success: function (result) {
-        console.log(JSON.parse(result));
-        resolve(JSON.parse(result));
+        try {
+          console.log(JSON.parse(result));
+          resolve(JSON.parse(result));
+        } catch (e) {
+          console.error(e);
+        }
       },
       error: function (error) {
         console.log(error);
