@@ -110,6 +110,7 @@ int main()
     list1->next->next = new ListNode(7);
     list1->next->next->next = new ListNode(1);
     list1->next->next->next->next = new ListNode(2);
+    list1->next->next->next->next->next = new ListNode(9);
     ListNode *list2 = new ListNode(3);
     list2->next = new ListNode(4);
     list2->next->next = new ListNode(7);
