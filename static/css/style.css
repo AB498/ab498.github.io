@@ -28,6 +28,16 @@
   color: #fff;
   padding: 5px 10px;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.btn:hover {
+  background-color: #9e75b6;
+  color: #fff;
+  padding: 5px 10px;
+  outline: 2px solid #448c27;
+  box-shadow: 1px 1px 14px 4px #448c2799;
 }
 .hover-effect:hover {
   background-color: #6c8df8;

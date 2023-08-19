@@ -1,76 +1,87 @@
 #include <iostream>
-#include <vector>
-#include <stdio.h>
 
-using namespace std;
-class Solution
+template <typename T>
+class Queue
 {
+private:
+    struct Node
+    {
+        T data;
+        Node *next;
+        Node(const T &item) : data(item), next(nullptr) {}
+    };
+
+    Node *frontNode;
+    Node *rearNode;
+
 public:
-    vector<int> runningSum(const vector<int> &nums)
-    {
-        return {1, 2};
-    }
-    // int main(int argc, char const *argv[])
-    // {
-    // Solution().runningSum(const std::vector<int>{1, 2, 4, 5});
+    Queue() : frontNode(nullptr), rearNode(nullptr) {}
 
-    //     /* code */
-    //     3;
-    //     return 0;
-    // }
-    std::vector<int> runningSum2(std::vector<int> &nums)
+    ~Queue()
     {
-        return std::vector<int>{1, 2, 3, 4, 5};
+        while (frontNode)
+        {
+            Node *temp = frontNode;
+            frontNode = frontNode->next;
+            delete temp;
+        }
+    }
+
+    bool isEmpty() const
+    {
+        return frontNode == nullptr;
+    }
+
+    void enqueue(const T &item)
+    {
+        Node *newNode = new Node(item);
+        if (isEmpty())
+        {
+            frontNode = rearNode = newNode;
+        }
+        else
+        {
+            rearNode->next = newNode;
+            rearNode = newNode;
+        }
+    }
+
+    void dequeue()
+    {
+        if (!isEmpty())
+        {
+            Node *temp = frontNode;
+            frontNode = frontNode->next;
+            delete temp;
+        }
+    }
+
+    T front() const
+    {
+        if (!isEmpty())
+        {
+            return frontNode->data;
+        }
+        else
+        {
+            throw std::runtime_error("Queue is empty.");
+        }
     }
 };
-class Solution2
-{
-    vector<int> runningSum3(vector<int> &nums)
-    {
-        324 * 64665;
-        324 * 64665;
-        324 * 64665;
-        "rdfdhf";
-        return {1, 2};
-    }
-    /* cod
 
-
-e */
-};
-int hello()
-{
-    return 1;
-}
-std::vector<int> hello2()
-{
-    return {23, 432, 5, 2, 53, 254};
-}
-void hello3()
-{
-    return;
-}
 int main()
 {
-    hello3();
-    Solution().runningSum({1});
-    hello2();
-    int a2 = 4 - hello();
-    cout << "Hello World!";
-    int a;
-    int b = a * a;
-    vector<int>{3, 4, 5};
-    new int[1]{43};
-    b *= b++; // b dsidobad
-    b;
-    a = 2;
-    b = a * a;
-    std::cout << 32 << std::endl;
-    // std::cin >> 32;
-    for (int i = 0; i < 10; i++)
-    {
-        printf("%s %d", "hello world", i);
-    }
+    Queue<int> myQueue;
+
+    myQueue.enqueue(10);
+    myQueue.enqueue(20);
+    myQueue.enqueue(30);
+
+    std::cout << "Front element: " << myQueue.front() << std::endl;
+
+    myQueue.dequeue();
+
+    std::cout << "Front element after dequeue: " << myQueue.front() << std::endl;
 
     return 0;
 }

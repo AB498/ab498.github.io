@@ -99,11 +99,18 @@ char *ConvToString(char *value, int lineNum, int col)
     __sprecial_print(std::string(value), lineNum, col);
     return value;
 }
+int ConvToString(const int &value, int lineNum, int col)
+{
+    std::ostringstream os;
+    os << value;
+    __sprecial_print(os.str(), lineNum, col);
+    return value;
+}
 template <typename T>
 T ConvToString(const T &value, int lineNum, int col)
 {
     std::ostringstream os;
-    os << value;
+    // os << value;
     __sprecial_print(os.str(), lineNum, col);
     return value;
 }

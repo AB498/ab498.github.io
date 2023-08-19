@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Email Validation Test</title>
+    <script>
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function testValidation() {
+            const inputEmail = document.getElementById("inputEmail").value;
+            const resultMessage = document.getElementById("resultMessage");
+
+            if (validateEmail(inputEmail)) {
+                resultMessage.textContent = "Valid email address.";
+            } else {
+                resultMessage.textContent = "Invalid email address.";
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Email Validation Test</h1>
+    <input oninput="testValidation()" type="text" id="inputEmail" placeholder="Enter email address">
+    <button onclick="testValidation()">Validate</button>
+    <p id="resultMessage"></p>
+</body>
+
+</html>

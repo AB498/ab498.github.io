@@ -1,3 +1,7 @@
+<!-- debounce -->
+<!-- hover full -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,12 +55,14 @@
     <div class="terminal w-full h-full"></div>
     <div class="editor w-full h-full"></div>
     <div id="wrapper" class="w-full h-full flex flex-col">
-        <ul id="menuContainer" class="w-full h-12 bg-blue-500"></ul>
+        <ul id="menuContainer" class="w-full h-12 bg-blue-500 flex p-2">
+            <div class="btn copy-replaced">Copy Replaced</div>
+        </ul>
         <div id="layoutContainer" class="w-full grow "></div>
     </div>
     <script>
 
-
+        window.runProcesses = {};
         (async () => {
 
             await window.initLayout();
@@ -82,7 +88,15 @@
             monaco.editor.setTheme('vs-dark');
 
             await initTerminal();
-
+            window.getBP = () => {
+                const width = window.innerWidth;
+                if (width >= 1536) return ['2xl', 'xl', 'lg', 'md', 'sm']
+                if (width >= 1280) return ['xl', 'lg', 'md', 'sm']
+                if (width >= 1024) return ['lg', 'md', 'sm']
+                if (width >= 768) return ['md', 'sm'];
+                if (width >= 640) return ['sm'];
+                return 'default'; // or handle differently
+            };
             window.addEventListener("resize", () => {
                 window.myLayout.updateSize(); // Resize the entire layout
             });
@@ -97,8 +111,19 @@
 
         })().catch(console.error);
 
+        window.addRun = async () => {
+            let timeNow = new Date().getTime();
+            window.runProcesses.push({ start: timeNow, running: true });
 
+            // window.runProcesses.splice(window.runProcesses.indexOf(window.runProcesses.find(e => e.start == timeNow)))
+            window.runProcesses.shift();
+            while (window.runProcesses.length > 0) {
+                await runCode();
+            }
+
+        }
         window.runCode = async () => {
+
             debug("Compiling and running ...");
             let code = window.editor.getValue();
             let tree = window.parser.parse(code);
@@ -110,7 +135,8 @@
             code = replaceExprs(code, globalData.functionCallSlices, globalData.binaryRights);
 
 
-            code = injectable + code;
+            code = injectable + code.replaceAll("NULL", "nullptr");
+            window.replacedCode = code;
             // console.log(globalData.binaryRights);
 
             try {
@@ -126,6 +152,7 @@
             addOutputDecors(lineOutputs, code);
             // console.log("found", globalData.functionToReturnMap);
             // console.log(syntaxTreeJSON) 
+
         }
         function addOutputDecors(lineOutputs, code) {
             let lines = code.split('\n');
@@ -167,7 +194,7 @@
                 let col = prefix[2];
                 let suffix = match.match(/__res_end__(\d+)_(\d+)__/)[1];
                 let line = match.match(/__res_start__(\d+)_(\d+)__(.*?)__res_end__(\d+)_(\d+)__/s)[3];
-                lineOutputs[lineNum + "_" + col] = (lineOutputs[lineNum + "_" + col] ? lineOutputs[lineNum + "_" + col] + " | " : "") + line.trim();
+                lineOutputs[lineNum + "_" + col] = (lineOutputs[lineNum + "_" + col] ? lineOutputs[lineNum + "_" + col] + "|" : "") + line.trim();
             });
             return lineOutputs;
         }
@@ -179,14 +206,17 @@
                     let prefix = s.substring(0, node.startIndex);
                     let postfix = s.substring(node.endIndex, s.length);
                     let replace = s.substring(node.startIndex, node.endIndex);
+                    console.log('replace', replace);
                     s = prefix + `ConvToString(${replace}, ${node.startIndex}, ${node.endIndex})` + postfix;
                     return;
                 }
+
                 let func_name = node.children.find(e => ['identifier', 'field_identifier'].includes(e.type))?.text;
                 let args = node.children.find(e => ['argument_list'].includes(e.type))?.text;
                 let prefix = s.substring(0, node.startIndex);
                 let postfix = s.substring(node.endIndex, s.length);
                 let replace = s.substring(node.startIndex, node.endIndex);
+                console.log('replace_func', replace);
                 if (func_name == "printf") {
                     s = prefix + `FormatString(${node.startIndex}, ${node.endIndex}, ${args.slice(1, args.length - 1)})` + postfix;
                 }
@@ -249,23 +279,11 @@
                     ].includes(el[0])
                 ))
                     globalData.functionCallSlices.push(callexpr);
-                console.log(globalData.functionToReturnMap, 'callexpr', callexpr
-                    .children.find(e => ['field_expression'].includes(e.type))
-                    ?.children.find(e => ['field_identifier'].includes(e.type))?.text)
+                // console.log(globalData.functionToReturnMap, 'callexpr', callexpr
+                //     .children.find(e => ['field_expression'].includes(e.type))
+                //     ?.children.find(e => ['field_identifier'].includes(e.type))?.text)
             }
-            //binary expr
-            found = true;
-            ['binary_expression'].forEach((element, idx) => {
-                if (jsonNode.path.slice(-1)[idx] == element) {
-                } else
-                    found = false;
-            });
-            if (found) {
-                let right = node.children.find(e => [''].includes(e.type));
-                if (right) {
-                    globalData.binaryRights.push(right);
-                }
-            }
+
             found = true;
             ['assignment_expression'].forEach((element, idx) => {
                 if (jsonNode.path.slice(-1)[idx] == element) {
@@ -273,8 +291,12 @@
                     found = false;
             });
             if (found) {
+                let operand = node.children.find(e => e.type == "<<")?.text;
+                let right = node.childForFieldName("right");
+                console.log('assignment', node, right);
                 // console.log('assignment_expression', node.childForFieldName("right").walk().nodeType, node.childForFieldName("right").walk().nodeText)
-                globalData.binaryRights.push(node.childForFieldName("right"));
+                if (right.text != "endl" && right.text != "std::endl" && operand == "<<")
+                    globalData.binaryRights.push(right);
             }
             found = true;
             ['binary_expression'].forEach((element, idx) => {
@@ -285,7 +307,7 @@
             if (found) {
                 let operand = node.children.find(e => e.type == "<<")?.text;
                 let right = node.childForFieldName("right");
-                console.log(operand, 'right', right)
+                console.log(operand, 'right', right.text);
                 if (right.text != "endl" && right.text != "std::endl" && operand == "<<")
                     globalData.binaryRights.push(right);
             }
@@ -309,6 +331,9 @@
                     }
                 }])]
             }
+        }
+        document.querySelector('.copy-replaced').onclick = () => {
+            navigator.clipboard.writeText(window.replacedCode);
         }
 
 

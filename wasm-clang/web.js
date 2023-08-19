@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-const LAYOUT_CONFIG_KEY = 'layoutConfig';
+const LAYOUT_CONFIG_KEY = "layoutConfig";
 
-const initialProgram =
-`#include <canvas.h>
+const initialProgram = `#include <canvas.h>
 #include <stdint.h>
 
 const int w = 1000;
@@ -50,24 +49,32 @@ function initLayout() {
       showCloseIcon: false,
       showPopoutIcon: false,
     },
-    content: [{
-      type: 'row',
-      content: [{
-        type: 'component',
-        componentName: 'editor',
-        componentState: {fontSize: 18, value: initialProgram},
-      }, {
-        type: 'stack',
-        content: [{
-          type: 'component',
-          componentName: 'terminal',
-          componentState: {fontSize: 18},
-        }, {
-          type: 'component',
-          componentName: 'canvas',
-        }]
-      }]
-    }]
+    content: [
+      {
+        type: "row",
+        content: [
+          {
+            type: "component",
+            componentName: "editor",
+            componentState: { fontSize: 18, value: initialProgram },
+          },
+          {
+            type: "stack",
+            content: [
+              {
+                type: "component",
+                componentName: "terminal",
+                componentState: { fontSize: 18 },
+              },
+              {
+                type: "component",
+                componentName: "canvas",
+              },
+            ],
+          },
+        ],
+      },
+    ],
   };
 
   layout = new Layout({
@@ -75,21 +82,21 @@ function initLayout() {
     defaultLayoutConfig,
   });
 
-  layout.on('initialised', event => {
+  layout.on("initialised", (event) => {
     // Editor stuff
     editor.commands.addCommand({
-      name: 'run',
-      bindKey: {win: 'Ctrl+Enter', mac: 'Command+Enter'},
-      exec: run
+      name: "run",
+      bindKey: { win: "Ctrl+Enter", mac: "Command+Enter" },
+      exec: run,
     });
   });
 
-  layout.registerComponent('canvas', CanvasComponent);
+  layout.registerComponent("canvas", CanvasComponent);
   layout.init();
 }
 
 function resetLayout() {
-  localStorage.removeItem('layoutConfig');
+  localStorage.removeItem("layoutConfig");
   if (layout) {
     layout.destroy();
     layout = null;
@@ -98,8 +105,9 @@ function resetLayout() {
 }
 
 // Toolbar stuff
-$('#reset').on('click', event => { if (confirm('really reset?')) resetLayout() });
-$('#run').on('click', event => run(editor));
-
+$("#reset").on("click", (event) => {
+  if (confirm("really reset?")) resetLayout();
+});
+$("#run").on("click", (event) => run(editor));
 
 initLayout();

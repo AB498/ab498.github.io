@@ -35,7 +35,7 @@ const apiOptions = {
     } else {
       const response = await fetch(filename);
       return WebAssembly.compile(await response.arrayBuffer());
-    } 
+    }
   },
 
   hostWrite(s) {
