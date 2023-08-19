@@ -64,7 +64,7 @@ public:
         }
         else
         {
-            throw std::runtime_error("Queue is empty.");
+            std::cout << ("Queue is empty.");
         }
     }
 };

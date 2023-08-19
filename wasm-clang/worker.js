@@ -95,13 +95,13 @@ const onAnyMessage = async (event) => {
       let output = null;
       let transferList;
       if (currentApp) {
-        console.log("First, disallowing rAF from previous app.");
+        // console.log("First, disallowing rAF from previous app.");
         // Stop running rAF on the previous app, if any.
         currentApp.allowRequestAnimationFrame = false;
       }
       try {
         currentApp = await api.compileLinkRun(event.data.data);
-        console.log(`finished compileLinkRun. currentApp = ${currentApp}.`);
+        // console.log(`finished compileLinkRun. currentApp = ${currentApp}.`);
         port.postMessage({
           id: "runAsync",
           responseId,

@@ -1,6 +1,4 @@
-<!-- debounce -->
 <!-- hover full -->
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -104,24 +102,37 @@
             window.window.parser = new TreeSitter();
             const JavaScript = await TreeSitter.Language.load('../static/wasm/tree-sitter-cpp.wasm');
             window.parser.setLanguage(JavaScript);
-            await window.runCode(window.editor, window.parser)
+            await window.addRun()
             window.editor.getModel().onDidChangeContent((event) => {
-                window.runCode(window.editor, window.parser)
+                window.addRun()
             });
 
         })().catch(console.error);
 
+        window.runQueue = [];
+        window.runAddPromise = async () => { };
         window.addRun = async () => {
+            console.log(runQueue)
             let timeNow = new Date().getTime();
-            window.runProcesses.push({ start: timeNow, running: true });
-
-            // window.runProcesses.splice(window.runProcesses.indexOf(window.runProcesses.find(e => e.start == timeNow)))
-            window.runProcesses.shift();
-            while (window.runProcesses.length > 0) {
-                await runCode();
-            }
-
+            if (runQueue.length > 1)
+                runQueue.pop();
+            runQueue.push({ start: timeNow, isRunning: false, isFinished: false, promise: runCode });
+            window.runAddPromise();
         }
+        window.runAddition = () => {
+            return new Promise((resolve, reject) => {
+                window.runAddPromise = resolve;
+            })
+        }
+        window.manageRuns = async () => {
+            while (runQueue.length > 0) {
+                await runQueue[0].promise(window.editor, window.parser);
+                runQueue.shift();
+            }
+            await runAddition();
+            manageRuns();
+        }
+        window.manageRuns();
         window.runCode = async () => {
 
             debug("Compiling and running ...");
@@ -206,7 +217,7 @@
                     let prefix = s.substring(0, node.startIndex);
                     let postfix = s.substring(node.endIndex, s.length);
                     let replace = s.substring(node.startIndex, node.endIndex);
-                    console.log('replace', replace);
+                    // console.log('replace', replace);
                     s = prefix + `ConvToString(${replace}, ${node.startIndex}, ${node.endIndex})` + postfix;
                     return;
                 }
@@ -216,7 +227,7 @@
                 let prefix = s.substring(0, node.startIndex);
                 let postfix = s.substring(node.endIndex, s.length);
                 let replace = s.substring(node.startIndex, node.endIndex);
-                console.log('replace_func', replace);
+                // console.log('replace_func', replace);
                 if (func_name == "printf") {
                     s = prefix + `FormatString(${node.startIndex}, ${node.endIndex}, ${args.slice(1, args.length - 1)})` + postfix;
                 }
@@ -293,7 +304,7 @@
             if (found) {
                 let operand = node.children.find(e => e.type == "<<")?.text;
                 let right = node.childForFieldName("right");
-                console.log('assignment', node, right);
+                // console.log('assignment', node, right);
                 // console.log('assignment_expression', node.childForFieldName("right").walk().nodeType, node.childForFieldName("right").walk().nodeText)
                 if (right.text != "endl" && right.text != "std::endl" && operand == "<<")
                     globalData.binaryRights.push(right);
@@ -307,7 +318,7 @@
             if (found) {
                 let operand = node.children.find(e => e.type == "<<")?.text;
                 let right = node.childForFieldName("right");
-                console.log(operand, 'right', right.text);
+                // console.log(operand, 'right', right.text);
                 if (right.text != "endl" && right.text != "std::endl" && operand == "<<")
                     globalData.binaryRights.push(right);
             }
