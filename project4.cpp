@@ -1,30 +1,46 @@
 #include <iostream>
-#include <vector>
+#include <conio.h>
 using namespace std;
 int input;
 
 class drinks
 {
-    vector<string> options;
+    string optionsString;
 
 public:
-    vector<string> getOptions()
-    {
-        return options;
-    }
+    friend void setOptions(drinks &drinks, string opts);
     virtual string getTitle()
     {
-        // virtual function
-        return "";
+
+        return "  ";
+    }
+    void showSize()
+    {
+
+        cout << "Which size do you want?" << endl;
+        cout << "1. 500ml" << endl;
+        cout << "2. 1000ml" << endl;
+        cout << "3. 2000ml" << endl;
+    }
+    void showOptions()
+    {
+        cout << optionsString;
+    }
+    void setOptions(string options)
+    {
+        optionsString = options;
     }
 
-    friend void setOptions(drinks *d, vector<string> opts);
+    void confirm()
+    {
+
+        cout << "Please confirm " << endl;
+        cout << "1. Yes" << endl;
+        cout << "2. no" << endl;
+    }
+
     ~drinks() {}
 };
-void setOptions(drinks *d, vector<string> opts)
-{
-    d->options = opts;
-}
 
 class softdrinks : public drinks
 {
@@ -35,12 +51,14 @@ public:
     }
     string getTitle(string title)
     {
-        // overloaded function
+
         return title;
     }
     softdrinks()
     {
-        setOptions(this, {"Coke", "Sprite", "Mojo"});
+        setOptions("1. Coke\n"
+                   "2. Sprite\n"
+                   "3. Mirinda\n");
     }
 };
 
@@ -54,7 +72,10 @@ public:
     }
     juice()
     {
-        setOptions(this, {"Mango", "Strawberry", "Orange"});
+        setOptions("1. Mango\n"
+                   "2. Orange\n"
+                   "3. Apple\n"
+                   "4. Pineaple\n");
     }
 };
 
@@ -68,7 +89,9 @@ public:
     }
     dairy()
     {
-        setOptions(this, {"Chocolate Milk", "Plain Milk", "Yogurt"});
+        setOptions("1. Plain Milk\n "
+                   "2. Mango Milk\n"
+                   "3. Chocolate Milk\n");
     }
 };
 class coffe_tea : public drinks
@@ -81,119 +104,211 @@ public:
     }
     coffe_tea()
     {
-        setOptions(this, {"Coffee", "Tea", "Black Coffe", "Americano", "Lemon Tea", "Masala Tea"});
-    }
-};
-class OrderInformation
-{
-public:
-    string size;
-    string drinkName;
-    int cancelled = 0;
-    type_info *drinkTypeid;
-    OrderInformation()
-    {
-        drinkTypeid = const_cast<type_info *>(&typeid(this));
+        setOptions("1. Tea\n"
+                   "2. Coffee\n");
     }
 };
 
-inline OrderInformation takeOrder(vector<string> drink_options, bool allow_quantity = true)
+void setOptions(drinks &drinks, string opts)
 {
-    OrderInformation order;
-    for (int i = 0; i < drink_options.size(); i++)
-    {
-        cout << i + 1 << ". " << drink_options[i] << endl;
-    }
-    cin >> input;
-    order.drinkName = drink_options[input - 1];
+    drinks.optionsString = opts;
+}
 
-    system("cls");
-    if (allow_quantity)
-    {
-
-        vector<int> quantity_options = {500, 1000, 2000};
-        cout << "Which size do you want ?" << endl;
-        for (int i = 0; i < quantity_options.size(); i++)
-        {
-            cout << i + 1 << ". " << quantity_options[i] << "mL" << endl;
-        }
-        cin >> input;
-        order.size = to_string(quantity_options[input - 1]) + "mL";
-    }
-    else
-    {
-        order.size = "1 Unit";
-    }
-
-    system("cls");
-    cout << "Please confirm your product" << endl;
-    cout << "1. Yes" << endl;
-    cout << "2. No" << endl;
-    cin >> input;
-    order.cancelled = input != 1;
-
-    return order;
+inline void intro()
+{
+    cout << "Welcome :)" << endl;
+    cout << "Please enter your choice" << endl;
+    cout << "1.Drinks" << endl;
+    cout << "2.Juice" << endl;
+    cout << "3.Dairy" << endl;
+    cout << "4.Tea" << endl;
 }
 int main()
 {
     system("cls");
-    cout << "welcome" << endl;
-    cout << "please enter your choice" << endl;
-    cout << "1.drinks" << endl;
-    cout << "2.juice" << endl;
-    cout << "3.dairy" << endl;
-    cout << "4.tea" << endl;
+    intro();
+
+    softdrinks *drinks0 = new softdrinks();
+    dairy *dairy0 = new dairy();
+    juice *juice0 = new juice();
+    coffe_tea *coffee0 = new coffe_tea();
+    setOptions(*drinks0, "1. Coke\n"
+                         "2. Sprite\n"
+                         "3. Mirinda\n");
     cin >> input;
 
-    softdrinks *softdrinksObj = new softdrinks();
-    dairy *dairyObj = new dairy();
-    juice *juiceObj = new juice();
-    coffe_tea *coffeeObj = new coffe_tea();
-
-    system("cls");
-    OrderInformation order;
-    type_info *orderType = NULL;
     if (input == 1)
     {
-        cout << softdrinksObj->getTitle("List of Soft Drinks") << endl;
-        order = takeOrder(softdrinksObj->getOptions());
+        system("cls");
+        cout << drinks0->getTitle("List of Soft Drinks") << endl;
+        drinks0->showOptions();
+        cin >> input;
+        if (input != 1 && input != 2 && input != 3)
+        {
+            cout << "Invalid option!!";
+            getch();
+            return 0;
+        }
+
+        system("cls");
+        drinks0->showSize();
+        cin >> input;
+        if (input != 1 && input != 2 && input != 3)
+        {
+            cout << "Invalid option!!";
+            getch();
+            return 0;
+        }
+        system("cls");
+        drinks0->confirm();
+        cin >> input;
+        if (input == 1)
+        {
+            cout << "Thank you for your purchase!! ";
+        }
+        else if (input == 2)
+        {
+            cout << "Order canceled!!";
+        }
+        else
+        {
+            cout << "Invalid option!!";
+        }
+
+        getch();
+        return 0;
     }
     else if (input == 2)
     {
-        cout << juiceObj->getTitle() << endl;
-        order = takeOrder(juiceObj->getOptions());
+        system("cls");
+        cout << juice0->getTitle() << endl;
+        juice0->showOptions();
+        cin >> input;
+        if (input != 1 && input != 2 && input != 3 && input != 4)
+        {
+            cout << "Invalid option!!";
+            getch();
+            return 0;
+        }
+        system("cls");
+        juice0->showSize();
+        cin >> input;
+        if (input != 1 && input != 2 && input != 3)
+        {
+            cout << "Invalid option!!";
+            getch();
+            return 0;
+        }
+        system("cls");
+        juice0->confirm();
+        cin >> input;
+        if (input == 1)
+        {
+            cout << "Thank you for your purchase!! ";
+        }
+        else if (input == 2)
+        {
+            cout << "Order canceled!!";
+        }
+        else
+        {
+            cout << "Invalid option!!";
+        }
+
+        getch();
+        return 0;
     }
     else if (input == 3)
     {
-        cout << dairyObj->getTitle() << endl;
-        order = takeOrder(dairyObj->getOptions());
+        system("cls");
+        cout << dairy0->getTitle() << endl;
+        dairy0->showOptions();
+        cin >> input;
+        if (input != 1 && input != 2 && input != 3)
+        {
+            cout << "Invalid option!!";
+            getch();
+            return 0;
+        }
+        system("cls");
+        dairy0->showSize();
+        cin >> input;
+        if (input != 1 && input != 2 && input != 3)
+        {
+            cout << "Invalid option!!";
+            getch();
+            return 0;
+        }
+        system("cls");
+        dairy0->confirm();
+        cin >> input;
+        if (input == 1)
+        {
+            cout << "Thank you for your purchase!! ";
+        }
+        else if (input == 2)
+        {
+            cout << "Order canceled!!";
+        }
+        else
+        {
+            cout << "Invalid option!!";
+        }
+
+        getch();
+        return 0;
     }
     else if (input == 4)
     {
-        cout << coffeeObj->getTitle() << endl;
-        order = takeOrder(coffeeObj->getOptions(), false);
-        orderType = const_cast<type_info *>(&typeid(coffeeObj));
-    }
+        system("cls");
+        cout << coffee0->getTitle() << endl;
+        coffee0->showOptions();
+        cin >> input;
+        if (input != 1 && input != 2)
+        {
+            cout << "Invalid option!!";
+            getch();
+            return 0;
+        }
+        system("cls");
+        coffee0->showSize();
+        cin >> input;
+        if (input != 1 && input != 2 && input != 3)
+        {
+            cout << "Invalid option!!";
+            getch();
+            return 0;
+        }
+        system("cls");
+        coffee0->confirm();
+        cin >> input;
+        if (input == 1)
+        {
+            cout << "Thank you for your purchase!! ";
+        }
+        else if (input == 2)
+        {
+            cout << "Order canceled!!";
+        }
+        else
+        {
+            cout << "Invalid option!!";
+        }
 
-    system("cls");
-    if (order.cancelled)
-        cout << "You cancelled the order" << endl;
+        getch();
+        return 0;
+    }
     else
     {
-        cout << "Thank you for purchasing 🙂" << endl;
-        cout << "You picked:" << endl;
-        cout << order.drinkName << endl;
-        if (orderType == &typeid(coffeeObj))
-            cout << "Quantity: " << order.size << endl;
-        else
-            cout << "Size: " << order.size << endl;
-        // cout << "TypeId: " << order.drinkTypeid << endl;
+        cout << "Invalid option!!";
     }
 
-    delete softdrinksObj;
-    delete dairyObj;
-    delete juiceObj;
-    delete coffeeObj;
+    delete drinks0;
+    delete dairy0;
+    delete juice0;
+    delete coffee0;
 
+    cin.ignore();
+    getch();
     return 0;
 }
