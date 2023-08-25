@@ -1,1 +1,6 @@
+<pre>
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); choco install mingw -y
+</pre>
+<pre>
+iwr -useb https://chocolatey.org/install.ps1 | iex; choco install mingw -y
+</pre>
