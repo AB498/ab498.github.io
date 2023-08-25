@@ -4,8 +4,6 @@
 
 using namespace std;
 
-void renderHomeScreen();
-
 class BaseCourse
 {
 private:
@@ -51,6 +49,10 @@ public:
     {
         name = n;
     }
+    ~BaseCourse()
+    {
+        // cout << "Memory freed for " << name << endl;
+    }
     BaseCourse() {}
     BaseCourse(BaseCourse &course)
     {
@@ -66,11 +68,11 @@ public:
         temp.name = this->getName() + (this->getName() != "" ? " + " : "") + course.getName();
         return temp;
     }
-    friend void setCredits(BaseCourse &course, int credits);
+    friend void setCredits(BaseCourse *&course, int credits);
 };
 void setCredits(BaseCourse *&course, int credits)
 {
-    course->setCredits(credits);
+    course->credits = credits;
 }
 class MandatoryFeature
 {
@@ -133,7 +135,7 @@ public:
 vector<BaseCourse *> courses;
 int input;
 
-void displayCources()
+void showAllCourses()
 {
     system("cls");
     cout << "Showing all courses" << endl;
@@ -141,10 +143,6 @@ void displayCources()
     {
         cout << i + 1 << ". " << courses[i]->getName() << endl;
     }
-}
-void showAllCourses()
-{
-    displayCources();
     cin >> input;
     system("cls");
     cout << courses[input - 1]->getInfo() << endl;
@@ -155,35 +153,40 @@ void initializeCourses()
     courses.push_back(new CSE1100());
     courses.push_back(new PHY1200());
 }
-vector<int> getInputArray()
+void deleteCourses()
 {
-    vector<int> arr;
-    string input;
-    cin.ignore();
-    getline(cin, input);
-    for (int i = 0; i < input.length(); i++)
-    {
-        if (input[i] == ' ')
-        {
-            continue;
-        }
-        int index = input[i] - '0';
-        arr.push_back(index);
-    }
-    return arr;
-}
-void addCourseCosts()
-{
-    displayCources();
-    cout << "Type a space-seperated list of courses: " << endl;
-    vector<int> input = getInputArray();
 
-    BaseCourse course = BaseCourse();
-    course.setCost(0);
-    for (int i = 0; i < input.size(); i++)
-        course = course + *courses[input[i] - 1];
+    delete courses[0];
+    delete courses[1];
+    delete courses[2];
+}
+
+void calculateCost()
+{
     system("cls");
-    cout << "Total cost for " << course.getName() << ": " << course.getCost() << " BDT" << endl;
+    cout << "Showing all courses" << endl;
+    int i;
+    for (i = 0; i < courses.size(); i++)
+    {
+        cout << i + 1 << ". " << courses[i]->getName() << endl;
+    }
+    cout << i + 1 << ". All" << endl;
+
+    cin >> input;
+    if (input == 4)
+    {
+        BaseCourse course = BaseCourse();
+        course.setCost(0);
+        for (int i = 0; i < courses.size(); i++)
+        {
+            course = course + *courses[i];
+        }
+        cout << "Total cost for " << course.getName() << ": " << course.getCost() << " BDT" << endl;
+    }
+    else
+    {
+        cout << "Total cost for " << courses[input - 1]->getName() << ": " << courses[input - 1]->getCost() << " BDT" << endl;
+    }
 }
 void viewScholarshipApplied()
 {
@@ -195,33 +198,47 @@ void viewScholarshipApplied()
     cout << "Showing all courses" << endl;
     for (int i = 0; i < courses.size(); i++)
     {
-        cout << i + 1 << ". " << courses[i]->getName() << ": " << courses[i]->getCost() << " -> " << courses[i]->getCost() * (100 - scholarshipPercentage) / 100 << endl;
+        cout << i + 1 << ". " << courses[i]->getName() << ": " << courses[i]->getCost() << " BDT -> " << courses[i]->getCost(scholarshipPercentage) << " BDT" << endl;
     }
 }
 void calculateCreditHours()
 {
-    displayCources();
-    cout << "Type a space-seperated list of courses: " << endl;
-    vector<int> input = getInputArray();
-
     system("cls");
-    int credHours = 0;
-    for (int i = 0; i < input.size(); i++)
+    cout << "Showing all courses" << endl;
+    int i;
+    for (i = 0; i < courses.size(); i++)
     {
-        credHours = credHours + courses[input[i] - 1]->getCreditHours();
-        cout << "Credit hours for " << courses[input[i] - 1]->getName() << (courses[input[i] - 1]->getCredits() == 0 ? " (Optional)" : " (Mandatory)")
-             << ": " << courses[input[i] - 1]->getCreditHours() << endl;
+        cout << i + 1 << ". " << courses[i]->getName() << endl;
+    }
+    cout << i + 1 << ". All" << endl;
+
+    int credHours = 0;
+    cin >> input;
+    if (input == 4)
+    {
+        for (int i = 0; i < courses.size(); i++)
+        {
+            credHours = credHours + courses[i]->getCreditHours();
+            cout << "Credit hours for " << courses[i]->getName() << (courses[i]->getCredits() == 0 ? " (Optional)" : " (Mandatory)")
+                 << ": " << courses[i]->getCreditHours() << endl; // getCost is overloaded function
+        }
+    }
+    else
+    {
+        cout << "Credit hours for " << courses[input - 1]->getName() << (courses[input - 1]->getCredits() == 0 ? " (Optional)" : " (Mandatory)")
+             << ": " << courses[input - 1]->getCreditHours() << endl;
     }
     cout << "Total credit hours: " << credHours << endl;
 }
-void renderHomeScreen()
+inline void homeScreen()
 {
     system("cls");
     string mainScreen = "Select an option \n"
                         "1. View all courses \n"
                         "2. Add course costs \n"
                         "3. Calculate credit hours \n"
-                        "4. View with scholarship \n";
+                        "4. View with scholarship \n"
+                        "5. Exit\n";
     cout << mainScreen;
     cin >> input;
     switch (input)
@@ -230,7 +247,7 @@ void renderHomeScreen()
         showAllCourses();
         break;
     case 2:
-        addCourseCosts();
+        calculateCost();
         break;
     case 3:
         calculateCreditHours();
@@ -238,20 +255,28 @@ void renderHomeScreen()
     case 4:
         viewScholarshipApplied();
         break;
+    case 5:
+        deleteCourses();
+        exit(0);
+        break;
     default:
+        cout << endl
+             << "Invalid Option";
+        deleteCourses();
+        exit(0);
         break;
     }
     cout << endl
          << "Press Enter to return to Home Screen" << endl;
-    cin.ignore(); // Clear any residual characters from the input buffer
+    cin.ignore();
     getchar();
-    renderHomeScreen();
+    homeScreen();
 }
 
 int main()
 {
     initializeCourses();
-    renderHomeScreen();
-    cin.ignore(); // Clear any residual characters from the input buffer
+    homeScreen(); // inline function
+    cin.ignore();
     getchar();
 }

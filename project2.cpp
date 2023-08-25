@@ -1,29 +1,24 @@
 #include <iostream>
-#include <vector>
 #include <string>
 
 using namespace std;
 
-void renderHomeScreen();
-
 class EWallet
 {
-    float balance;
     string walletType = "None";
 
 public:
+    float balance;
+    friend void setWalletType(EWallet &wallet, string type);
     EWallet()
     {
         balance = 0;
     }
-    float getBalance()
+    virtual float getBalance()
     {
         return balance;
     }
-    void setWalletType(string type)
-    {
-        walletType = type;
-    }
+
     string getWalletType()
     {
         return walletType;
@@ -33,6 +28,10 @@ public:
         balance = b;
     }
     void deposit(float amount)
+    {
+        balance += amount;
+    }
+    void deposit(int amount)
     {
         balance += amount;
     }
@@ -50,13 +49,16 @@ public:
         cout << "Wallet destroyed" << endl;
     }
 };
-
+void setWalletType(EWallet &wallet, string type)
+{
+    wallet.walletType = type;
+}
 class MobileEWallet : public EWallet
 {
 public:
     MobileEWallet()
     {
-        setWalletType("Mobile");
+        setWalletType(*this, "Mobile");
     }
 };
 class CryptocurrencyEWallet : public EWallet
@@ -64,36 +66,46 @@ class CryptocurrencyEWallet : public EWallet
 public:
     CryptocurrencyEWallet()
     {
-        setWalletType("Cryptocurrency");
+        setWalletType(*this, "Cryptocurrency");
+    }
+    float getBalance()
+    {
+        return balance * 2;
     }
 };
 
-class PrepaidEWallet : public MobileEWallet
+class PrepaidEWallet : public EWallet
 {
 public:
     PrepaidEWallet()
     {
-        setWalletType("Prepaid");
+        setWalletType(*this, "Prepaid");
     }
 };
+
+inline void home()
+{
+    cout << "Select an option \n"
+            "1. Create Account \n"
+            "2. Show Balance  \n"
+            "3. Deposit  \n"
+            "4. Withdraw \n";
+}
 
 int main()
 {
     EWallet *wallet = NULL;
 
 main:
-    cout << "Select an option \n"
-            "1. Create Account \n"
-            "2. Show Balance  \n"
-            "3. Deposit  \n"
-            "4. Withdraw \n";
+    home();
     int input;
 
     cin >> input;
     switch (input)
     {
     case 1:
-        cout << "What type of account do you want to open: \n"
+        cout << endl
+             << "What type of account do you want to open: \n"
                 "1. Mobile E-Wallet \n"
                 "2. Cryptocurrency E-Wallet  \n"
                 "3. Prepaid E-Wallet  \n";
@@ -123,6 +135,8 @@ main:
                  << "Please create an account first" << endl;
             goto main;
         }
+        cout << endl
+             << "Wallet Type: " << wallet->getWalletType() << endl;
         cout << "Your balance is: " << wallet->getBalance() << endl;
         goto main;
 
@@ -163,8 +177,10 @@ main:
         break;
     }
 
-    cin.ignore(); // Clear any residual characters from the input buffer
+    cin.ignore();
     getchar();
+
+    delete wallet;
 
     return 0;
 }

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void renderHomeScreen();
+void homeScreen();
 
 class Vehicle
 {
@@ -26,6 +26,13 @@ public:
     float getPrice()
     {
         return price;
+    }
+    float getPrice(int BDT)
+    {
+        if (BDT)
+            return price * 100;
+        else
+            return price;
     }
     string getType()
     {
@@ -59,7 +66,7 @@ class Bus : public Vehicle
 public:
     Bus()
     {
-        setModel("Tata ");
+        setModel("Tata");
         setColor("Red");
         setPrice(100);
         setType(*this, "Bus");
