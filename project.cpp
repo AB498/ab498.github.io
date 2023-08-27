@@ -13,7 +13,7 @@ private:
     int cost = 1000;
 
 public:
-    string getName()
+    string getName() // getter function
     {
         return name;
     }
@@ -21,11 +21,11 @@ public:
     {
         return cost;
     }
-    int getCost(int scholarshipPercentage)
+    int getCost(int scholarshipPercentage) // function overload
     {
         return cost * (100 - scholarshipPercentage) / 100;
     }
-    void setCost(int c)
+    void setCost(int c) // setter function
     {
         cost = c;
     }
@@ -41,27 +41,27 @@ public:
     {
         return credits * 3;
     }
-    virtual string getInfo()
+    virtual string getInfo() // to be overridden
     {
         return "Name: " + getName() + "\nCredits: " + to_string(getCredits()) + "\nCredit Hours: " + to_string(getCreditHours());
     }
-    BaseCourse(string n)
-    {
-        name = n;
-    }
-    ~BaseCourse()
+    ~BaseCourse() // destructor
     {
         // cout << "Memory freed for " << name << endl;
     }
-    BaseCourse() {}
-    BaseCourse(BaseCourse &course)
+    BaseCourse() {}                // default constructor
+    BaseCourse(BaseCourse &course) // copy constructor
     {
         name = course.getName();
         credits = course.getCredits();
         creditHours = course.getCreditHours();
         cost = course.getCost();
     }
-    BaseCourse operator+(BaseCourse &course)
+    BaseCourse(string name) // parameterized constructor
+    {
+        this->name = name;
+    }
+    BaseCourse operator+(BaseCourse &course) // operator overload
     {
         BaseCourse temp = BaseCourse();
         temp.cost = course.getCost() + this->getCost();
@@ -70,7 +70,11 @@ public:
     }
     friend void setCredits(BaseCourse *&course, int credits);
 };
-void setCredits(BaseCourse *&course, int credits)
+
+int input;
+vector<BaseCourse *> courses; // array of all courses
+
+void setCredits(BaseCourse *&course, int credits) // friend function
 {
     course->credits = credits;
 }
@@ -79,7 +83,7 @@ class MandatoryFeature
 public:
     MandatoryFeature(BaseCourse *c)
     {
-        setCredits(c, 1);
+        setCredits(c, 1); // mandatory, so credits=1
     }
 };
 class OptionalFeature
@@ -87,12 +91,16 @@ class OptionalFeature
 public:
     OptionalFeature(BaseCourse *c)
     {
-        setCredits(c, 0);
+        setCredits(c, 0); // no credits for optional
     }
 };
 class ENGCourse : public BaseCourse
 {
 public:
+    string getInfo() // function override
+    {
+        return "Name: " + getName() + "\nCredits: " + to_string(getCredits()) + "\nCredit Hours: " + to_string(getCreditHours());
+    }
     ENGCourse(string n) : BaseCourse(n)
     {
     }
@@ -132,9 +140,19 @@ public:
     {
     }
 };
-vector<BaseCourse *> courses;
-int input;
 
+void initializeCourses()
+{
+    courses.push_back(new ENG1010());
+    courses.push_back(new CSE1100());
+    courses.push_back(new PHY1200());
+}
+void deleteCourses()
+{
+    delete courses[0];
+    delete courses[1];
+    delete courses[2];
+}
 void showAllCourses()
 {
     system("cls");
@@ -145,20 +163,12 @@ void showAllCourses()
     }
     cin >> input;
     system("cls");
+    if (input < 1 || input > 3)
+    {
+        cout << "Invalid option" << endl;
+        return;
+    }
     cout << courses[input - 1]->getInfo() << endl;
-}
-void initializeCourses()
-{
-    courses.push_back(new ENG1010());
-    courses.push_back(new CSE1100());
-    courses.push_back(new PHY1200());
-}
-void deleteCourses()
-{
-
-    delete courses[0];
-    delete courses[1];
-    delete courses[2];
 }
 
 void calculateCost()
@@ -170,10 +180,15 @@ void calculateCost()
     {
         cout << i + 1 << ". " << courses[i]->getName() << endl;
     }
-    cout << i + 1 << ". All" << endl;
+    cout << i + 1 << ". All" << endl; // option 4: all
 
     cin >> input;
-    if (input == 4)
+    if (input < 1 || input > 4)
+    {
+        cout << "Invalid option" << endl;
+        return;
+    }
+    if (input == 4) // option 4: all
     {
         BaseCourse course = BaseCourse();
         course.setCost(0);
@@ -210,11 +225,16 @@ void calculateCreditHours()
     {
         cout << i + 1 << ". " << courses[i]->getName() << endl;
     }
-    cout << i + 1 << ". All" << endl;
+    cout << i + 1 << ". All" << endl; // option 4: all
 
     int credHours = 0;
     cin >> input;
-    if (input == 4)
+    if (input < 1 || input > 4)
+    {
+        cout << "Invalid option" << endl;
+        return;
+    }
+    if (input == 4) // option 4: all
     {
         for (int i = 0; i < courses.size(); i++)
         {
@@ -233,13 +253,12 @@ void calculateCreditHours()
 inline void homeScreen()
 {
     system("cls");
-    string mainScreen = "Select an option \n"
-                        "1. View all courses \n"
-                        "2. Add course costs \n"
-                        "3. Calculate credit hours \n"
-                        "4. View with scholarship \n"
-                        "5. Exit\n";
-    cout << mainScreen;
+    cout << "Select an option \n"
+            "1. View all courses \n"
+            "2. Add course costs \n"
+            "3. Calculate credit hours \n"
+            "4. View with scholarship \n"
+            "5. Exit\n";
     cin >> input;
     switch (input)
     {
@@ -256,13 +275,13 @@ inline void homeScreen()
         viewScholarshipApplied();
         break;
     case 5:
-        deleteCourses();
+        deleteCourses(); // delete keyword
         exit(0);
         break;
     default:
         cout << endl
              << "Invalid Option";
-        deleteCourses();
+        deleteCourses(); // delete keyword
         exit(0);
         break;
     }
@@ -275,8 +294,8 @@ inline void homeScreen()
 
 int main()
 {
-    initializeCourses();
-    homeScreen(); // inline function
+    initializeCourses(); // dynamic memory allocation
+    homeScreen();        // inline function
     cin.ignore();
     getchar();
 }

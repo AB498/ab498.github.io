@@ -1,10 +1,7 @@
 #include <iostream>
-#include <vector>
 #include <string>
 
 using namespace std;
-
-void homeScreen();
 
 class Vehicle
 {
@@ -27,7 +24,7 @@ public:
     {
         return price;
     }
-    float getPrice(int BDT)
+    float getPrice(int BDT) // overload
     {
         if (BDT)
             return price * 100;
@@ -57,7 +54,7 @@ public:
     }
     ~Vehicle()
     {
-        cout << "Vehicle destroyed" << endl;
+        cout << "Vehicle information destroyed" << endl;
     }
 };
 
@@ -101,7 +98,7 @@ void setType(Vehicle &v, string s)
     v.vehicleType = s;
 }
 
-void displayLocations()
+inline void displayLocations()
 {
     cout << "Locations: \n"
             "1. Cantonment, Dhaka \n"
@@ -110,11 +107,13 @@ void displayLocations()
 
 int main()
 {
+    Vehicle *vehicle = NULL;
 
 main:
     cout << "\nSelect an option \n"
             "1. Rent Vehicle \n"
-            "2. Pickup and drop-off locations \n";
+            "2. Pickup and drop-off locations \n"
+            "3. Exit \n";
     int input;
 
     cin >> input;
@@ -123,11 +122,10 @@ main:
     case 1:
         cout << "Vehicle type? \n"
                 "1. Bus \n"
-                "2. Bicycle  \n"
-                "3. Ambulance  \n";
+                "2. Bicycle \n"
+                "3. Ambulance \n";
         int input2;
         cin >> input2;
-        Vehicle *vehicle;
         switch (input2)
         {
         case 1:
@@ -154,12 +152,16 @@ main:
         goto main;
 
         break;
+    case 3:
+        break;
     default:
         cout << endl
              << "Invalid input" << endl;
-        goto main;
         break;
     }
+
+    if (vehicle != NULL)
+        delete vehicle;
 
     return 0;
 }
