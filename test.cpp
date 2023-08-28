@@ -1,15 +1,19 @@
 #include <iostream>
-
+#include <vector>
 using namespace std;
-
-class Phone
+class Solution
 {
 public:
-    Phone(string name, int size)
+    vector<vector<int>> subsetsWithDup(vector<int> &nums)
     {
+        return {nums};
     }
 };
-int main()
+
+int main(int argc, char const *argv[])
 {
-    Phone phone1("iphonex", 10100);
+    vector<int> v = {1, 2, 4, 5, 7};
+
+    Solution().subsetsWithDup(v);
+    return 0;
 }

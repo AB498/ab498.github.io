@@ -32,7 +32,14 @@ T ConvToStringNonPrint(const T &value)
 }
 
 template <typename T>
-std::vector<T> ConvToString(const std::vector<T> &vec, int lineNum, int col)
+std::string getVectString(T v)
+{
+    std::ostringstream os;
+    os << v;
+    return os.str();
+}
+template <typename T>
+std::string getVectString(std::vector<T> vec)
 {
     std::ostringstream os;
     os << "[";
@@ -40,10 +47,17 @@ std::vector<T> ConvToString(const std::vector<T> &vec, int lineNum, int col)
     {
         if (i > 0)
             os << ", ";
-        os << (vec[i]);
+        os << getVectString(vec[i]);
     }
     os << "]";
-    __sprecial_print(os.str(), lineNum, col);
+    return os.str();
+}
+template <typename T>
+std::vector<T> ConvToString(const std::vector<T> &vec, int lineNum, int col)
+{
+    std::string os;
+    os = getVectString(vec);
+    __sprecial_print(os, lineNum, col);
     return vec;
 }
 

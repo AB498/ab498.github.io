@@ -1,87 +1,19 @@
 #include <iostream>
-
-template <typename T>
-class Queue
+#include <vector>
+using namespace std;
+class Solution
 {
-private:
-    struct Node
-    {
-        T data;
-        Node *next;
-        Node(const T &item) : data(item), next(nullptr) {}
-    };
-
-    Node *frontNode;
-    Node *rearNode;
-
 public:
-    Queue() : frontNode(nullptr), rearNode(nullptr) {}
-
-    ~Queue()
+    vector<vector<int>> subsetsWithDup(vector<int> &nums)
     {
-        while (frontNode)
-        {
-            Node *temp = frontNode;
-            frontNode = frontNode->next;
-            delete temp;
-        }
-    }
-
-    bool isEmpty() const
-    {
-        return frontNode == nullptr;
-    }
-
-    void enqueue(const T &item)
-    {
-        Node *newNode = new Node(item);
-        if (isEmpty())
-        {
-            frontNode = rearNode = newNode;
-        }
-        else
-        {
-            rearNode->next = newNode;
-            rearNode = newNode;
-        }
-    }
-
-    void dequeue()
-    {
-        if (!isEmpty())
-        {
-            Node *temp = frontNode;
-            frontNode = frontNode->next;
-            delete temp;
-        }
-    }
-
-    T front() const
-    {
-        if (!isEmpty())
-        {
-            return frontNode->data;
-        }
-        else
-        {
-            std::cout << ("Queue is empty.");
-        }
+        return {nums, nums};
     }
 };
 
-int main()
+int main(int argc, char const *argv[])
 {
-    Queue<int> myQueue;
+    vector<int> v = {1, 2};
 
-    myQueue.enqueue(10);
-    myQueue.enqueue(20);
-    myQueue.enqueue(30);
-
-    std::cout << "Front element: " << myQueue.front() << std::endl;
-
-    myQueue.dequeue();
-
-    std::cout << "Front element after dequeue: " << myQueue.front() << std::endl;
-
+    Solution().subsetsWithDup(v);
     return 0;
 }
