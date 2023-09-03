@@ -26,7 +26,6 @@ window.poll = (func, callback) => {
   let res = func();
   if (!res) {
     setTimeout(() => {
-      console.log("polling... ");
       window.poll(func, callback);
     }, 100);
     return;
