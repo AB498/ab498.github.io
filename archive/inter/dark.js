@@ -44,10 +44,6 @@ else if (localStorage.getItem("theme") === "light")
 setDarkMode(localStorage.getItem("theme") === "dark");
 
 function setDarkMode(isDark) {
-  // console.log("dark", isDark);
-  // if (window.alertify) {
-  //   window.alertify.success("" + isDark);
-  // }
   if (isDark) {
     document.documentElement.classList.add("dark");
     document.querySelector("#switchhelper").classList.add("grow");

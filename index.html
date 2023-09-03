@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- vuejs -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- unused -->
+    <script src="https://unpkg.com/vue-router@4"></script>
+
+    <!-- google fonts and icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+    <!-- tooltip -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
+
+
+    <!-- alert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.min.js"
+        integrity="sha512-JnjG+Wt53GspUQXQhc+c4j8SBERsgJAoHeehagKHlxQN+MtCCmFDghX9/AcbkkNRZptyZU4zC8utK59M5L45Iw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css"
+        integrity="sha512-MpdEaY2YQ3EokN6lCD6bnWMl5Gwk7RjBbpKLovlrH6X+DRokrPRAF3zQJl1hZUiLXfo2e9MrOt+udOnHCAmi5w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- css animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* remove tailwind default */
+        input[type="text"] {
+            outline: none;
+        }
+
+        .tippy-box[data-theme~='transparent'] {
+            background-color: #00000000;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+    <!-- fontawesome icon link -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = { darkMode: 'class' } // theme 
+    </script>
+
+</head>
+
+<body class="flex flex-col h-screen bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50">
+
+    <!-- vue app -->
+    <div class="w-full h-full flex flex-col transition-all duration-500" id="app">
+        <!-- splash screen -->
+        <div class="splash fixed w-screen h-screen bg-white dark:bg-zinc-950 top-0 left-0 z-50 transition-all duration-500 pointer-events-none"
+            :class="loaded ? 'opacity-0' : 'opacity-100'"> </div>
+        <!-- top nav bar -->
+        <div
+            class="topnav flex basis-1/12 border-b dark:border-b dark:border-zinc-700 shrink-0 items-center px-6 space-x-2">
+            <!-- animation stuff  -->
+            <span class="material-symbols-outlined cursor-pointer  animate__animated top-menu-btn" @click="()=>{ window.document.querySelector('.top-menu-btn').classList.remove('animate__swing');
+                window.setTimeout(() => { 
+                    if(breakpoint.includes('sm'))window.document.querySelector('.top-menu-btn').classList.add('animate__swing'); 
+                }, 0);
+                window.document.querySelector('.sidenav').classList.toggle('-translate-x-full'); 
+            }">menu</span>
+            <div class="grow"></div>
+
+            <!-- dark mode switch (by me) -->
+            <div class="tailwind-dark-toggle"></div>
+            <script src="https://ab498.github.io/static/js/dark.js"></script>
+            <span class="material-symbols-outlined cursor-pointer">notifications</span>
+            <!-- image and name -->
+            <button
+                class="expand-profile flex font-bold center space-x-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 p-2 rounded ">
+                <img :src="user.avatar" alt="" class="w-6 h-6 rounded-full shadow-xl">
+                <!-- provided by vuejs of course -->
+                <div>
+                    {{user.firstName}}
+                </div>
+                <span class="material-symbols-outlined">expand_more</span>
+            </button>
+            <!-- expanded fiv used by tippy -->
+            <div
+                class="expanded-profile flex flex-col hidden rounded p-6 px-12 shadow border bg-zinc-100 dark:bg-zinc-900 ">
+                <button v-for="item in lefnavItems" :key="item.name"
+                    class="flex overflow-auto w-full h-12 items-center space-x-2 transition-all duration-500"
+                    :class="sidebarWindow == item.path ?'text-zinc-950 dark:text-zinc-50':'text-zinc-400 dark:text-zinc-500'"
+                    @click="sidebarWindow = item.path">
+                    <div type="button" class="relative self-center">
+                        <span class="material-symbols-outlined relative ">
+                            {{item.icon}}
+                            <div :class="item.path == '/notifications' ?'':'hidden'"
+                                class="absolute inline-flex items-center justify-center w-2 h-2 text-xs font-bold text-white bg-red-500 rounded-full top-0 right-0">
+                            </div>
+                        </span>
+                    </div>
+                    <div class="flex  break-words overflow-auto ">
+                        {{item.name}}
+                    </div>
+                </button>
+            </div>
+        </div>
+        <!-- side nav bar and main content -->
+        <div class="side-and-main flex flex-row grow overflow-auto relative ">
+            <div
+                class="sidenav flex flex-col basis-1/4  shrink-0 border-r-2 dark:border-r dark:border-zinc-700 border-zinc-100 text-center h-full bg-white dark:bg-zinc-950 overflow-auto w-full -translate-x-full absolute sm:translate-x-0 sm:static transition-all duration-500">
+                <div class="text-xl font-bold py-8">User Profile</div>
+                <div class=" flex font-medium ">
+                    <!-- items -->
+                    <div class="grow flex flex-col">
+                        <div class="flex flex-col self-center">
+                            <button v-for="item in lefnavItems" :key="item.name"
+                                class="flex overflow-auto w-full h-12 items-center space-x-2 transition-all duration-500"
+                                :class="sidebarWindow == item.path ?'text-zinc-950 dark:text-zinc-50':'text-zinc-400 dark:text-zinc-600'"
+                                @click="sidebarWindow = item.path">
+                                <div type="button" class="relative self-center">
+                                    <span class="material-symbols-outlined">{{item.icon}}</span>
+                                    <div :class="item.path == '/notifications' ?'':'hidden'"
+                                        class="absolute inline-flex items-center justify-center w-2 h-2 text-xs font-bold text-white bg-red-500 rounded-full top-0 right-0">
+                                    </div>
+                                </div>
+                                <div class="flex  break-words overflow-auto ">
+                                    {{item.name}}
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- red bar on right of items -->
+                    <div class="w-1 flex flex-col ">
+                        <div v-for="item in lefnavItems" :key="item.name"
+                            class="w-1 flex flex-col bg-red-500 rounded-l-full h-12 opacity-0 transition-all duration-500"
+                            :class="sidebarWindow == item.path ?'opacity-100':''" @click="sidebarWindow = item.path">
+                            <div class="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grow"></div>
+                <button class="logout flex center h-12 text-sm hover:bg-zinc-200 dark:hover:bg-zinc-800 m-4 rounded"
+                    onclick="alertify.success('Logout Template Alert!');">
+                    <span class="material-symbols-outlined">logout</span>
+                    <div class="flex  break-words overflow-auto ">Log out
+                    </div>
+                </button>
+            </div>
+
+            <div class="main-content flex flex-col grow shrink-0 overflow-auto">
+                <!-- router view (unused) -->
+                <div v-if="sidebarWindow == '/profile'"
+                    class="flex flex-col self-stretch sm:self-center  items-center h-full overflow-auto">
+                    <!-- image and name -->
+                    <div class="flex center space-x-4 sm:w-96 py-8 pt-14 ">
+                        <img :src="user.avatar  " alt="" class="w-20 h-20 rounded-full shadow-xl">
+                        <div class="flex flex-col">
+                            <div class="font-bold">{{ user.firstName + ' ' + user.lastName }}</div>
+                            <div class="text-xs text-zinc-500">Dhaka, Bangladesh</div>
+                        </div>
+                    </div>
+                    <!-- inputs -->
+                    <div class="flex flex-col self-stretch w-full">
+                        <div class="grid grid-cols-1 p-4 sm:grid-cols-2 gap-x-12 gap-y-4 ">
+                            <div class="flex flex-col">
+                                <div class="text-sm font-medium text-zinc-500">First Name</div>
+                                <input
+                                    class="text-center font-medium bg-zinc-100 dark:bg-zinc-900 border focus:shadow-lg w-full h-10 rounded-md"
+                                    type="text" placeholder="First Name" :value="user.firstName">
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="text-sm font-medium text-zinc-500">Last Name</div>
+                                <input
+                                    class="text-center font-medium bg-zinc-100 dark:bg-zinc-900 border focus:shadow-lg w-full h-10 rounded-md"
+                                    type="text" placeholder="Last Name" :value="user.lastName">
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="text-sm font-medium text-zinc-500">Email Address</div>
+                                <input
+                                    class="text-center font-medium bg-zinc-100 dark:bg-zinc-900 border focus:shadow-lg w-full h-10 rounded-md"
+                                    type="text" placeholder="Email Address" :value="user.email">
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="text-sm font-medium text-zinc-500">Phone Number</div>
+                                <input
+                                    class="text-center font-medium bg-zinc-100 dark:bg-zinc-900 border focus:shadow-lg w-full h-10 rounded-md"
+                                    type="text" placeholder="Phone Number" :value="user.phone">
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="text-sm font-medium text-zinc-500">Location</div>
+                                <input
+                                    class="text-center font-medium bg-zinc-100 dark:bg-zinc-900 border focus:shadow-lg w-full h-10 rounded-md"
+                                    type="text" placeholder="Location" :value="user.address">
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="text-sm font-medium text-zinc-500">Postal Code</div>
+                                <input
+                                    class="text-center font-medium bg-zinc-100 dark:bg-zinc-900 border focus:shadow-lg w-full h-10 rounded-md"
+                                    type="text" placeholder="Postal Code" :value="user.postcode">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- buttons -->
+                    <div class="btn-container flex">
+                        <div class="save center my-8 bg-orange-600 text-white rounded-xl p-2 px-12 shadow-xl hover:bg-orange-700 transition-all duration-500"
+                            onclick="alertify.success('Template Alert!');">
+                            <div class="flex  break-words overflow-auto ">Save Changes</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="sidebarWindow == '/favourites'"
+                    class="text-2xl font-medium flex flex-col self-stretch sm:self-center center h-full overflow-auto">
+                    Favorite
+                </div>
+                <div v-if="sidebarWindow == '/watchlist'"
+                    class="text-2xl font-medium flex flex-col self-stretch sm:self-center center h-full overflow-auto">
+                    Watchlist
+                </div>
+                <div v-if="sidebarWindow == '/settings'"
+                    class="text-2xl font-medium flex flex-col self-stretch sm:self-center center h-full overflow-auto">
+                    Settings
+                </div>
+                <div v-if="sidebarWindow == '/notifications'"
+                    class="text-2xl font-medium flex flex-col self-stretch sm:self-center center h-full overflow-auto">
+                    Notifications
+                </div>
+            </div>
+        </div>
+        <div class=" bottom flex h-16 grow-0 shrink-0 sm:hidden bg-zinc-100 dark:bg-zinc-900 border-t border-zinc-500">
+            <div class="flex flex-row justify-between px-4 basis-full shrink-0">
+                <button v-for="item in lefnavItems" :key="item.name"
+                    class="flex overflow-auto w-full sm:h-12 items-center space-x-2 transition-all duration-500 center"
+                    :class="sidebarWindow == item.path ?'text-zinc-950 dark:text-zinc-50':'text-zinc-500'"
+                    @click="sidebarWindow = item.path">
+                    <div type="button" class="self-center rounded  p-2"
+                        :class="sidebarWindow == item.path ?'bg-zinc-200 dark:bg-zinc-800':''">
+                        <span class="material-symbols-outlined relative ">
+                            {{item.icon}}
+                            <div :class="item.path == '/notifications' ?'':'hidden'"
+                                class="absolute inline-flex items-center justify-center w-2 h-2 text-xs font-bold text-white bg-red-500 rounded-full top-0 right-0">
+                            </div>
+                        </span>
+                    </div>
+                    <div class="hidden sm:flex break-words overflow-auto ">
+                        {{item.name}}
+                    </div>
+                </button>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        const { createApp, ref, onMounted } = Vue
+
+        const app = createApp({
+            setup() {
+                const loaded = ref(false);
+                const user = ref({
+                    firstName: 'Zubaer',
+                    lastName: 'Ahmed',
+                    email: 'zubaerahmed100@gmail.com',
+                    phone: '+8801827829617',
+                    address: 'ECB, Dhaka Cantonment',
+                    postcode: '1206',
+                    avatar: 'https://picsum.photos/200/300'
+                })
+                const sidebarWindow = ref('/profile')
+                const lefnavItems = ref([{
+                    name: 'User Info',
+                    icon: 'person',
+                    path: '/profile'
+                }, {
+                    name: 'Favourites',
+                    icon: 'favorite',
+                    path: '/favourites'
+                }, {
+                    name: 'Watchlist',
+                    icon: 'star',
+                    path: '/watchlist'
+                },
+                {
+                    name: 'Settings',
+                    icon: 'settings',
+                    path: '/settings'
+                },
+                {
+                    name: 'Notifiations',
+                    icon: 'notifications',
+                    path: '/notifications'
+                },
+                ])
+                const breakpoint = ref([]);
+                const getBP = () => {
+                    const width = window.innerWidth;
+                    if (width >= 1536) return ['2xl', 'xl', 'lg', 'md', 'sm']
+                    if (width >= 1280) return ['xl', 'lg', 'md', 'sm']
+                    if (width >= 1024) return ['lg', 'md', 'sm']
+                    if (width >= 768) return ['md', 'sm'];
+                    if (width >= 640) return ['sm'];
+                    return 'default'; // or handle differently
+                };
+                onMounted(() => {
+                    setTimeout(() => {
+                        loaded.value = true;
+                    }, 0);
+                    window.addEventListener('resize', () => { breakpoint.value = getBP() });
+                    breakpoint.value = getBP();
+                })
+                return {
+                    lefnavItems,
+                    sidebarWindow,
+                    user,
+                    loaded,
+                    breakpoint
+                }
+            }
+
+        });
+
+        app.config.globalProperties.window = window;
+        app.mount('#app')
+        const template = document.querySelector('.expanded-profile');
+        template.classList.remove('hidden');
+
+        tippy('.expand-profile', {
+            theme: 'transparent',
+            content: template,
+            animation: 'scale',
+            trigger: 'click',
+            interactive: true,
+            arrow: false,
+        });
+        tippy('.tailwind-dark-toggle', {
+            content: "Currently " + localStorage.theme + " mode",
+            animation: 'fade',
+            onTrigger(instance, event) {
+                instance.setContent("Currently " + localStorage.theme + " mode");
+            },
+        });
+
+        alertify.set('notifier', 'position', 'bottom-center');
+
+
+    </script>
+</body>
+
+</html>

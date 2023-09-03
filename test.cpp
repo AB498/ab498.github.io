@@ -1,19 +1,63 @@
 #include <iostream>
-#include <vector>
 using namespace std;
-class Solution
+class node
 {
 public:
-    vector<vector<int>> subsetsWithDup(vector<int> &nums)
+    int data;
+    node *next;
+
+    node(int value)
     {
-        return {nums};
+        data = value;
+        next = NULL;
     }
 };
-
-int main(int argc, char const *argv[])
+void insertAthead(node *head, int val)
 {
-    vector<int> v = {1, 2, 4, 5, 7};
+    node *n = new node(val);
+    n->next = head;
+    head = n;
+    return;
+}
 
-    Solution().subsetsWithDup(v);
+void insertATail(node *&head, int val)
+{
+    node *n = new node(val);
+    if (head == NULL)
+    {
+        head = n;
+        return;
+    }
+
+    node *temp = head;
+    while (temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+    temp->next = n;
+}
+
+void display(node *head)
+{
+    node *temp = head;
+    while (temp != NULL)
+    {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << "NULL" << endl;
+}
+
+int main()
+{
+    node *head = NULL;
+
+    insertATail(head, 1);
+
+    insertATail(head, 2);
+
+    insertATail(head, 3);
+    insertAthead(head, 4);
+    display(head);
     return 0;
 }
