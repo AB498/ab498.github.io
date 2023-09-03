@@ -55,13 +55,6 @@ poll(
               <div
                 id="switchhelper"
                 class="transition-all duration-200 ease-in-out"
-                :ref="
-                  (el) => {
-                    // window.localStorage.getItem('theme') == 'dark'
-                    //   ? el.classList.add('grow')
-                    //   : null;
-                  }
-                "
               ></div>
               <div
                 class="toggle-circle flex h-6 w-6 items-center justify-center rounded-full bg-zinc-50 dark:bg-blue-950 border-2 border-blue-400 p-1"
