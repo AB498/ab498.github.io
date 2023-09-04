@@ -93,7 +93,7 @@
         <div
             class="topnav flex basis-1/12 border-b dark:border-b dark:border-zinc-700 shrink-0 items-center px-6 space-x-2">
             <!-- animation stuff  -->
-            <span class="material-symbols-outlined cursor-pointer  animate__animated top-menu-btn" @click="()=>{ window.document.querySelector('.top-menu-btn').classList.remove('animate__swing');
+            <span class="material-symbols-outlined cursor-pointer animate__animated top-menu-btn" @click="()=>{ window.document.querySelector('.top-menu-btn').classList.remove('animate__swing');
                 window.setTimeout(() => { 
                     if(breakpoint.includes('sm'))window.document.querySelector('.top-menu-btn').classList.add('animate__swing'); 
                 }, 0);
