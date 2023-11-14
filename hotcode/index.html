@@ -217,6 +217,8 @@
         let parser;
         let outputDecs = []
         let globalCompileTime = 0;
+        let lastRun;
+        let abortControllers = [];
 
         function tryParseJSON(obj) {
             try {
@@ -280,8 +282,13 @@
             else monaco.editor.setTheme('vs');
         }
 
-
         async function runCurrentFile() {
+            lastRun = Date.now();
+            let currentRun = lastRun;
+            while (abc = abortControllers.pop())
+                abc.abort();
+
+
             let code = editor.getValue();
             let tree = parser.parse(editor.getValue());
             let [syntaxTreeJSON, globalData] = syntaxNodeToJSON(tree.rootNode, { path: [] }, {});
@@ -292,14 +299,16 @@
                 globalData.identifiers,
             );
 
-            console.log("text", replacedCode);
 
-
-
-            clearOutput();
             editor.deltaDecorations(outputDecs, []);
+            clearOutput();
+
+
+            const controller = new AbortController()
+            abortControllers.push(controller);
 
             let res = await fetch('https://ab498.pythonanywhere.com/compile', {
+                signal: controller.signal,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -307,19 +316,25 @@
                 body: JSON.stringify({ code: replacedCode })
             });
             let { output, error } = (await res.json()) || { error: "1" };
-            console.log(output);
             if (error) {
                 let errorLines = extractErrors(error);
                 if (!Object.entries(errorLines).length) return;
-                addOutput(Object.entries(errorLines).map((e) => e[1]).join("\n"));
+                // editor.deltaDecorations(outputDecs, []);
+                // clearOutput();
+
+                if (currentRun != lastRun) return;
                 setErrorDecors(errorLines);
+                addOutput(Object.entries(errorLines).map((e) => e[1]).join("\n"));
                 return;
             }
+            // console.log(output);
             let lineOutputs = extractLineOutputs(output);
             let actualOutput = output.replace(/__res_start__(\d+)_(\d+)__[\s\S]*?__res_end__(\d+)_(\d+)__/g, "");
+            editor.deltaDecorations(outputDecs, []);
+            clearOutput();
 
+            if (currentRun != lastRun) return;
             addOutput(actualOutput);
-
             setOutputDecors(lineOutputs);
             return (output)
         }
@@ -683,7 +698,7 @@
 
 
             for (const [key, value] of Object.entries(lineOutputs)) {
-                const lastCharIndex = editor.getModel().getLineContent(parseInt(key.split("_")[0])).length - 1;
+                const lastCharIndex = editor.getModel().getLineContent(parseInt(key.split("_")[0]) + 1).length - 1;
                 const range = new monaco.Range(parseInt(key.split("_")[0]) + 1, lastCharIndex + 1, parseInt(key.split("_")[0]) + 1, lastCharIndex + 20);
 
                 let message = value.length > 50 ? value.slice(0, 50) + "..." : value;
