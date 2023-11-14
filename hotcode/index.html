@@ -133,6 +133,17 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        .error-message {
+            margin: 1em;
+            padding: 0.2em 0.5em 0.2em 0.5em;
+            background-color: rgb(253, 149, 149);
+            border-radius: 5px;
+        }
+
+        .vs-dark .error-message {
+            background-color: rgb(180, 43, 43);
+        }
+
         .output-message {
             margin: 1em;
             padding: 0.2em 0.5em 0.2em 0.5em;
@@ -190,7 +201,7 @@
                 <div class="drag-handle " onmousedown="initDrag(event)">
                     <!-- <div class="bg-red-500 full h-1"></div> -->
                 </div>
-                <div class="terminal w-full bg-zinc-900 grow relative">
+                <div class="terminal w-full bg-zinc-100 dark:bg-zinc-900 grow relative">
                     <div class="output font-mono pre whitespace-pre-wrap full absolute  p-2 overflow-auto"></div>
                 </div>
 
@@ -220,7 +231,7 @@
 
         (async () => {
 
-            window.injectable = await (await fetch('/injectable.cpp')).text();
+            window.injectable = (await (await fetch('/injectable.cpp')).text()).trim();
             window.placeholderCode = await (await fetch('/placeholderCode.cpp')).text();
 
             function asyncRequire(path) {
@@ -295,15 +306,22 @@
                 },
                 body: JSON.stringify({ code: replacedCode })
             });
-            let data = await res.text();
-            console.log(data);
-            let lineOutputs = extractLineOutputs(data);
-            let actualOutput = data.replace(/__res_start__(\d+)_(\d+)__[\s\S]*?__res_end__(\d+)_(\d+)__/g, "");
+            let { output, error } = (await res.json()) || { error: "1" };
+            console.log(output);
+            if (error) {
+                let errorLines = extractErrors(error);
+                if (!Object.entries(errorLines).length) return;
+                addOutput(Object.entries(errorLines).map((e) => e[1]).join("\n"));
+                setErrorDecors(errorLines);
+                return;
+            }
+            let lineOutputs = extractLineOutputs(output);
+            let actualOutput = output.replace(/__res_start__(\d+)_(\d+)__[\s\S]*?__res_end__(\d+)_(\d+)__/g, "");
 
             addOutput(actualOutput);
 
             setOutputDecors(lineOutputs);
-            return (data)
+            return (output)
         }
 
         function addOutput(s) {
@@ -626,7 +644,7 @@
         }
         function setOutputDecors(lineOutputs, code) {
             // Clear existing decorations
-            hoverDecs = editor.deltaDecorations(outputDecs, []);
+            editor.deltaDecorations(outputDecs, []);
             outputDecs = [];
 
             for (const [key, value] of Object.entries(lineOutputs)) {
@@ -658,7 +676,57 @@
             }
 
         }
+        function setErrorDecors(lineOutputs, code) {
+            // Clear existing decorations
+            editor.deltaDecorations(outputDecs, []);
+            outputDecs = [];
 
+
+            for (const [key, value] of Object.entries(lineOutputs)) {
+                const lastCharIndex = editor.getModel().getLineContent(parseInt(key.split("_")[0])).length - 1;
+                const range = new monaco.Range(parseInt(key.split("_")[0]) + 1, lastCharIndex + 1, parseInt(key.split("_")[0]) + 1, lastCharIndex + 20);
+
+                let message = value.length > 50 ? value.slice(0, 50) + "..." : value;
+                outputDecs = outputDecs.concat(editor.deltaDecorations([], [
+                    {
+                        range,
+                        options: {
+                            hoverMessage: [{
+                                isTrusted: true,
+                                supportHtml: true,
+                                value: `<pre style="color:#ff0000;">${value}</pre>`
+                            }],
+                            after: message ? {
+                                content: message.replace(/\r*\n/g, ' '),
+                                inlineClassName: 'error-message text-yellow-500',
+                                inlineClassNameAffectsLetterSpacing: true,
+                            } : undefined,
+                        },
+                    },
+                ]));
+            }
+
+        }
+        function extractErrors(errorLogs) {
+            const errorMap = {};
+
+            const lines = errorLogs.trim().split('\n');
+            for (const line of lines) {
+                if (/.*:\d+:\d+:/.test(line)) {
+                    // use regex to get line and col number
+                    let match = line.match(/.*:(\d+:\d+):[:\s]*/);
+                    match = match[1].split(':')//.join('_');
+                    match[0] = -injectable.split('\n').length + parseInt(match[0]) - 2;
+                    match = match.join('_');
+                    match;
+                    const ln = line.replace(/.*:(\d+:\d+):[:\s]*/, '');
+                    ln;
+                    errorMap[match] = ln;
+                }
+            }
+
+            return errorMap;
+        }
     </script>
 </body>
 
