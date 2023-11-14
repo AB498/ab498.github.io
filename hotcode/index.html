@@ -38,8 +38,9 @@
     <!-- css animations -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
+    <script src="../static/js/tree-sitter.js"></script>
 
-    <script src="https://ab498.github.io/monaco-editor/min/vs/loader.js"></script>
+    <script src="../monaco-editor/min/vs/loader.js"></script>
     <style>
         .center {
             display: flex;
@@ -82,6 +83,7 @@
         }
 
         .drag-handle-horizontal {
+            cursor: col-resize;
             display: inline-block;
             width: auto;
             height: 100%;
@@ -99,6 +101,7 @@
         }
 
         .drag-handle {
+            cursor: row-resize;
             display: inline-block;
             height: auto;
             width: 100%;
@@ -114,6 +117,43 @@
             height: 3px;
             width: 100%;
         }
+
+        .hover-effect {
+            cursor: pointer;
+            padding: 5px;
+            color: #555;
+        }
+
+        .hover-effect:hover {
+            color: #000;
+            transition: 0.3s;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .output-message {
+            margin: 1em;
+            padding: 0.2em 0.5em 0.2em 0.5em;
+            background-color: aqua;
+            border-radius: 5px;
+        }
+
+        .vs-dark .output-message {
+            background-color: #555;
+        }
+
+        .output-message2 {
+
+            font-size: 0.8em;
+            line-height: 0.8em;
+            padding: 0em 0.4em 0em 0.4em;
+            position: absolute;
+            top: 70%;
+            border: 1px solid white;
+
+        }
     </style>
     <!-- fontawesome icon link -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
@@ -124,62 +164,156 @@
 </head>
 
 <body class="flex flex-col h-screen bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50">
-    <script src="https://ab498.github.io/static/js/dark-ssr.js"></script>
+    <script src="../static/js/dark-ssr.js"></script>
 
-    <div class="w-full h-full flex flex-col transition-all duration-500 flex flex-col h-screen bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50"
+    <div class="w-full h-full flex flex-col   flex flex-col h-screen bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50"
         id="app">
         <div
-            class="topnav flex basis-1/12 border-b dark:border-b dark:border-zinc-700 shrink-0 items-center px-6 py-2 space-x-2">
+            class="topnav flex h-8 border-b dark:border-b dark:border-zinc-700 shrink-0 items-center px-6 py-2 space-x-2">
             <div class="grow"></div>
+            <div class="run-button" onclick="runCurrentFile()">
+                <i class="fa fa-play hover-effect "></i>
+            </div>
             <div class="tailwind-dark-toggle"></div>
         </div>
-        <div class="side-and-main flex flex-row grow overflow-auto relative ">
+        <div class="side-and-main flex flex-row grow overflow-auto relative grow">
             <div class="sidenav h-full bg-gray-300" style="width: 0%;">
             </div>
-            <div class="drag-handle-horizontal h-full p-2 cursor-move bg-blue-300"
-                onmousedown="initDragHorizontal(event)">
-                <div class="bg-red-500 full h-1"></div>
+            <div class="drag-handle-horizontal" onmousedown="initDragHorizontal(event)">
             </div>
             <div class="main-content flex flex-col grow shrink-0 overflow-auto">
                 <!-- main -->
 
-                <div class="main bg-yellow-100" style="height: 100%;">
-                    <div class="editor full"></div>
+                <div class="main bg-yellow-100 relative" style="height: 70%;">
+                    <div class="editor full absolute overflow-hidden "></div>
                 </div>
                 <div class="drag-handle " onmousedown="initDrag(event)">
                     <!-- <div class="bg-red-500 full h-1"></div> -->
                 </div>
-                <div class="terminal w-full bg-blue-500 grow  ">
+                <div class="terminal w-full bg-zinc-900 grow relative">
+                    <div class="output font-mono pre whitespace-pre-wrap full absolute  p-2 overflow-auto"></div>
                 </div>
 
                 <!-- /main -->
             </div>
         </div>
-        <div
-            class="transition-all duration-500 bottom flex h-16 grow-0 shrink-0 sm:hidden bg-zinc-100 dark:bg-zinc-900 border-t border-zinc-500">
+        <div class="  bottom flex h-8 grow-0 shrink-0  bg-zinc-100 dark:bg-zinc-900 border-t border-zinc-500">
         </div>
     </div>
     <script>
 
+        let editor;
+        let parser;
+        let outputDecs = []
+        let globalCompileTime = 0;
 
-            (async () => {
+        function tryParseJSON(obj) {
+            try {
+                if (typeof obj == "string")
+                    return JSON.stringify(obj);
+            } catch (e) {
+                return obj;
+            }
+        }
+        alertify.set('notifier', 'position', 'bottom-center');
+        let notify = (obj) => alertify.success(typeof obj == "string" ? obj : JSON.stringify(obj));
 
-                // window.injectable = await (await fetch('injectable.cpp')).text();
-                // window.placeholderCode = await (await fetch('placeholderCode.cpp')).text();
+        (async () => {
 
-                function asyncRequire(path) {
-                    return new Promise((resolve, reject) => {
-                        require([path], resolve, reject);
-                    });
-                }
-                require.config({ paths: { vs: 'https://ab498.github.io/monaco-editor/min/vs' } });
-                await asyncRequire('vs/editor/editor.main');
-                window.editor = monaco.editor.create(document.querySelector('.editor'), {
-                    minimap: { enabled: false },
-                    value: window.placeholderCode,
-                    language: 'cpp',
+            window.injectable = await (await fetch('/injectable.cpp')).text();
+            window.placeholderCode = await (await fetch('/placeholderCode.cpp')).text();
+
+            function asyncRequire(path) {
+                return new Promise((resolve, reject) => {
+                    require([path], resolve, reject);
                 });
-            })()
+            }
+            require.config({ paths: { vs: '../monaco-editor/min/vs' } });
+            await asyncRequire('vs/editor/editor.main');
+            editor = monaco.editor.create(document.querySelector('.editor'), {
+                minimap: { enabled: false },
+                value: window.placeholderCode,
+                language: 'cpp',
+            });
+            monaco.editor.setTheme('vs-dark');
+            function rsz() {
+                editor.layout();
+            }
+            new ResizeObserver(rsz).observe(document.querySelector('.editor').parentElement)
+
+            // on change set local storage
+            editor.getModel().onDidChangeContent(() => {
+                localStorage.lastCode = editor.getValue();
+            });
+
+
+            //set last text from llcal storage
+            editor.setValue(localStorage.lastCode || window.placeholderCode);
+
+            await TreeSitter.init();
+            parser = new TreeSitter();
+            const JavaScript = await TreeSitter.Language.load('../static/wasm/tree-sitter-cpp.wasm');
+            parser.setLanguage(JavaScript);
+
+
+            editor.getModel().onDidChangeContent(() => {
+                runCurrentFile();
+            });
+            runCurrentFile();
+
+        })();
+
+        window.ontailwindthemechange = (theme) => {
+            if (typeof monaco == 'undefined') return;
+            if (theme == "dark") monaco.editor.setTheme('vs-dark');
+            else monaco.editor.setTheme('vs');
+        }
+
+
+        async function runCurrentFile() {
+            let code = editor.getValue();
+            let tree = parser.parse(editor.getValue());
+            let [syntaxTreeJSON, globalData] = syntaxNodeToJSON(tree.rootNode, { path: [] }, {});
+            let replacedCode = injectable + '\n\n' + replaceExprs(
+                code,
+                globalData.functionCallSlices,
+                globalData.binaryRights,
+                globalData.identifiers,
+            );
+
+            console.log("text", replacedCode);
+
+
+
+            clearOutput();
+            editor.deltaDecorations(outputDecs, []);
+
+            let res = await fetch('https://ab498.pythonanywhere.com/compile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ code: replacedCode })
+            });
+            let data = await res.text();
+            console.log(data);
+            let lineOutputs = extractLineOutputs(data);
+            let actualOutput = data.replace(/__res_start__(\d+)_(\d+)__[\s\S]*?__res_end__(\d+)_(\d+)__/g, "");
+
+            addOutput(actualOutput);
+
+            setOutputDecors(lineOutputs);
+            return (data)
+        }
+
+        function addOutput(s) {
+            document.querySelector(".output").textContent += s + "\n";
+        }
+
+        function clearOutput() {
+            document.querySelector(".output").textContent = "";
+        }
+
 
         function initDrag(e) {
             if (!elMap[event.currentTarget]) elMap[event.currentTarget] = {};
@@ -291,30 +425,239 @@
             }
 
         });
-
         app.config.globalProperties.window = window;
         app.mount('#app')
         const template = document.querySelector('.expanded-profile');
         // template.classList.remove('hidden');
 
-        tippy('.expand-profile', {
-            theme: 'transparent',
-            content: template,
-            animation: 'scale',
-            trigger: 'click',
-            interactive: true,
-            arrow: false,
-        });
-        tippy('.tailwind-dark-toggle', {
-            content: "Currently " + localStorage.theme + " mode",
-            animation: 'fade',
-            onTrigger(instance, event) {
-                instance.setContent("Currently " + localStorage.theme + " mode");
-            },
-        });
 
-        alertify.set('notifier', 'position', 'bottom-center');
 
+        function syntaxNodeToJSON(node, parent, globalData) {
+            const jsonNode = {
+                type: node.type,
+                text: node.text,
+                path: [...parent.path, node.type],
+                children: [],
+            };
+
+            for (let i = 0; i < node.childCount; i++) {
+                const child = node.child(i);
+                jsonNode.children.push(
+                    syntaxNodeToJSON(child, jsonNode, globalData)[0]
+                );
+            }
+            globalData.functionToReturnMap = globalData.functionToReturnMap || {};
+            globalData.functionCallSlices = globalData.functionCallSlices || [];
+            globalData.binaryRights = globalData.binaryRights || [];
+            globalData.identifiers = globalData.identifiers || [];
+            found = true;
+            ["function_definition"].forEach((element, idx) => {
+                if (jsonNode.path.slice(-1)[idx] == element) {
+                } else found = false;
+            });
+            if (found) {
+                let func_name = jsonNode.children
+                    .find((e) => e.type == "function_declarator")
+                    ?.children.find((e) =>
+                        ["identifier", "field_identifier"].includes(e.type)
+                    )?.text;
+                let ret_type = jsonNode.children.find((e) =>
+                    [
+                        "primitive_type",
+                        "qualified_identifier",
+                        "template_type",
+                    ].includes(e.type)
+                )?.text;
+                globalData.functionToReturnMap[func_name] = ret_type;
+            }
+            // identifier
+            found = true;
+            ["expression_statement", "identifier"].forEach((element, idx) => {
+                if (jsonNode.path.slice(-2)[idx] == element) {
+                } else found = false;
+            });
+            if (found) {
+                globalData.identifiers.push(node);
+            }
+            // call
+            found = true;
+            ["expression_statement", "call_expression"].forEach((element, idx) => {
+                if (jsonNode.path.slice(-2)[idx] == element) {
+                } else found = false;
+            });
+            if (found) {
+                let callexpr = node;
+                if (
+                    [
+                        ...Object.entries(globalData.functionToReturnMap).filter(
+                            (el) => el[1] != "void"
+                        ),
+                        ["printf", "int"],
+                    ].some((el) =>
+                        [
+                            callexpr.children.find((e) =>
+                                ["identifier", "field_identifier"].includes(e.type)
+                            )?.text,
+                            callexpr.children
+                                .find((e) => ["field_expression"].includes(e.type))
+                                ?.children.find((e) => ["field_identifier"].includes(e.type))
+                                ?.text,
+                        ].includes(el[0])
+                    )
+                )
+                    globalData.functionCallSlices.push(callexpr);
+                // console.log(globalData.functionToReturnMap, 'callexpr', callexpr
+                //     .children.find(e => ['field_expression'].includes(e.type))
+                //     ?.children.find(e => ['field_identifier'].includes(e.type))?.text)
+            }
+
+            found = true;
+            ["assignment_expression"].forEach((element, idx) => {
+                if (jsonNode.path.slice(-1)[idx] == element) {
+                } else found = false;
+            });
+            if (found) {
+                let operand = node.children.find((e) => e.type == "<<")?.text;
+                let right = node.childForFieldName("right");
+                // console.log('assignment', node, right);
+                // console.log('assignment_expression', node.childForFieldName("right").walk().nodeType, node.childForFieldName("right").walk().nodeText)
+                if (
+                    right.text != "endl" &&
+                    right.text != "std::endl" &&
+                    operand == "<<"
+                )
+                    globalData.binaryRights.push(right);
+            }
+            found = true;
+            ["binary_expression"].forEach((element, idx) => {
+                if (jsonNode.path.slice(-1)[idx] == element) {
+                } else found = false;
+            });
+            if (found) {
+                let operand = node.children.find((e) => e.type == "<<")?.text;
+                let right = node.childForFieldName("right");
+                // console.log(operand, 'right', right.text);
+                if (
+                    right.text != "endl" &&
+                    right.text != "std::endl" &&
+                    operand == "<<"
+                )
+                    globalData.binaryRights.push(right);
+            }
+            globalData.binaryRights.forEach((e) => {
+                e.isBin = true;
+            });
+            return [jsonNode, globalData];
+        }
+
+        function replaceExprs(s, callNodes, binaryNodes, identifiers) {
+            let mergedNodes = [...callNodes, ...binaryNodes, ...identifiers].sort((a, b) => {
+                return a.startIndex - b.startIndex;
+            });
+            mergedNodes.reverse().forEach((node) => {
+                if (node.isBin) {
+                    // console.log('node', node.children);
+                    let prefix = s.substring(0, node.startIndex);
+                    let postfix = s.substring(node.endIndex, s.length);
+                    let replace = s.substring(node.startIndex, node.endIndex);
+                    // console.log('replace', replace);
+                    s =
+                        prefix +
+                        `_conv_string(${replace}, ${node.startIndex}, ${node.endIndex})` +
+                        postfix;
+                    return;
+                }
+
+                let func_name = node.children.find((e) =>
+                    ["identifier", "field_identifier"].includes(e.type)
+                )?.text;
+                let args = node.children.find((e) =>
+                    ["argument_list"].includes(e.type)
+                )?.text;
+                let prefix = s.substring(0, node.startIndex);
+                let postfix = s.substring(node.endIndex, s.length);
+                let replace = s.substring(node.startIndex, node.endIndex);
+                // console.log('replace_func', replace);
+                if (func_name == "printf") {
+                    s =
+                        prefix +
+                        `_special_printf(${node.startIndex}, ${node.endIndex}, ${args.slice(
+                            1,
+                            args.length - 1
+                        )})` +
+                        postfix;
+                } else
+                    s =
+                        prefix +
+                        `_conv_string(${replace}, ${node.startIndex}, ${node.endIndex})` +
+                        postfix;
+            });
+            return s;
+        }
+        function extractLineOutputs(outputString) {
+            let matches = findRegexMatches(
+                outputString,
+                /__res_start__(\d+)_(\d+)__[\s\S]*?__res_end__(\d+)_(\d+)__/gs
+            );
+            let lineOutputs = {};
+            matches.forEach((match) => {
+                let prefix = match.match(/__res_start__(\d+)_(\d+)__/);
+                let lineNum = prefix[1];
+                let col = prefix[2];
+                let suffix = match.match(/__res_end__(\d+)_(\d+)__/)[1];
+                let line = match.match(
+                    /__res_start__(\d+)_(\d+)__([\s\S]*?)__res_end__(\d+)_(\d+)__/s
+                )[3];
+                lineOutputs[lineNum + "_" + col] =
+                    (lineOutputs[lineNum + "_" + col]
+                        ? lineOutputs[lineNum + "_" + col] + "\n"
+                        : "") + line.trim();
+            });
+            return lineOutputs;
+        }
+
+        function findRegexMatches(string, regex) {
+            let matches = [];
+            let match;
+            while ((match = regex.exec(string))) {
+                matches.push(match[0]);
+            }
+            return matches;
+        }
+        function setOutputDecors(lineOutputs, code) {
+            // Clear existing decorations
+            hoverDecs = editor.deltaDecorations(outputDecs, []);
+            outputDecs = [];
+
+            for (const [key, value] of Object.entries(lineOutputs)) {
+                const startPosition = editor.getModel().getPositionAt(parseInt(key.split("_")[0]));
+                const lastCharIndex = editor.getModel().getLineContent(startPosition.lineNumber).length - 1;
+                console.log(lastCharIndex);
+                const endPosition = editor.getModel().getPositionAt(parseInt(key.split('_')[1]));
+
+                const range = new monaco.Range(startPosition.lineNumber, lastCharIndex + 1, endPosition.lineNumber, lastCharIndex + 20);
+
+                let message = value.length > 50 ? value.slice(0, 50) + "..." : value;
+                outputDecs = outputDecs.concat(editor.deltaDecorations([], [
+                    {
+                        range,
+                        options: {
+                            hoverMessage: [{
+                                isTrusted: true,
+                                supportHtml: true,
+                                value: `<pre style="color:#ff0000;">${value}</pre>`
+                            }],
+                            after: message ? {
+                                content: message.replace(/\r*\n/g, ' '),
+                                inlineClassName: 'output-message text-yellow-500',
+                                inlineClassNameAffectsLetterSpacing: true,
+                            } : undefined,
+                        },
+                    },
+                ]));
+            }
+
+        }
 
     </script>
 </body>

@@ -19,6 +19,10 @@ window.setDarkMode = (isDark, updateUI) => {
     document.documentElement.classList.remove("dark");
     localStorage.theme = "light";
   }
+
+  if (window.ontailwindthemechange) {
+    window.ontailwindthemechange(isDark ? "dark" : "light");
+  }
 };
 window.setDarkMode(localStorage.getItem("theme") === "dark");
 
