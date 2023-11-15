@@ -426,7 +426,8 @@
         <div class="side-and-main flex flex-row grow overflow-auto relative grow">
             <div class="sidenav h-full bg-gray-300" style="width: 0%;">
             </div>
-            <div class="drag-handle-horizontal" onmousedown="initDragHorizontal(event)">
+            <div class="drag-handle-horizontal" onmousedown="initDragHorizontal(event)"
+                ontouchstart="initDragHorizontal(event,true)">
             </div>
             <div class="main-content flex flex-col grow shrink-0 overflow-auto">
                 <!-- main -->
@@ -434,13 +435,14 @@
                 <div class="main relative" style="height: 70%;">
                     <div class="editor full absolute overflow-hidden "></div>
                 </div>
-                <div class="drag-handle " onmousedown="initDrag(event)"> </div>
+                <div class="drag-handle " onmousedown="initDrag(event)" ontouchstart="initDrag(event, true)"> </div>
                 <div class="terminal w-full bg-zinc-100 dark:bg-zinc-900 grow relative">
                     <div class=" full absolute overflow-auto flex">
                         <div class="bg-zinc-100 p-2 dark:bg-zinc-900 relative output font-mono pre whitespace-pre-wrap"
                             style="width: 100%;">
                         </div>
-                        <div class="drag-handle-horizontal " onmousedown="initDragHorizontal(event)"> </div>
+                        <div class="drag-handle-horizontal " onmousedown="initDragHorizontal(event)"
+                            ontouchstart="initDragHorizontal(event,true)"> </div>
                         <div class="bg-zinc-100 dark:bg-zinc-900 grow relative"></div>
                     </div>
 
@@ -613,7 +615,11 @@
         }
 
 
-        function initDrag(e) {
+        function initDrag(e, touch) {
+            if (touch) {
+                e.pageX = e.touches[0].pageX;
+                e.pageY = e.touches[0].pageY;
+            }
             if (!elMap[event.currentTarget]) elMap[event.currentTarget] = {};
             elMap[event.currentTarget].dragStart = { x: event.pageX, y: event.pageY };
             elMap[event.currentTarget].parentEl = e.currentTarget.parentElement;
@@ -622,16 +628,28 @@
 
             elMap[event.currentTarget].beforeElInitHeight = elMap[event.currentTarget].beforeEl.offsetHeight
 
-            let tmp_func = (e) => resizeEl(e, event.currentTarget);
+            let tmp_func = (e) => resizeEl(e, event.currentTarget, touch);
             elMap[event.currentTarget].parentEl.addEventListener('mousemove', tmp_func);
+            elMap[event.currentTarget].parentEl.addEventListener('touchmove', tmp_func);
             elMap[event.currentTarget].parentEl.addEventListener('mouseup', (e) => {
                 elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+                elMap[event.currentTarget].parentEl.removeEventListener('touchmove', tmp_func);
             });
             elMap[event.currentTarget].parentEl.addEventListener('mouseleave', (e) => {
                 elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+                elMap[event.currentTarget].parentEl.removeEventListener('touchmove', tmp_func);
             });
+            elMap[event.currentTarget].parentEl.addEventListener('touchend', (e) => {
+                elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+                elMap[event.currentTarget].parentEl.removeEventListener('touchmove', tmp_func);
+            })
         }
-        function initDragHorizontal(e) {
+        function initDragHorizontal(e, touch) {
+            if (touch) {
+                e.pageX = e.touches[0].pageX;
+                e.pageY = e.touches[0].pageY;
+            }
+            console.log(e.pageX, e.pageX);
             if (!elMap[event.currentTarget]) elMap[event.currentTarget] = {};
             elMap[event.currentTarget].dragStart = { x: event.pageX, y: event.pageY };
             elMap[event.currentTarget].parentEl = e.currentTarget.parentElement;
@@ -640,25 +658,43 @@
 
             elMap[event.currentTarget].beforeElInitWidth = elMap[event.currentTarget].beforeEl.offsetWidth
 
-            let tmp_func = (e) => resizeElHorizontal(e, event.currentTarget);
+            let tmp_func = (e) => resizeElHorizontal(e, event.currentTarget, touch);
             elMap[event.currentTarget].parentEl.addEventListener('mousemove', tmp_func);
+            elMap[event.currentTarget].parentEl.addEventListener('touchmove', tmp_func);
             elMap[event.currentTarget].parentEl.addEventListener('mouseup', (e) => {
                 elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
-            })
+                elMap[event.currentTarget].parentEl.removeEventListener('touchmove', tmp_func);
+            });
             elMap[event.currentTarget].parentEl.addEventListener('mouseleave', (e) => {
                 elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+                elMap[event.currentTarget].parentEl.removeEventListener('touchmove', tmp_func);
+            });
+            elMap[event.currentTarget].parentEl.addEventListener('touchend', (e) => {
+                elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+                elMap[event.currentTarget].parentEl.removeEventListener('touchmove', tmp_func);
             })
+
         }
         function clamp(x, a, b) {
             return Math.min(Math.max(x, a), b)
         }
         const elMap = {}
-        function resizeEl(e, target) {
+        function resizeEl(e, target, touch) {
+            if (touch) {
+                e.clientX = e.touches[0].clientX;
+                e.clientY = e.touches[0].clientY;
+            }
+
             let dragLength = e.clientY - elMap[e.currentTarget].dragStart.y
 
             elMap[target].beforeEl.style.height = elMap[target].beforeElInitHeight + dragLength + "px";
         }
-        function resizeElHorizontal(e, target) {
+        function resizeElHorizontal(e, target, touch) {
+            if (touch) {
+                e.clientX = e.touches[0].clientX;
+                e.clientY = e.touches[0].clientY;
+            }
+
             let dragLength = e.clientX - elMap[e.currentTarget].dragStart.x
 
             elMap[target].beforeEl.style.width = elMap[target].beforeElInitWidth + dragLength + "px";
