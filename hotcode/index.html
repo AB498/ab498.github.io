@@ -403,6 +403,12 @@
                 v0.1
             </div>
             <div class="grow"></div>
+            <div class="undo-button" onclick="editor.trigger('whatever...', 'undo') ">
+                <i class="fa fa-undo hover-effect "></i>
+            </div>
+            <div class="redo-button" onclick="editor.trigger('whatever...', 'redo')">
+                <i class="fa fa-redo hover-effect "></i>
+            </div>
             <div class="format-button" onclick="formatCode()">
                 <i class="fa fa-code hover-effect "></i>
             </div>
@@ -520,7 +526,11 @@
                         'Content-Type': 'application/json;charset=UTF-8'
                     },
 
-                    body: JSON.stringify({ code: editor.getValue() })
+                    body: JSON.stringify({
+                        code: editor.getValue(), options: {
+                            // indent: 2
+                        }
+                    })
                 })).json()).output;
             editor.setValue(text);
         }
@@ -555,7 +565,9 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ code: replacedCode })
+                body: JSON.stringify({
+                    code: replacedCode
+                })
             });
             let { output, error } = (await res.json()) || { error: "1" };
             if (error) {
@@ -930,7 +942,7 @@
                             }],
                             after: message ? {
                                 content: message.replace(/\r*\n/g, ' '),
-                                inlineClassName: 'output-message text-yellow-500',
+                                inlineClassName: 'output-message shadow-md  border-b border-gray-700 dark:border-gray-200 text-yellow-500',
                                 inlineClassNameAffectsLetterSpacing: true,
                             } : undefined,
                         },
