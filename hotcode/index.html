@@ -44,6 +44,12 @@
 
     <script src="../monaco-editor/min/vs/loader.js"></script>
     <style>
+        .hscreen {
+            height: 100dvh;
+            /* Fallback for browsers that do not support Custom Properties */
+            height: calc(var(--vh, 1vh) * 100);
+        }
+
         :root {
             --color-secondary: #ffffff;
             --color-primary: #dfffff;
@@ -391,10 +397,10 @@
 
 </head>
 
-<body class="flex flex-col h-screen bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50">
+<body class="flex flex-col hscreen bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50">
     <script src="../static/js/dark-ssr.js"></script>
 
-    <div class="w-full h-full flex flex-col   flex flex-col h-screen bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50"
+    <div class="w-full h-full flex flex-col   flex flex-col h-full bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50"
         id="app">
         <div
             class="top-bar flex h-8 border-b dark:border-b dark:border-zinc-700 shrink-0 items-center px-6 py-2 space-x-2">
@@ -428,11 +434,16 @@
                 <div class="main relative" style="height: 70%;">
                     <div class="editor full absolute overflow-hidden "></div>
                 </div>
-                <div class="drag-handle " onmousedown="initDrag(event)">
-                    <!-- <div class="bg-red-500 full h-1"></div> -->
-                </div>
+                <div class="drag-handle " onmousedown="initDrag(event)"> </div>
                 <div class="terminal w-full bg-zinc-100 dark:bg-zinc-900 grow relative">
-                    <div class="output font-mono pre whitespace-pre-wrap full absolute  p-2 overflow-auto"></div>
+                    <div class=" full absolute overflow-auto flex">
+                        <div class="bg-zinc-100 p-2 dark:bg-zinc-900 relative output font-mono pre whitespace-pre-wrap"
+                            style="width: 100%;">
+                        </div>
+                        <div class="drag-handle-horizontal " onmousedown="initDragHorizontal(event)"> </div>
+                        <div class="bg-zinc-100 dark:bg-zinc-900 grow relative"></div>
+                    </div>
+
                 </div>
 
                 <!-- /main -->
@@ -1002,6 +1013,10 @@
 
             return errorMap;
         }
+
+        document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + 'px');
+
+
     </script>
 </body>
 
