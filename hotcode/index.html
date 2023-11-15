@@ -10,6 +10,8 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <!-- tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/prettier@3.1.0/standalone.js"></script>
+    <script src="https://unpkg.com/prettier@3.1.0/plugins/cpp.js"></script>
 
     <!-- unused -->
     <script src="https://unpkg.com/vue-router@4"></script>
@@ -401,6 +403,9 @@
                 v0.1
             </div>
             <div class="grow"></div>
+            <div class="format-button" onclick="formatCode()">
+                <i class="fa fa-code hover-effect "></i>
+            </div>
             <div class="run-button" onclick="runCurrentFile()">
                 <i class="fa fa-play hover-effect "></i>
             </div>
@@ -495,6 +500,9 @@
             });
             runCurrentFile();
 
+
+
+
             window.ontailwindthemechange = (theme) => {
                 if (typeof monaco == 'undefined') return;
                 if (theme == "dark") monaco.editor.setTheme('vs-dark');
@@ -503,6 +511,19 @@
             window.ontailwindthemechange(localStorage.theme);
         })();
 
+        async function formatCode() {
+            const text = (await (await fetch('https://ab498.pythonanywhere.com/format',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+
+                    body: JSON.stringify({ code: editor.getValue() })
+                })).json()).output;
+            editor.setValue(text);
+        }
         async function runCurrentFile() {
             lastRun = Date.now();
             let currentRun = lastRun;
@@ -583,6 +604,9 @@
             elMap[event.currentTarget].parentEl.addEventListener('mouseup', (e) => {
                 elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
             });
+            elMap[event.currentTarget].parentEl.addEventListener('mouseleave', (e) => {
+                elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+            });
         }
         function initDragHorizontal(e) {
             if (!elMap[event.currentTarget]) elMap[event.currentTarget] = {};
@@ -596,6 +620,9 @@
             let tmp_func = (e) => resizeElHorizontal(e, event.currentTarget);
             elMap[event.currentTarget].parentEl.addEventListener('mousemove', tmp_func);
             elMap[event.currentTarget].parentEl.addEventListener('mouseup', (e) => {
+                elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+            })
+            elMap[event.currentTarget].parentEl.addEventListener('mouseleave', (e) => {
                 elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
             })
         }
