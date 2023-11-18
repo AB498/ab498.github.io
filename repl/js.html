@@ -1132,6 +1132,8 @@
                 const endPosition = editor.getModel().getPositionAt(col);
                 const lastCharIndex = editor.getModel().getLineContent(endPosition.lineNumber).length - 1;
                 const range = new monaco.Range(endPosition.lineNumber, 0, endPosition.lineNumber, lastCharIndex + 2);
+
+                if (editor.getModel().getLineContent(endPosition.lineNumber).slice(-2) == "//") continue;
                 if (typeof value == 'undefined') continue//value = 'undefined';
                 else if (!value) continue//value = 'null';
                 else if (typeof value != 'string') value = JSON.stringify(value);
@@ -1194,6 +1196,11 @@
                 const lastCharIndex = editor.getModel().getLineContent(line).length - 1;
                 const range = new monaco.Range(lastCharIndex == -1 ? 0 : line, 0, line, lastCharIndex + 2);
                 // console.log(range, value);
+
+                if (editor.getModel().getLineContent(line).slice(-2) == "//") continue;
+                if (typeof value == 'undefined') continue//value = 'undefined';
+                else if (!value) continue//value = 'null';
+                else if (typeof value != 'string') value = JSON.stringify(value);
                 let max_len = 50;
                 let message = value.length > max_len ? value.slice(0, max_len) + "..." : value;
                 outputDecs = outputDecs.concat(editor.deltaDecorations([], [
