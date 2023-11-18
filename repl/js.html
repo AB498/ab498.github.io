@@ -1197,7 +1197,7 @@
                 const range = new monaco.Range(lastCharIndex == -1 ? 0 : line, 0, line, lastCharIndex + 2);
                 // console.log(range, value);
 
-                if (editor.getModel().getLineContent(line).slice(-2) == "//") continue;
+                // if (editor.getModel().getLineContent(line).slice(-2) == "//") continue;
                 if (typeof value == 'undefined') continue//value = 'undefined';
                 else if (!value) continue//value = 'null';
                 else if (typeof value != 'string') value = JSON.stringify(value);
