@@ -699,7 +699,7 @@
             if (!res) return
             res = res?.map(i => [i[0], i[1], i[2]])
             actualOutput = printedLogs?.map(i => i[2])//    .join("\n") || ""
-            actualOutput.forEach(i => addOutput(i));
+            actualOutput.slice(0, 1000).forEach(i => addOutput(i));
             setOutputDecors(res, code);
             return (output)
         }
