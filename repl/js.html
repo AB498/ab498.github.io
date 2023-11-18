@@ -1137,7 +1137,22 @@
 
                 let max_len = 50;
                 let message = value.length > max_len ? value.slice(0, max_len) + "..." : value;
+                if (lineLens[endPosition.lineNumber] > 1000) {
+                    continue;
+                }
                 lineLens[endPosition.lineNumber] = (lineLens[endPosition.lineNumber] || 0) + message.length;
+                outputDecs = outputDecs.concat(editor.deltaDecorations([], [
+                    {
+                        range,
+                        options: {
+                            hoverMessage: [{
+                                isTrusted: true,
+                                supportHtml: true,
+                                value: `<pre style="color:#ff0000;">${value.replace(/(\\r)*\\n/g, '<br>')}</pre>`
+                            }],
+                        },
+                    },
+                ]));
                 if (lineLens[endPosition.lineNumber] > 70) {
                     continue;
                 }
@@ -1157,11 +1172,6 @@
                     {
                         range,
                         options: {
-                            hoverMessage: [{
-                                isTrusted: true,
-                                supportHtml: true,
-                                value: `<pre style="color:#ff0000;">${value.replace(/(\\r)*\\n/g, '<br>')}</pre>`
-                            }],
                             after: message ? {
                                 content: message.replace(/\r*\n/g, ' '),
                                 inlineClassName: 'output-message shadow-md text-yellow-500',
@@ -1171,6 +1181,7 @@
                         },
                     },
                 ]));
+
             }
 
         }
