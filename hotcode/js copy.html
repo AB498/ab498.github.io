@@ -11,8 +11,7 @@
     <!-- tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/prettier@3.1.0/standalone.js"></script>
-    <script src="https://unpkg.com/prettier@3.1.0/plugins/typescript.js"></script>
-    <script src="https://unpkg.com/prettier@3.1.0/plugins/estree.js"></script>
+    <script src="https://unpkg.com/prettier@3.1.0/plugins/js.js"></script>
 
     <!-- unused -->
     <script src="https://unpkg.com/vue-router@4"></script>
@@ -358,6 +357,7 @@
         }
 
         .error-message {
+            margin: 1em;
             padding: 0.1em 0.5em 0.1em 0.5em;
             background-color: rgb(253, 149, 149);
             border-radius: 5px;
@@ -368,13 +368,10 @@
         }
 
         .output-message {
+            margin: 1em;
             padding: 0.1em 0.5em 0.1em 0.5em;
             background-color: aqua;
             border-radius: 5px;
-        }
-
-        .null-message {
-            opacity: 0;
         }
 
         .vs-dark .output-message {
@@ -389,15 +386,6 @@
             position: absolute;
             top: 70%;
 
-        }
-
-        .info-plate {
-            font-size: 0.8em;
-            line-height: 0.8em;
-            padding: 0em 0.4em 0em 0.4em;
-            position: absolute;
-            top: 70%;
-            border: 1px solid white;
         }
     </style>
     <!-- fontawesome icon link -->
@@ -420,9 +408,6 @@
                 v0.1.1
             </div>
             <div class="grow"></div>
-            <div class="download-button" onclick="triggerDownload()">
-                <i class="fa fa-download hover-effect "></i>
-            </div>
             <div class="undo-button" onclick="editor.trigger('whatever...', 'undo') ">
                 <i class="fa fa-undo hover-effect "></i>
             </div>
@@ -481,23 +466,6 @@
         document.body.appendChild(iframe);
         var iframeWindow = iframe.contentWindow;
 
-        let script = document.createElement('script');
-        let injection = `
-    window.onerror = function (message, source, line, col, error) {
-        return true;
-    }
-`;
-
-        // Set the content of the script element
-        script.text = injection;
-
-        // Append the script to the iframe document
-        iframe.contentDocument.body.appendChild(script);
-
-        // insert script tag to iframe
-
-
-
         function tryParseJSON(obj) {
             try {
                 if (typeof obj == "string")
@@ -536,12 +504,12 @@
 
             // on change set local storage
             editor.getModel().onDidChangeContent(() => {
-                localStorage.lastJSCode = editor.getValue();
+                localStorage.lastCode = editor.getValue();
             });
 
 
             //set last text from llcal storage
-            editor.setValue(localStorage.lastJSCode || window.placeholderCode);
+            editor.setValue(localStorage.lastCode || window.placeholderCode);
 
             await TreeSitter.init();
             parser = new TreeSitter();
@@ -556,25 +524,6 @@
 
 
 
-            // Assuming `monaco` is your Monaco editor instance and `editor` is your editor instance
-
-            editor.onDidChangeModelContent(event => {
-                const changes = event.changes;
-                changes.forEach(change => {
-                    if (change.text) {
-                        const insertedText = change.text[0];
-                        if (insertedText.length === 1) {
-                            const lastInsertedChar = insertedText; // Single character inserted
-                            // console.log('Inserted:', lastInsertedChar);
-                            if (lastInsertedChar == ";") {
-                                formatCode();
-                            }
-
-                        }
-                    }
-                });
-            });
-
 
             window.ontailwindthemechange = (theme) => {
                 if (typeof monaco == 'undefined') return;
@@ -582,38 +531,25 @@
                 else monaco.editor.setTheme('vs');
             }
             window.ontailwindthemechange(localStorage.theme);
-            // Wait for editor to be ready
-
-            editor.addCommand(monaco.KeyMod.WinCtrl | monaco.KeyCode.KEY_B, function () {
-                console.log('Ctrl+Shift+S pressed');
-                triggerDownload();
-            });
-
         })();
 
-        function triggerDownload() {
-            const blob = new Blob([editor.getValue()], { type: 'text/javascript' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'js-repl-download.js';
-            link.click();
-            URL.revokeObjectURL(url);
-        }
         async function formatCode() {
-            editor.getAction('editor.action.formatDocument').run();
-            // const savedCursor = editor.getPosition(); // Save cursor position
-            // const formatted = await prettier.format(editor.getValue(), {
-            //     parser: "typescript",
-            //     plugins: prettierPlugins,
-            // });
-            // const savedLineNumber = savedCursor.lineNumber;
-            // const savedColumn = savedCursor.column;
-            // editor.setValue(formatted);
-            // editor.setPosition({ lineNumber: savedLineNumber, column: savedColumn });
+            const text = (await (await fetch('https://ab498.pythonanywhere.com/format',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+
+                    body: JSON.stringify({
+                        code: editor.getValue(), options: {
+                            // indent: 2
+                        }
+                    })
+                })).json()).output;
+            editor.setValue(text);
         }
-
-
 
         iframeErrorResolve = null;
 
@@ -641,7 +577,6 @@
                 globalData.identifiers,
                 globalData.loops,
             );
-            // console.log("replacedCode", replacedCode)
 
             editor.deltaDecorations(outputDecs, []);
             // clearOutput();
@@ -653,36 +588,48 @@
                 iframeErrorResolve = resolve;
             });
             try {
-                iframeWindow.eval(injectable + replacedCode);
+
+
+                iframeWindow.eval(
+                    `
+                    
+            try {
+            
+            `+ injectable + '\n' + replacedCode +
+                    `
+            }catch(e){
+                window.top.postMessage([capturedLogs,printedLogs,"error"], '*');
+                e.line=e.line||1; 
+                throw e;
+            }`
+                );
                 res = iframeWindow.capturedLogs;
                 printedLogs = iframeWindow.printedLogs;
             } catch (e) {
-                console.error("Eval Error:", e.message)
                 try {
-                    iframeWindow.eval(code);
-
+                    iframeWindow.eval(replacedCode);
                 } catch (e) {
-                    res = iframeWindow.capturedLogs;
-                    printedLogs = iframeWindow.printedLogs;
+                }
+                // console.log(extractErrors((err.stack)))
+                if (e.line) {
+                    printedLogs = (await iframeError)[1];
+                    res = (await iframeError)[0];
+                    console.log("line", e.line)
                     err = e;
                 }
             }
-
             editor.deltaDecorations(outputDecs, []);
             outputDecs = [];
             clearOutput();
-            //     addOutput(injectable + '\n' + replacedCode + `\n
-            // window.printedLogs.push("[line, col, error]");
-            // `);
             let [output, error] = [res, err];
             if (error) {
-                let errorLines = extractErrors(error);
+                // let errorLines = extractErrors(error);
                 // if (!Object.entries(errorLines).length) return;
                 // editor.deltaDecorations(outputDecs, []);
 
                 // console.log([[charNum, 0, error.message]]);
-                // addOutput("Error:\n" + err.message);
-                setErrorDecors(errorLines);
+                addOutput("Error:\n" + err.message);
+                setErrorDecors([[error.line, error.line || 0, error.message]]);
             }
             // console.log(output);
 
@@ -690,8 +637,8 @@
             if (currentRun != lastRun) return;
             if (!res) return
             res = res?.map(i => [i[0], i[1], i[2]])
-            actualOutput = printedLogs?.map(i => i[2])//    .join("\n") || ""
-            actualOutput.forEach(i => addOutput(i));
+            actualOutput = printedLogs?.map(i => i[2]).join("\n") || ""
+            addOutput(actualOutput);
             setOutputDecors(res, code);
             return (output)
         }
@@ -945,16 +892,6 @@
                 globalData.binaryRights.push(node);
             }
             found = true;
-            ["expression_statement", "subscript_expression"].forEach((element, idx) => {
-                if (jsonNode.path.slice(-2)[idx] == element) {
-                } else found = false;
-            });
-            if (found) {
-                globalData.binaryRights.push(node);
-            }
-
-
-            found = true;
             ["expression_statement", "array"].forEach((element, idx) => {
                 if (jsonNode.path.slice(-2)[idx] == element) {
                 } else found = false;
@@ -1124,7 +1061,7 @@
                 const endPosition = editor.getModel().getPositionAt(col);
                 const lastCharIndex = editor.getModel().getLineContent(endPosition.lineNumber).length - 1;
 
-                const range = new monaco.Range(endPosition.lineNumber, 0, endPosition.lineNumber, lastCharIndex + 2);
+                const range = new monaco.Range(endPosition.lineNumber, lastCharIndex + 1, endPosition.lineNumber, lastCharIndex + 20);
                 if (typeof value != 'string') value = JSON.stringify(value);
 
                 let message = value.length > 50 ? value.slice(0, 50) + "..." : value;
@@ -1136,18 +1073,6 @@
                     {
                         range,
                         options: {
-                            after: message ? {
-                                content: '*',
-                                inlineClassName: 'null-message',
-                                cursorStops: 3,
-                            } : undefined,
-                        },
-                    },
-                ]));
-                outputDecs = outputDecs.concat(editor.deltaDecorations([], [
-                    {
-                        range,
-                        options: {
                             hoverMessage: [{
                                 isTrusted: true,
                                 supportHtml: true,
@@ -1155,9 +1080,8 @@
                             }],
                             after: message ? {
                                 content: message.replace(/\r*\n/g, ' '),
-                                inlineClassName: 'output-message shadow-md text-yellow-500',
+                                inlineClassName: 'output-message shadow-md  border-b border-gray-700 dark:border-gray-200 text-yellow-500',
                                 inlineClassNameAffectsLetterSpacing: true,
-                                cursorStops: 3,
                             } : undefined,
                         },
                     },
@@ -1169,23 +1093,12 @@
             // Clear existing decorations
 
             for (const [line, col, value] of (lineOutputs)) {
-                const lastCharIndex = editor.getModel().getLineContent(line).length - 1;
-                const range = new monaco.Range(lastCharIndex == -1 ? 0 : line, 0, line, lastCharIndex + 2);
-                // console.log(range, value);
+                const startPosition = editor.getModel().getPositionAt(line);
+                const endPosition = editor.getModel().getPositionAt(col);
+                const lastCharIndex = editor.getModel().getLineContent(endPosition.lineNumber).length - 1;
+                const range = new monaco.Range(endPosition.lineNumber, lastCharIndex + 1, endPosition.lineNumber, lastCharIndex + 20);
 
                 let message = value.length > 50 ? value.slice(0, 50) + "..." : value;
-                outputDecs = outputDecs.concat(editor.deltaDecorations([], [
-                    {
-                        range,
-                        options: {
-                            after: message ? {
-                                content: '*',
-                                inlineClassName: 'null-message',
-                                cursorStops: 3,
-                            } : undefined,
-                        },
-                    },
-                ]));
                 outputDecs = outputDecs.concat(editor.deltaDecorations([], [
                     {
                         range,
@@ -1199,7 +1112,6 @@
                                 content: message.replace(/\r*\n/g, ' '),
                                 inlineClassName: 'error-message shadow-md  border-b border-gray-700 dark:border-gray-200 text-yellow-500',
                                 inlineClassNameAffectsLetterSpacing: true,
-                                cursorStops: 3,
                             } : undefined,
                         },
                     },
@@ -1208,22 +1120,28 @@
 
         }
         function extractErrors(errorLogs) {
+            const errorMap = {};
 
-            let [lineno, colno] = [1, 1];
-            try {
-                [lineno, colno] = errorLogs.stack.match(/<anonymous>.*?(\d+:\d+)\)\n/)[1].split(':').map(Number);
+            const lines = errorLogs.trim().split('\n');
+            for (const line of lines) {
+                // console.log(line.replace(/[\s\S\t]*?:(\d+:\d)+/, '$1'));
+                if (/.*?:\d+:\d+/.test(line)) {
+                    // use regex to get line and col number
+                    let match = line.match(/.*?:(\d+:\d+).*?$/);
+                    match = match[1].split(':')//.join('_');
+                    match[0] = -injectable.split('\n').length + parseInt(match[0]) - 2;
+                    match = match.join('_');
+                    match;
+                    const ln = line.replace(/.*?(\d+:\d+):[:\s]*/, '');
+                    ln;
+                    errorMap[match] = ln;
+                }
             }
-            catch (e) {
-                const savedCursor = editor.getPosition(); // Save cursor position
-                const savedLineNumber = savedCursor.lineNumber;
-                const savedColumn = savedCursor.column;
-                [lineno, colno] = [savedLineNumber, savedColumn];
-            }
-            return [[lineno, colno, errorLogs.message]];
+
+            return errorMap;
         }
 
         document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + 'px');
-
 
 
     </script>
