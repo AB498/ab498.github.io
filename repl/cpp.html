@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- vuejs -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/prettier@3.1.0/standalone.js"></script>
+    <script src="https://unpkg.com/prettier@3.1.0/plugins/cpp.js"></script>
+
+    <!-- unused -->
+    <script src="https://unpkg.com/vue-router@4"></script>
+
+    <!-- google fonts and icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+    <!-- tooltip -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
+
+
+    <!-- alert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.min.js"
+        integrity="sha512-JnjG+Wt53GspUQXQhc+c4j8SBERsgJAoHeehagKHlxQN+MtCCmFDghX9/AcbkkNRZptyZU4zC8utK59M5L45Iw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css"
+        integrity="sha512-MpdEaY2YQ3EokN6lCD6bnWMl5Gwk7RjBbpKLovlrH6X+DRokrPRAF3zQJl1hZUiLXfo2e9MrOt+udOnHCAmi5w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- css animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <script src="../static/js/tree-sitter.js"></script>
+
+    <script src="../monaco-editor/min/vs/loader.js"></script>
+    <style>
+        .hscreen {
+            height: 100dvh;
+            /* Fallback for browsers that do not support Custom Properties */
+            height: calc(var(--vh, 1vh) * 100);
+        }
+
+        :root {
+            --color-secondary: #ffffff;
+            --color-primary: #dfffff;
+            --color-text: #000005;
+            --color-text-secondary: #8e8e8e;
+            --color-success: 0 200 81;
+            --color-info: 51 181 229;
+            --color-warn: 255 187 51;
+            --color-error: 254 78 78;
+        }
+
+        html.dark {
+            --color-primary: #000000;
+            --color-secondary: #000f0d;
+            --color-text: #afffff;
+            --color-text-secondary: #8e8e8e;
+            --color-success: 0 200 81;
+            --color-info: 51 181 229;
+            --color-warn: 255 187 51;
+            --color-error: 254 78 78;
+        }
+
+        .material-button {
+            position: relative;
+            display: inline-block;
+            flex-shrink: 0;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 4px;
+            padding: 0 16px;
+            min-width: 64px;
+            height: 38px;
+            vertical-align: middle;
+            text-align: center;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+            color: rgb(var(--pure-material-onprimary-rgb, 255, 255, 255));
+            background-color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
+            box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                0 1px 5px 0 rgba(0, 0, 0, 0.12);
+            font-family: var(--pure-material-font,
+                    "Roboto",
+                    "Segoe UI",
+                    BlinkMacSystemFont,
+                    system-ui,
+                    -apple-system);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 36px;
+            overflow: hidden;
+            outline: none;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+        }
+
+        .material-button::-moz-focus-inner {
+            border: none;
+        }
+
+        /* Overlay */
+        .material-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgb(var(--pure-material-onprimary-rgb, 255, 255, 255));
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        /* Ripple */
+        .material-button::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            border-radius: 50%;
+            padding: 50%;
+            width: 32px;
+            /* Safari */
+            height: 32px;
+            /* Safari */
+            background-color: rgb(var(--pure-material-onprimary-rgb, 255, 255, 255));
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1);
+            transition: opacity 1s, transform 0.5s;
+        }
+
+        /* Hover, Focus */
+        .material-button:hover,
+        .material-button:focus {
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+                0 1px 10px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        .material-button:hover::before {
+            opacity: 0.08;
+        }
+
+        .material-button:focus::before {
+            opacity: 0.24;
+        }
+
+        .material-button:hover:focus::before {
+            opacity: 0.3;
+        }
+
+        /* Active */
+        .material-button:active {
+            box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+        }
+
+        .material-button:active::after {
+            opacity: 0.32;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0s;
+        }
+
+        /* Disabled */
+        .material-button:disabled {
+            color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38);
+            background-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.12);
+            box-shadow: none;
+            cursor: initial;
+        }
+
+        .material-button:disabled::before {
+            opacity: 0;
+        }
+
+        .material-button:disabled::after {
+            opacity: 0;
+        }
+
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center,
+                    rgba(0, 0, 0, 0.4) 50%,
+                    rgba(0, 0, 0, 0.3) 70%,
+                    rgba(0, 0, 0, 0.2) 80%,
+                    rgba(0, 0, 0, 0) 100%);
+            /* animation: gradientMove 2s linear infinite; */
+            /* background-size: 200% 100%; */
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 100% 0%;
+            }
+
+            100% {
+                background-position: -100% 0%;
+            }
+        }
+
+        /* Loading animation styles */
+        .loading::after {
+            content: "";
+            border: 4px solid rgba(255, 255, 255, 0.7);
+            /* Spinner border color and thickness */
+            border-top: 4px solid #7300ff;
+            /* Spinner top border color */
+            border-radius: 50%;
+            /* Creates a circular shape */
+            width: 24px;
+            /* Spinner width */
+            height: 24px;
+            /* Spinner height */
+            animation: spin 1s linear infinite;
+            /* Apply the spin animation */
+        }
+
+        /* Define the spin animation */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+                /* Initial rotation */
+            }
+
+            100% {
+                transform: rotate(360deg);
+                /* Full rotation */
+            }
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .full {
+            width: 100%;
+            height: 100%;
+        }
+
+        .link {
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .link:hover {
+            background-color: lightblue;
+        }
+
+        body {
+            font-family: "Gabarito", sans-serif;
+        }
+
+
+        /* remove tailwind default */
+        input[type="text"] {
+            outline: none;
+        }
+
+        .tippy-box[data-theme~='transparent'] {
+            background-color: #00000000;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .drag-handle-horizontal {
+            cursor: col-resize;
+            display: inline-block;
+            width: auto;
+            height: 100%;
+            background-color: var(--color-primary);
+            box-shadow: 5px 10px 10px 5px rgba(0, 0, 0, 0.9);
+            padding: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+        }
+
+        .drag-handle-horizontal::after {
+            content: '';
+            display: block;
+            background-color: #555;
+            width: 3px;
+            height: 50px;
+            margin: auto 0;
+        }
+
+        .drag-handle {
+            cursor: row-resize;
+            display: inline-block;
+            height: auto;
+            width: 100%;
+            background-color: var(--color-primary);
+            box-shadow: 5px 10px 10px 5px rgba(0, 0, 0, 0.9);
+            padding: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+
+        .drag-handle::after {
+            content: '';
+            display: block;
+            background-color: #555;
+            height: 3px;
+            width: 50px;
+            margin: 0 auto;
+        }
+
+        .hover-effect {
+            cursor: pointer;
+            padding: 5px;
+            color: #555;
+        }
+
+        .hover-effect:hover {
+            color: #000;
+            transition: 0.3s;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-message {
+            margin: 1em;
+            padding: 0.2em 0.5em 0.2em 0.5em;
+            background-color: rgb(253, 149, 149);
+            border-radius: 5px;
+        }
+
+        .vs-dark .error-message {
+            background-color: rgb(180, 43, 43);
+        }
+
+        .output-message {
+            margin: 1em;
+            padding: 0.2em 0.5em 0.2em 0.5em;
+            background-color: aqua;
+            border-radius: 5px;
+        }
+
+        .vs-dark .output-message {
+            background-color: #555;
+        }
+
+        .output-message2 {
+
+            font-size: 0.8em;
+            line-height: 0.8em;
+            padding: 0em 0.4em 0em 0.4em;
+            position: absolute;
+            top: 70%;
+            border: 1px solid white;
+
+        }
+    </style>
+    <!-- fontawesome icon link -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = { darkMode: 'class' } // theme 
+    </script>
+
+</head>
+
+<body class="flex flex-col hscreen bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50">
+    <script src="../static/js/dark-ssr.js"></script>
+
+    <div class="w-full h-full flex flex-col   flex flex-col h-full bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50"
+        id="app">
+        <div
+            class="top-bar flex h-8 border-b dark:border-b dark:border-zinc-700 shrink-0 items-center px-6 py-2 space-x-2">
+            <div
+                class="version font-mono text-xs text-gray-500 dark:text-gray-400 rounded-md px-1 bg-gray-200 dark:bg-zinc-700 cursor-pointer">
+                v0.1.1
+            </div>
+            <div class="grow"></div>
+            <div class="undo-button" onclick="editor.trigger('whatever...', 'undo') ">
+                <i class="fa fa-undo hover-effect "></i>
+            </div>
+            <div class="redo-button" onclick="editor.trigger('whatever...', 'redo')">
+                <i class="fa fa-redo hover-effect "></i>
+            </div>
+            <div class="format-button" onclick="formatCode()">
+                <i class="fa fa-code hover-effect "></i>
+            </div>
+            <div class="run-button" onclick="runCurrentFile()">
+                <i class="fa fa-play hover-effect "></i>
+            </div>
+            <div class="tailwind-dark-toggle"></div>
+        </div>
+        <div class="side-and-main flex flex-row grow overflow-auto relative grow">
+            <div class="sidenav h-full bg-gray-300" style="width: 0%;">
+            </div>
+            <div class="drag-handle-horizontal" onmousedown="initDragHorizontal(event)"
+                ontouchstart="initDragHorizontal(event,true)">
+            </div>
+            <div class="main-content flex flex-col grow shrink-0 overflow-auto">
+                <!-- main -->
+
+                <div class="main relative" style="height: 70%;">
+                    <div class="editor full absolute overflow-hidden "></div>
+                </div>
+                <div class="drag-handle " onmousedown="initDrag(event)" ontouchstart="initDrag(event, true)"> </div>
+                <div class="terminal w-full bg-zinc-100 dark:bg-zinc-900 grow relative">
+                    <div class=" full absolute overflow-auto flex">
+                        <div class="bg-zinc-100 p-2 dark:bg-zinc-900 relative output font-mono pre whitespace-pre-wrap"
+                            style="width: 100%;">
+                        </div>
+                        <div class="drag-handle-horizontal " onmousedown="initDragHorizontal(event)"
+                            ontouchstart="initDragHorizontal(event,true)"> </div>
+                        <div class="bg-zinc-100 dark:bg-zinc-900 grow relative"></div>
+                    </div>
+
+                </div>
+
+                <!-- /main -->
+            </div>
+        </div>
+        <div class="  bottom flex h-8 grow-0 shrink-0  bg-zinc-100 dark:bg-zinc-900 border-t border-zinc-500">
+        </div>
+    </div>
+    <script>
+
+        let editor;
+        let parser;
+        let outputDecs = []
+        let globalCompileTime = 0;
+        let lastRun;
+        let abortControllers = [];
+
+        function tryParseJSON(obj) {
+            try {
+                if (typeof obj == "string")
+                    return JSON.stringify(obj);
+            } catch (e) {
+                return obj;
+            }
+        }
+        alertify.set('notifier', 'position', 'bottom-center');
+        let notify = (obj) => alertify.success(typeof obj == "string" ? obj : JSON.stringify(obj));
+
+        (async () => {
+
+            window.injectable = (await (await fetch('/injectable.cpp')).text()).trim();
+            window.placeholderCode = await (await fetch('/placeholderCode.cpp')).text();
+
+            function asyncRequire(path) {
+                return new Promise((resolve, reject) => {
+                    require([path], resolve, reject);
+                });
+            }
+            require.config({ paths: { vs: '../monaco-editor/min/vs' } });
+            await asyncRequire('vs/editor/editor.main');
+            editor = monaco.editor.create(document.querySelector('.editor'), {
+                minimap: { enabled: false },
+                value: window.placeholderCode,
+                language: 'cpp',
+            });
+            if (localStorage.theme == "dark")
+                monaco.editor.setTheme('vs-dark');
+
+            function rsz() {
+                editor.layout();
+            }
+            new ResizeObserver(rsz).observe(document.querySelector('.editor').parentElement)
+
+            // on change set local storage
+            editor.getModel().onDidChangeContent(() => {
+                localStorage.lastCode = editor.getValue();
+            });
+
+
+            //set last text from llcal storage
+            editor.setValue(localStorage.lastCode || window.placeholderCode);
+
+            await TreeSitter.init();
+            parser = new TreeSitter();
+            const JavaScript = await TreeSitter.Language.load('../static/wasm/tree-sitter-cpp.wasm');
+            parser.setLanguage(JavaScript);
+
+
+            editor.getModel().onDidChangeContent(() => {
+                runCurrentFile();
+            });
+            runCurrentFile();
+
+
+
+
+            window.ontailwindthemechange = (theme) => {
+                if (typeof monaco == 'undefined') return;
+                if (theme == "dark") monaco.editor.setTheme('vs-dark');
+                else monaco.editor.setTheme('vs');
+            }
+            window.ontailwindthemechange(localStorage.theme);
+        })();
+
+        async function formatCode() {
+            const text = (await (await fetch('https://ab498.pythonanywhere.com/format',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+
+                    body: JSON.stringify({
+                        code: editor.getValue(), options: {
+                            // indent: 2
+                        }
+                    })
+                })).json()).output;
+            editor.setValue(text);
+        }
+        async function runCurrentFile() {
+            lastRun = Date.now();
+            let currentRun = lastRun;
+            while (abc = abortControllers.pop())
+                abc.abort();
+
+
+            let code = editor.getValue();
+            let tree = parser.parse(editor.getValue());
+            let [syntaxTreeJSON, globalData] = syntaxNodeToJSON(tree.rootNode, { path: [] }, {});
+            let replacedCode = injectable + '\n\n' + replaceExprs(
+                code,
+                globalData.functionCallSlices,
+                globalData.binaryRights,
+                globalData.identifiers,
+            );
+
+
+            editor.deltaDecorations(outputDecs, []);
+            clearOutput();
+
+
+            const controller = new AbortController()
+            abortControllers.push(controller);
+
+            let res = await fetch('https://ab498.pythonanywhere.com/compile', {
+                signal: controller.signal,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    code: replacedCode
+                })
+            });
+            let { output, error } = (await res.json()) || { error: "1" };
+            if (error) {
+                let errorLines = extractErrors(error);
+                if (!Object.entries(errorLines).length) return;
+                // editor.deltaDecorations(outputDecs, []);
+                // clearOutput();
+
+                if (currentRun != lastRun) return;
+                setErrorDecors(errorLines);
+                addOutput(Object.entries(errorLines).map((e) => e[1]).join("\n"));
+                return;
+            }
+            // console.log(output);
+            let lineOutputs = extractLineOutputs(output);
+            let actualOutput = output.replace(/__res_start__(\d+)_(\d+)__[\s\S]*?__res_end__(\d+)_(\d+)__/g, "");
+            editor.deltaDecorations(outputDecs, []);
+            clearOutput();
+
+            if (currentRun != lastRun) return;
+            addOutput(actualOutput);
+            setOutputDecors(lineOutputs);
+            return (output)
+        }
+
+        function addOutput(s) {
+            document.querySelector(".output").textContent += s + "\n";
+        }
+
+        function clearOutput() {
+            document.querySelector(".output").textContent = "";
+        }
+
+
+        function initDrag(e, touch) {
+            if (touch) {
+                e.pageX = e.touches[0].pageX;
+                e.pageY = e.touches[0].pageY;
+            }
+            if (!elMap[event.currentTarget]) elMap[event.currentTarget] = {};
+            elMap[event.currentTarget].dragStart = { x: event.pageX, y: event.pageY };
+            elMap[event.currentTarget].parentEl = e.currentTarget.parentElement;
+            elMap[event.currentTarget].beforeEl = e.currentTarget.previousSibling;
+            elMap[event.currentTarget].afterEl = e.currentTarget.nextSibling;
+
+            elMap[event.currentTarget].beforeElInitHeight = elMap[event.currentTarget].beforeEl.offsetHeight
+
+            let tmp_func = (e) => resizeEl(e, event.currentTarget, touch);
+            elMap[event.currentTarget].parentEl.addEventListener('mousemove', tmp_func);
+            elMap[event.currentTarget].parentEl.addEventListener('touchmove', tmp_func);
+            elMap[event.currentTarget].parentEl.addEventListener('mouseup', (e) => {
+                elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+                elMap[event.currentTarget].parentEl.removeEventListener('touchmove', tmp_func);
+            });
+            elMap[event.currentTarget].parentEl.addEventListener('mouseleave', (e) => {
+                elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+                elMap[event.currentTarget].parentEl.removeEventListener('touchmove', tmp_func);
+            });
+            elMap[event.currentTarget].parentEl.addEventListener('touchend', (e) => {
+                elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+                elMap[event.currentTarget].parentEl.removeEventListener('touchmove', tmp_func);
+            })
+        }
+        function initDragHorizontal(e, touch) {
+            if (touch) {
+                e.pageX = e.touches[0].pageX;
+                e.pageY = e.touches[0].pageY;
+            }
+            console.log(e.pageX, e.pageX);
+            if (!elMap[event.currentTarget]) elMap[event.currentTarget] = {};
+            elMap[event.currentTarget].dragStart = { x: event.pageX, y: event.pageY };
+            elMap[event.currentTarget].parentEl = e.currentTarget.parentElement;
+            elMap[event.currentTarget].beforeEl = e.currentTarget.previousSibling;
+            elMap[event.currentTarget].afterEl = e.currentTarget.nextSibling;
+
+            elMap[event.currentTarget].beforeElInitWidth = elMap[event.currentTarget].beforeEl.offsetWidth
+
+            let tmp_func = (e) => resizeElHorizontal(e, event.currentTarget, touch);
+            elMap[event.currentTarget].parentEl.addEventListener('mousemove', tmp_func);
+            elMap[event.currentTarget].parentEl.addEventListener('touchmove', tmp_func);
+            elMap[event.currentTarget].parentEl.addEventListener('mouseup', (e) => {
+                elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+                elMap[event.currentTarget].parentEl.removeEventListener('touchmove', tmp_func);
+            });
+            elMap[event.currentTarget].parentEl.addEventListener('mouseleave', (e) => {
+                elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+                elMap[event.currentTarget].parentEl.removeEventListener('touchmove', tmp_func);
+            });
+            elMap[event.currentTarget].parentEl.addEventListener('touchend', (e) => {
+                elMap[event.currentTarget].parentEl.removeEventListener('mousemove', tmp_func);
+                elMap[event.currentTarget].parentEl.removeEventListener('touchmove', tmp_func);
+            })
+
+        }
+        function clamp(x, a, b) {
+            return Math.min(Math.max(x, a), b)
+        }
+        const elMap = {}
+        function resizeEl(e, target, touch) {
+            if (touch) {
+                e.clientX = e.touches[0].clientX;
+                e.clientY = e.touches[0].clientY;
+            }
+
+            let dragLength = e.clientY - elMap[e.currentTarget].dragStart.y
+
+            elMap[target].beforeEl.style.height = elMap[target].beforeElInitHeight + dragLength + "px";
+        }
+        function resizeElHorizontal(e, target, touch) {
+            if (touch) {
+                e.clientX = e.touches[0].clientX;
+                e.clientY = e.touches[0].clientY;
+            }
+
+            let dragLength = e.clientX - elMap[e.currentTarget].dragStart.x
+
+            elMap[target].beforeEl.style.width = elMap[target].beforeElInitWidth + dragLength + "px";
+        }
+        const { createApp, ref, onMounted } = Vue
+
+        const app = createApp({
+            setup() {
+                const loaded = ref(false);
+                const user = ref({
+                    firstName: 'Zubaer',
+                    lastName: 'Ahmed',
+                    email: 'zubaerahmed100@gmail.com',
+                    phone: '+8801827829617',
+                    address: 'ECB, Dhaka Cantonment',
+                    postcode: '1206',
+                    avatar: 'https://picsum.photos/200/300'
+                })
+                const sidebarWindow = ref('/profile')
+                const lefnavItems = ref([{
+                    name: 'User Info',
+                    icon: 'person',
+                    path: '/profile'
+                }, {
+                    name: 'Favourites',
+                    icon: 'favorite',
+                    path: '/favourites'
+                }, {
+                    name: 'Watchlist',
+                    icon: 'star',
+                    path: '/watchlist'
+                },
+                {
+                    name: 'Settings',
+                    icon: 'settings',
+                    path: '/settings'
+                },
+                {
+                    name: 'Notifiations',
+                    icon: 'notifications',
+                    path: '/notifications'
+                },
+                ])
+                const breakpoint = ref([]);
+                const getBP = () => {
+                    const width = window.innerWidth;
+                    if (width >= 1536) return ['2xl', 'xl', 'lg', 'md', 'sm']
+                    if (width >= 1280) return ['xl', 'lg', 'md', 'sm']
+                    if (width >= 1024) return ['lg', 'md', 'sm']
+                    if (width >= 768) return ['md', 'sm'];
+                    if (width >= 640) return ['sm'];
+                    return 'default'; // or handle differently
+                };
+                onMounted(() => {
+                    setTimeout(() => {
+                        loaded.value = true;
+                    }, 0);
+                    window.addEventListener('resize', () => { breakpoint.value = getBP() });
+                    breakpoint.value = getBP();
+                })
+                return {
+                    lefnavItems,
+                    sidebarWindow,
+                    user,
+                    loaded,
+                    breakpoint
+                }
+            }
+
+        });
+        app.config.globalProperties.window = window;
+        app.mount('#app')
+        const template = document.querySelector('.expanded-profile');
+        // template.classList.remove('hidden');
+
+
+
+        function syntaxNodeToJSON(node, parent, globalData) {
+            const jsonNode = {
+                type: node.type,
+                text: node.text,
+                path: [...parent.path, node.type],
+                children: [],
+            };
+
+            for (let i = 0; i < node.childCount; i++) {
+                const child = node.child(i);
+                jsonNode.children.push(
+                    syntaxNodeToJSON(child, jsonNode, globalData)[0]
+                );
+            }
+            globalData.functionToReturnMap = globalData.functionToReturnMap || {};
+            globalData.functionCallSlices = globalData.functionCallSlices || [];
+            globalData.binaryRights = globalData.binaryRights || [];
+            globalData.identifiers = globalData.identifiers || [];
+            found = true;
+            ["function_definition"].forEach((element, idx) => {
+                if (jsonNode.path.slice(-1)[idx] == element) {
+                } else found = false;
+            });
+            if (found) {
+                let func_name = jsonNode.children
+                    .find((e) => e.type == "function_declarator")
+                    ?.children.find((e) =>
+                        ["identifier", "field_identifier"].includes(e.type)
+                    )?.text;
+                let ret_type = jsonNode.children.find((e) =>
+                    [
+                        "primitive_type",
+                        "qualified_identifier",
+                        "template_type",
+                    ].includes(e.type)
+                )?.text;
+                globalData.functionToReturnMap[func_name] = ret_type;
+            }
+            // identifier
+            found = true;
+            ["expression_statement", "identifier"].forEach((element, idx) => {
+                if (jsonNode.path.slice(-2)[idx] == element) {
+                } else found = false;
+            });
+            if (found) {
+                globalData.identifiers.push(node);
+            }
+            // call
+            found = true;
+            ["expression_statement", "call_expression"].forEach((element, idx) => {
+                if (jsonNode.path.slice(-2)[idx] == element) {
+                } else found = false;
+            });
+            if (found) {
+                let callexpr = node;
+                if (
+                    [
+                        ...Object.entries(globalData.functionToReturnMap).filter(
+                            (el) => el[1] != "void"
+                        ),
+                        ["printf", "int"],
+                    ].some((el) =>
+                        [
+                            callexpr.children.find((e) =>
+                                ["identifier", "field_identifier"].includes(e.type)
+                            )?.text,
+                            callexpr.children
+                                .find((e) => ["field_expression"].includes(e.type))
+                                ?.children.find((e) => ["field_identifier"].includes(e.type))
+                                ?.text,
+                        ].includes(el[0])
+                    )
+                )
+                    globalData.functionCallSlices.push(callexpr);
+                // console.log(globalData.functionToReturnMap, 'callexpr', callexpr
+                //     .children.find(e => ['field_expression'].includes(e.type))
+                //     ?.children.find(e => ['field_identifier'].includes(e.type))?.text)
+            }
+
+            found = true;
+            ["assignment_expression"].forEach((element, idx) => {
+                if (jsonNode.path.slice(-1)[idx] == element) {
+                } else found = false;
+            });
+            if (found) {
+                let operand = node.children.find((e) => e.type == "<<")?.text;
+                let right = node.childForFieldName("right");
+                // console.log('assignment', node, right);
+                // console.log('assignment_expression', node.childForFieldName("right").walk().nodeType, node.childForFieldName("right").walk().nodeText)
+                if (
+                    right.text != "endl" &&
+                    right.text != "std::endl" &&
+                    operand == "<<"
+                )
+                    globalData.binaryRights.push(right);
+            }
+            found = true;
+            ["binary_expression"].forEach((element, idx) => {
+                if (jsonNode.path.slice(-1)[idx] == element) {
+                } else found = false;
+            });
+            if (found) {
+                let operand = node.children.find((e) => e.type == "<<")?.text;
+                let right = node.childForFieldName("right");
+                // console.log(operand, 'right', right.text);
+                if (
+                    right.text != "endl" &&
+                    right.text != "std::endl" &&
+                    operand == "<<"
+                )
+                    globalData.binaryRights.push(right);
+            }
+            globalData.binaryRights.forEach((e) => {
+                e.isBin = true;
+            });
+            return [jsonNode, globalData];
+        }
+
+        function replaceExprs(s, callNodes, binaryNodes, identifiers) {
+            let mergedNodes = [...callNodes, ...binaryNodes, ...identifiers].sort((a, b) => {
+                return a.startIndex - b.startIndex;
+            });
+            mergedNodes.reverse().forEach((node) => {
+                if (node.isBin) {
+                    // console.log('node', node.children);
+                    let prefix = s.substring(0, node.startIndex);
+                    let postfix = s.substring(node.endIndex, s.length);
+                    let replace = s.substring(node.startIndex, node.endIndex);
+                    // console.log('replace', replace);
+                    s =
+                        prefix +
+                        `_conv_string(${replace}, ${node.startIndex}, ${node.endIndex})` +
+                        postfix;
+                    return;
+                }
+
+                let func_name = node.children.find((e) =>
+                    ["identifier", "field_identifier"].includes(e.type)
+                )?.text;
+                let args = node.children.find((e) =>
+                    ["argument_list"].includes(e.type)
+                )?.text;
+                let prefix = s.substring(0, node.startIndex);
+                let postfix = s.substring(node.endIndex, s.length);
+                let replace = s.substring(node.startIndex, node.endIndex);
+                // console.log('replace_func', replace);
+                if (func_name == "printf") {
+                    s =
+                        prefix +
+                        `_special_printf(${node.startIndex}, ${node.endIndex}, ${args.slice(
+                            1,
+                            args.length - 1
+                        )})` +
+                        postfix;
+                } else
+                    s =
+                        prefix +
+                        `_conv_string(${replace}, ${node.startIndex}, ${node.endIndex})` +
+                        postfix;
+            });
+            return s;
+        }
+        function extractLineOutputs(outputString) {
+            let matches = findRegexMatches(
+                outputString,
+                /__res_start__(\d+)_(\d+)__[\s\S]*?__res_end__(\d+)_(\d+)__/gs
+            );
+            let lineOutputs = {};
+            matches.forEach((match) => {
+                let prefix = match.match(/__res_start__(\d+)_(\d+)__/);
+                let lineNum = prefix[1];
+                let col = prefix[2];
+                let suffix = match.match(/__res_end__(\d+)_(\d+)__/)[1];
+                let line = match.match(
+                    /__res_start__(\d+)_(\d+)__([\s\S]*?)__res_end__(\d+)_(\d+)__/s
+                )[3];
+                lineOutputs[lineNum + "_" + col] =
+                    (lineOutputs[lineNum + "_" + col]
+                        ? lineOutputs[lineNum + "_" + col] + "\n"
+                        : "") + line.trim();
+            });
+            return lineOutputs;
+        }
+
+        function findRegexMatches(string, regex) {
+            let matches = [];
+            let match;
+            while ((match = regex.exec(string))) {
+                matches.push(match[0]);
+            }
+            return matches;
+        }
+        function setOutputDecors(lineOutputs, code) {
+            // Clear existing decorations
+            editor.deltaDecorations(outputDecs, []);
+            outputDecs = [];
+
+            for (const [key, value] of Object.entries(lineOutputs)) {
+                const startPosition = editor.getModel().getPositionAt(parseInt(key.split("_")[0]));
+                const lastCharIndex = editor.getModel().getLineContent(startPosition.lineNumber).length - 1;
+                console.log(lastCharIndex);
+                const endPosition = editor.getModel().getPositionAt(parseInt(key.split('_')[1]));
+
+                const range = new monaco.Range(startPosition.lineNumber, lastCharIndex + 1, endPosition.lineNumber, lastCharIndex + 20);
+
+                let message = value.length > 50 ? value.slice(0, 50) + "..." : value;
+                outputDecs = outputDecs.concat(editor.deltaDecorations([], [
+                    {
+                        range,
+                        options: {
+                            hoverMessage: [{
+                                isTrusted: true,
+                                supportHtml: true,
+                                value: `<pre style="color:#ff0000;">${value}</pre>`
+                            }],
+                            after: message ? {
+                                content: message.replace(/\r*\n/g, ' '),
+                                inlineClassName: 'output-message shadow-md  border-b border-gray-700 dark:border-gray-200 text-yellow-500',
+                                inlineClassNameAffectsLetterSpacing: true,
+                            } : undefined,
+                        },
+                    },
+                ]));
+            }
+
+        }
+        function setErrorDecors(lineOutputs, code) {
+            // Clear existing decorations
+            editor.deltaDecorations(outputDecs, []);
+            outputDecs = [];
+
+
+            for (const [key, value] of Object.entries(lineOutputs)) {
+                const lastCharIndex = editor.getModel().getLineContent(parseInt(key.split("_")[0]) + 1).length - 1;
+                const range = new monaco.Range(parseInt(key.split("_")[0]) + 1, lastCharIndex + 1, parseInt(key.split("_")[0]) + 1, lastCharIndex + 20);
+
+                let message = value.length > 50 ? value.slice(0, 50) + "..." : value;
+                outputDecs = outputDecs.concat(editor.deltaDecorations([], [
+                    {
+                        range,
+                        options: {
+                            hoverMessage: [{
+                                isTrusted: true,
+                                supportHtml: true,
+                                value: `<pre style="color:#ff0000;">${value}</pre>`
+                            }],
+                            after: message ? {
+                                content: message.replace(/\r*\n/g, ' '),
+                                inlineClassName: 'error-message text-yellow-500',
+                                inlineClassNameAffectsLetterSpacing: true,
+                            } : undefined,
+                        },
+                    },
+                ]));
+            }
+
+        }
+        function extractErrors(errorLogs) {
+            const errorMap = {};
+
+            const lines = errorLogs.trim().split('\n');
+            for (const line of lines) {
+                if (/.*:\d+:\d+:/.test(line)) {
+                    // use regex to get line and col number
+                    let match = line.match(/.*:(\d+:\d+):[:\s]*/);
+                    match = match[1].split(':')//.join('_');
+                    match[0] = -injectable.split('\n').length + parseInt(match[0]) - 2;
+                    match = match.join('_');
+                    match;
+                    const ln = line.replace(/.*:(\d+:\d+):[:\s]*/, '');
+                    ln;
+                    errorMap[match] = ln;
+                }
+            }
+
+            return errorMap;
+        }
+
+        document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + 'px');
+
+
+    </script>
+</body>
+
+</html>
