@@ -1135,7 +1135,7 @@
 
                 if (editor.getModel().getLineContent(endPosition.lineNumber).slice(-2) == "//") continue;
                 if (typeof value == 'undefined') continue//value = 'undefined';
-                else if (!value) continue//value = 'null';
+                else if (value === null) continue//value = 'null';
                 else if (typeof value != 'string') value = JSON.stringify(value);
                 console.log(line, lastCharIndex, value, value == 'string')
 
@@ -1199,7 +1199,7 @@
 
                 // if (editor.getModel().getLineContent(line).slice(-2) == "//") continue;
                 if (typeof value == 'undefined') continue//value = 'undefined';
-                else if (!value) continue//value = 'null';
+                else if (value === null) continue//value = 'null';
                 else if (typeof value != 'string') value = JSON.stringify(value);
                 let max_len = 50;
                 let message = value.length > max_len ? value.slice(0, max_len) + "..." : value;
