@@ -17,3 +17,6 @@ try {
     console.log('Line:', lineno);
     console.log('Column:', colno);
 }
+_special_loop_counter = 0; while (1) if (_special_loop_counter++ > 10) { throw new Error("Loop iteration limit exceeded"); break; } else {
+
+}

@@ -643,8 +643,10 @@
             );
             // console.log("replacedCode", replacedCode)
 
+
             editor.deltaDecorations(outputDecs, []);
-            // clearOutput();
+            outputDecs = [];
+            clearOutput();
             err = null;
             res = null;
             printedLogs = null;
@@ -659,7 +661,13 @@
             } catch (e) {
                 console.error("Eval Error:", e.message)
                 try {
-                    iframeWindow.eval(code);
+                    if (e.line) {
+                        err = e;
+                        res = iframeWindow.capturedLogs;
+                        printedLogs = iframeWindow.printedLogs;
+
+                    } else
+                        iframeWindow.eval(code);
 
                 } catch (e) {
                     res = iframeWindow.capturedLogs;
@@ -668,20 +676,20 @@
                 }
             }
 
-            editor.deltaDecorations(outputDecs, []);
-            outputDecs = [];
-            clearOutput();
             //     addOutput(injectable + '\n' + replacedCode + `\n
             // window.printedLogs.push("[line, col, error]");
             // `);
             let [output, error] = [res, err];
             if (error) {
                 let errorLines = extractErrors(error);
+                if (error.line) {
+                    errorLines = errorLines.map(i => [i[0] - injectable.split('\n').length + 1, i[1], i[2]])
+                }
                 // if (!Object.entries(errorLines).length) return;
                 // editor.deltaDecorations(outputDecs, []);
 
                 // console.log([[charNum, 0, error.message]]);
-                // addOutput("Error:\n" + err.message);
+                // addOutput("Error:\n" + errorLines);
                 setErrorDecors(errorLines);
             }
             // console.log(output);
@@ -1127,9 +1135,10 @@
                 const range = new monaco.Range(endPosition.lineNumber, 0, endPosition.lineNumber, lastCharIndex + 2);
                 if (typeof value != 'string') value = JSON.stringify(value);
 
-                let message = value.length > 50 ? value.slice(0, 50) + "..." : value;
+                let max_len = 50;
+                let message = value.length > max_len ? value.slice(0, max_len) + "..." : value;
                 lineLens[endPosition.lineNumber] = (lineLens[endPosition.lineNumber] || 0) + message.length;
-                if (lineLens[endPosition.lineNumber] > 150) {
+                if (lineLens[endPosition.lineNumber] > 70) {
                     continue;
                 }
                 outputDecs = outputDecs.concat(editor.deltaDecorations([], [
@@ -1172,8 +1181,8 @@
                 const lastCharIndex = editor.getModel().getLineContent(line).length - 1;
                 const range = new monaco.Range(lastCharIndex == -1 ? 0 : line, 0, line, lastCharIndex + 2);
                 // console.log(range, value);
-
-                let message = value.length > 50 ? value.slice(0, 50) + "..." : value;
+                let max_len = 50;
+                let message = value.length > max_len ? value.slice(0, max_len) + "..." : value;
                 outputDecs = outputDecs.concat(editor.deltaDecorations([], [
                     {
                         range,
