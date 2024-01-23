@@ -237,7 +237,7 @@ window.XJSON = XJSON;
 autoDOMData = {};
 
 class AutoDOM {
-  static attach(selector, obj) {}
+  static attach(selector, obj) { }
   static create(selector, obj) {
     let rootData = XJSON.create({}, obj, true, "")._px;
     obj = rootData;

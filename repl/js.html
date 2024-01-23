@@ -29,6 +29,7 @@
     <script src="https://unpkg.com/tippy.js@6"></script>
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
 
+    <script src="https://cdn.jsdelivr.net/npm/memfs-browser@3.4.13000/dist/memfs.min.js"></script>
 
     <!-- alert -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.min.js"
@@ -414,7 +415,7 @@
     <div class="w-full h-full flex flex-col   flex flex-col h-full bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50"
         id="app">
         <div
-            class="top-bar flex h-8 border-b dark:border-b dark:border-zinc-700 shrink-0 items-center px-6 py-2 space-x-2">
+            class="top-bar flex items-center h-8 border-b dark:border-b dark:border-zinc-700 shrink-0 items-center px-6 py-2 space-x-2">
             <div
                 class="version font-mono text-xs text-gray-500 dark:text-gray-400 rounded-md px-1 bg-gray-200 dark:bg-zinc-700 cursor-pointer">
                 v0.2.0
@@ -438,7 +439,17 @@
             <div class="tailwind-dark-toggle"></div>
         </div>
         <div class="side-and-main flex flex-row grow overflow-auto relative grow">
-            <div class="sidenav h-full bg-gray-300" style="width: 0%;">
+            <div class="flex flex-col h-full bg-zinc-200 dark:bg-zinc-800" style="width: 20%;">
+                <div class="tools h-8 bg-zinc-50 dark:bg-zinc-950 flex items-center">
+                    <div class="create-file-button" onclick="createFile()">
+                        <i class="fa fa-file hover-effect "></i>
+                    </div>
+
+
+                </div>
+                <div class="sidebar">
+
+                </div>
             </div>
             <div class="drag-handle-horizontal" onmousedown="initDragHorizontal(event)"
                 ontouchstart="initDragHorizontal(event,true)">
@@ -446,8 +457,15 @@
             <div class="main-content flex flex-col grow shrink-0 overflow-auto">
                 <!-- main -->
 
-                <div class="main relative" style="height: 70%;">
-                    <div class="editor full absolute overflow-hidden "></div>
+                <div class="main flex flex-col" style="height: 70%;">
+                    <div class="tools flex items-center h-8 bg-zinc-50 dark:bg-zinc-950">
+                        <div class="tabs">
+                            File
+                        </div>
+                    </div>
+                    <div class="full relative grow" style="height: 70%;">
+                        <div class="editor full absolute overflow-hidden "></div>
+                    </div>
                 </div>
                 <div class="drag-handle " onmousedown="initDrag(event)" ontouchstart="initDrag(event, true)"> </div>
                 <div class="terminal w-full bg-zinc-100 dark:bg-zinc-900 grow relative">
@@ -465,12 +483,16 @@
                 <!-- /main -->
             </div>
         </div>
-        <div class="  bottom flex h-8 grow-0 shrink-0  bg-zinc-100 dark:bg-zinc-900 border-t border-zinc-500">
+        <div
+            class="bottom flex items-center h-8 grow-0 shrink-0  bg-zinc-100 dark:bg-zinc-900 border-t border-zinc-500">
         </div>
     </div>
     <script>
 
-        let editor;
+        let allFiles = [];
+        let lastFile = localStorage.lastFile;
+
+        let editor = new Promise(resolve => window.editorResolve = resolve);
         let parser;
         let outputDecs = []
         let globalCompileTime = 0;
@@ -487,6 +509,14 @@
         return true;
     }
 `;
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                console.log('CTRL + S');
+                formatCode();
+            }
+        });
+
 
         // Set the content of the script element
         script.text = injection;
@@ -496,12 +526,101 @@
 
         // insert script tag to iframe
 
+        function updateFS() {
+            memfs.vol.fromJSON(tryParseJSON(localStorage.memfsSaved), '/');
+            document.querySelector('.sidebar').innerHTML = "";
+            memfs.fs.readdirSync('/').forEach(i => {
+                let ii = Date.now() + Math.random();
+                document.querySelector('.sidebar').insertAdjacentHTML('afterbegin', `
+                <div class="file p-2 link text-lg flex" onclick="openFile('${i}')">
+                    <div class="filename grow text-${ii}">
+                        ${i}
+                    </div>
+                    <div class="filename grow hidden input-${ii} text-black">
+                        <input class="filename w-full input-el-${ii}" value="${i}"/>
+                    </div>
+            <div class="icon pen-${ii}" onclick="event.stopPropagation(); 
+               document.getElementsByClassName('text-${ii}')[0].classList.add('hidden');
+            document.getElementsByClassName('pen-${ii}')[0].classList.add('hidden');
+            document.getElementsByClassName('save-${ii}')[0].classList.remove('hidden');
+            document.getElementsByClassName('input-${ii}')[0].classList.remove('hidden');
+            ">
+                <i class="fa fa-pen hover-effect "></i>
+            </div>
+            <div class="icon hidden save-${ii}" onclick="event.stopPropagation(); 
+            document.getElementsByClassName('text-${ii}')[0].classList.remove('hidden');
+            document.getElementsByClassName('pen-${ii}')[0].classList.remove('hidden');
+            document.getElementsByClassName('save-${ii}')[0].classList.add('hidden');
+            document.getElementsByClassName('input-${ii}')[0].classList.add('hidden');
+            renameFile(
+                '${i}',
+                document.getElementsByClassName('input-el-${ii}')[0].value
+            );
+            ">
+                <i class="fa fa-save hover-effect "></i>
+            </div>
+            <div class="icon" onclick="event.stopPropagation(); deleteFile('${i}')">
+                <i class="fa fa-trash hover-effect "></i>
+                </div>
+                </div>
+                `)
+            })
+        };
+        updateFS();
+
+        async function openFile(file) {
+
+            //set last text from llcal storage
+            if (memfs.fs.existsSync(file)) {
+            } else {
+                file = await createFile(file);
+                memfs.fs.writeFileSync(file, '');
+            }
+            localStorage.lastFile = file;
+            currentFile = file;
+            document.querySelector('.tabs').textContent = file;
+            (await editor).setValue(memfs.fs.readFileSync(file).toString());
+        }
+        async function createFile(file) {
+
+            //set last text from llcal storage
+            file = Date.now() + ".js";
+            localStorage.lastFile = file;
+            memfs.fs.writeFileSync(file, "");
+            (await editor).setValue(memfs.fs.readFileSync(file).toString() || "");
+            localStorage.memfsSaved = JSON.stringify(memfs.vol.toJSON());
+            updateFS();
+            currentFile = file;
+
+            return (file)
+        }
+        async function deleteFile(file) {
+            memfs.fs.unlinkSync(file, "");
+            localStorage.memfsSaved = JSON.stringify(memfs.vol.toJSON());
+            updateFS();
+            currentFile = null;
+            return (file)
+        }
+        async function renameFile(file, name) {
+            memfs.fs.renameSync(file, name);
+            localStorage.memfsSaved = JSON.stringify(memfs.vol.toJSON());
+            updateFS();
+            if (currentFile == file) {
+                currentFile = name;
+                localStorage.lastFile = name;
+            }
+            currentFile = null;
+            return (file)
+        }
+
+        openFile(lastFile)
+        console.log(lastFile);
 
 
         function tryParseJSON(obj) {
             try {
                 if (typeof obj == "string")
-                    return JSON.stringify(obj);
+                    return JSON.parse(obj);
             } catch (e) {
                 return obj;
             }
@@ -521,11 +640,12 @@
             }
             require.config({ paths: { vs: '../monaco-editor/min/vs' } });
             await asyncRequire('vs/editor/editor.main');
-            editor = monaco.editor.create(document.querySelector('.editor'), {
+            window.editorResolve(monaco.editor.create(document.querySelector('.editor'), {
                 minimap: { enabled: false },
                 value: window.placeholderCode,
                 language: 'javascript',
-            });
+            }));
+            editor = await editor;
             if (localStorage.theme == "dark")
                 monaco.editor.setTheme('vs-dark');
 
@@ -535,13 +655,6 @@
             new ResizeObserver(rsz).observe(document.querySelector('.editor').parentElement)
 
             // on change set local storage
-            editor.getModel().onDidChangeContent(() => {
-                localStorage.lastJSCode = editor.getValue();
-            });
-
-
-            //set last text from llcal storage
-            editor.setValue(localStorage.lastJSCode || window.placeholderCode);
 
             await TreeSitter.init();
             parser = new TreeSitter();
@@ -551,6 +664,11 @@
 
             editor.getModel().onDidChangeContent(() => {
                 runCurrentFile();
+            });
+            editor.getModel().onDidChangeContent(() => {
+                if (!currentFile) return;
+                memfs.fs.writeFileSync(currentFile, editor.getValue());
+                localStorage.memfsSaved = JSON.stringify(memfs.vol.toJSON());
             });
             runCurrentFile();
 
@@ -797,6 +915,9 @@
 
             elMap[target].beforeEl.style.width = elMap[target].beforeElInitWidth + dragLength + "px";
         }
+
+
+
         const { createApp, ref, onMounted } = Vue
 
         const app = createApp({
