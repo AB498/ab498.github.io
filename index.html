@@ -1,488 +1,822 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html class="dark" data-theme="dark">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="dist/img/Hexagon.png" type="image/x-icon" />
-  <link rel="stylesheet" href="dist/output.css" />
+<!-- <script src="assets/js/eruda.js"></script>
+<script>eruda.init();</script> -->
+<script src="assets/js/utils.js"></script>
 
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <script>
-    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-    if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+<link rel="stylesheet" href="assets/css/uicons-regular-rounded.css" />
+<!-- <style>
+    @font-face {
+        font-family: "uicons-regular-rounded";
+        src: url("assets/fonts/uicons-regular-rounded.eot#iefix") format("embedded-opentype"),
+            url("assets/fonts/uicons-regular-rounded.woff2") format("woff2"),
+            url("assets/fonts/uicons-regular-rounded.woff") format("woff");
     }
-  </script>
-  <title>Portfolio HTML + Tailwind CSS StarterPack Nehemia Gueldi</title>
-</head>
+</style> -->
+<!-- <script src="assets/js/jquery.min.js"></script> -->
 
-<body class="">
-  <!-- HEADER TOP START -->
-  <header class="fixed border-b-2 shadow bg-gray-700/75  backdrop-blur-md top-0 left-0 z-50 flex w-full items-center ">
-    <div class="container">
-      <div class="relative flex items-center justify-between">
-        <div class="px-4">
-          <a href="/" class="block py-6 text-lg font-bold text-gray-700"></a>
-        </div>
-        <div class="flex items-center px-4">
-          <nav id="nav-menu"
-            class="fixed right-4 top-full hidden w-full rounded-lg bg-white py-5 shadow-lg dark:bg-dark dark:shadow-slate-500 lg:md:static lg:md:block lg:md:w-full lg:md:rounded-none lg:md:bg-transparent lg:md:shadow-none lg:w-full dark:lg:bg-transparent">
-            <ul class="flex items-center justify-center">
-              <li class="group">
-                <a href="index.html"
-                  class="mx-8 flex py-2 text-base font-semibold text-dark transition duration-200 ease-in-out visited:text-blue-400  group-hover:text-blue-400 dark:text-white dark:visited:text-blue-400">
-                  Home </a>
-              </li>
-              <li class="group">
-                <a href="#"
-                  class="mx-8 flex py-2 text-base font-semibold text-dark transition duration-200 ease-in-out group-hover:text-gray-700 dark:text-white">Project</a>
-              </li>
-              <!-- <li class="group">
-                  <a href="#clients" class="mx-8 flex py-2 text-base font-semibold text-dark transition duration-200 ease-in-out group-hover:text-gray-700 dark:text-white">Clients</a>
-                </li> -->
-              <li class="group">
-                <a href="#"
-                  class="mx-8 flex py-2 text-base font-semibold text-dark transition duration-200 ease-in-out group-hover:text-gray-700 dark:text-white">Articles</a>
-              </li>
-              <li class="group">
-                <a href="#"
-                  class="mx-8 flex py-2 text-base font-semibold text-dark transition duration-200 ease-in-out group-hover:text-gray-700 dark:text-white">About
-                  Me</a>
-              </li>
-              <!-- <li class="group">
-                  <a href="#contact" class="mx-8 flex py-2 text-base font-semibold text-dark transition duration-200 ease-in-out group-hover:text-gray-700 dark:text-white">Contact</a>
-                </li> -->
-            </ul>
-          </nav>
-          <li class="flex items-center pl-4 sm:pr-5 lg:pr-10">
-            <div class="flex">
-              <!-- <span class="mr-2 text-sm font-semibold text-slate-500">Light</span> -->
-              <input type="checkbox" class="hidden" id="dark-toggle" />
-              <label for="dark-toggle">
-                <div class="flex h-9 w-14 cursor-pointer items-center rounded-full bg-slate-500 p-1">
-                  <div
-                    class="toggle-circle flex h-7 w-7 items-center justify-center rounded-full bg-white transition duration-300 ease-in-out">
-                    <svg role="img" class="dark:hidden" width="20" viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg" aria-labelledby="color-scheme-light">
-                      <path
-                        d="M12 18c-3.309 0-6-2.691-6-6s2.691-6 6-6 6 2.691 6 6-2.691 6-6 6zm0-10c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4zm0-4a1 1 0 0 1-1-1V1a1 1 0 0 1 2 0v2a1 1 0 0 1-1 1zm0 20a1 1 0 0 1-1-1v-2a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1zM5.64 6.64a.997.997 0 0 1-.707-.293l-1.42-1.42a.999.999 0 1 1 1.414-1.414l1.42 1.42A.999.999 0 0 1 5.64 6.64zm14.139 14.139a.997.997 0 0 1-.707-.293l-1.42-1.42a.999.999 0 1 1 1.414-1.414l1.42 1.42a.999.999 0 0 1-.707 1.707zM3 13H1a1 1 0 1 1 0-2h2a1 1 0 0 1 0 2zm20 0h-2a1 1 0 1 1 0-2h2a1 1 0 1 1 0 2zM4.22 20.779a.999.999 0 0 1-.707-1.707l1.42-1.42a.999.999 0 1 1 1.414 1.414l-1.42 1.42a.993.993 0 0 1-.707.293zM18.359 6.64a.999.999 0 0 1-.707-1.707l1.42-1.42a.999.999 0 1 1 1.414 1.414l-1.42 1.42a.997.997 0 0 1-.707.293z">
-                      </path>
-                    </svg>
-                    <svg role="img" class="hidden dark:block" width="20" viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg" aria-labelledby="color-scheme-dark">
-                      <path
-                        d="M12.048 21.963c-.308 0-.618-.015-.93-.043-2.66-.246-5.064-1.513-6.771-3.567s-2.512-4.651-2.266-7.311a10.004 10.004 0 0 1 9.038-9.038 1 1 0 0 1 .896 1.589 6.008 6.008 0 0 0 1.258 8.392c2.078 1.536 5.055 1.536 7.133 0a1 1 0 0 1 1.591.896 9.951 9.951 0 0 1-9.949 9.082zM9.315 4.438a8.006 8.006 0 0 0-5.244 6.787 7.954 7.954 0 0 0 1.813 5.849 7.95 7.95 0 0 0 5.417 2.854 7.95 7.95 0 0 0 8.266-5.243 8.01 8.01 0 0 1-2.729.476 7.946 7.946 0 0 1-4.755-1.565C9.174 11.443 8.145 7.68 9.315 4.438z">
-                      </path>
-                    </svg>
-                  </div>
-                </div>
-              </label>
-              <!-- <span class="ml-2 text-sm font-semibold text-slate-500">Dark</span> -->
+
+<link href="assets/css/daisy.min.css" rel="stylesheet" type="text/css" />
+<script src="assets/js/tailwind.js"></script>
+<script>window.tailwind.config = { darkMode: 'class' }</script>
+<link rel="stylesheet" href="assets/css/fa.css" />
+
+<script src="assets/js/babel.min.js"></script>
+<script src="assets/js/react.development.js"></script>
+<script src="assets/js/react-dom.development.js"></script>
+<script src="assets/js/react-router-dom.min.js"></script>
+
+<script src="assets/js/material-ui.production.min.js"></script>
+
+<script src="assets/js/pocketbase.umd.min.js"></script>
+
+<script type="module">
+    import * as fakerModule from './assets/js/faker/index.js';
+    const { faker } = fakerModule;
+    window.faker = faker;
+</script>
+
+<style>
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .full {
+        width: 100%;
+        height: 100%;
+    }
+
+    .slink {
+        cursor: pointer;
+        color: lightblue;
+    }
+
+    .slink:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div id="root"></div>
+
+
+<script type="module">
+
+    const SUPPRESSED_WARNINGS = [
+        "Warning: You are calling ReactDOMClient.createRoot()",
+        "Warning: React has detected a change in the order of Hooks",
+        "Warning: ReactDOM.render is no longer supported",
+        "Warning: `value` prop on `input` should not be null",
+        "cdn.tailwindcss.com should not be used in production",
+        "Download the React DevTools",
+        "You are using the in-browser Babel",
+        "Warning: A component is changing an uncontrolled",
+        "Warning: Invalid DOM property",
+        'Each child in a list should have a unique "key" prop',
+    ];
+
+    [
+        "error"
+    ].forEach(
+        (method) =>
+        (window.console[method] = function filterWarnings(...args) {
+            try {
+                if (!SUPPRESSED_WARNINGS.some((entry) => args.some((arg) => (arg.toString()).includes(entry)))) {
+                    console.log(...args)
+                } else {
+                    // console.log(...args);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        })
+    );
+    // import * as sucrase from 'https://cdn.pika.dev/sucrase';
+    // if (typeof sucrase !== 'undefined') {
+    //     window.sucrase = sucrase;
+    //     document.querySelectorAll('script[type="text/babel"]').forEach(async (code) => eval(sucrase.transform(code.src ? await (await fetch(code.src)).text() : code.innerHTML, { transforms: ['jsx'] }).code));
+    // }
+
+    let transform = window.sucrase ? (code) => window.sucrase.transform(code, { transforms: ['jsx'] }).code : (code) => window.Babel.transform(code, { presets: ['react'] }).code;
+
+    let fileUpdateMap = {};
+    async function watchFiles(file, cb) {
+        let code = await (await fetch(file + '?t=' + new Date().getTime())).text();
+        if (fileUpdateMap[file] && (fileUpdateMap[file] != code)) cb(file, code);
+        fileUpdateMap[file] = code;
+        new Promise(r => setTimeout(r, 500));
+        watchFiles(file, cb);
+    };
+
+    // watchFiles('index.html', (file, content) => {
+    //     console.log('reloaded', file, new Date().toTimeString().replace(/\s.*/, ''));
+    //     window.location.reload();
+    // });
+
+
+</script>
+<script type="text/babel">
+
+
+    function generateSems() {
+        let sems = [];
+        let thirdsRanges = [{ start: 1, end: 4, name: "spring" }, { start: 5, end: 8, name: "summer" }, { start: 9, end: 12, name: "fall" }];
+
+        let currentYear = new Date().getFullYear();
+
+        for (let i = 0; i < 3; i++) {
+            let year = currentYear + i;
+
+            for (let j = 0; j < 3; j++) {
+                let range = thirdsRanges[j];
+                sems.push({
+                    name: `${range.name}-${year}`,
+                    start: new Date(`${year}-${range.start}-01 00:00:00 +0000`),
+                })
+            }
+
+        }
+        return sems;
+    }
+
+
+    async function getCollection(name) {
+        return (await pb.collections.getFullList()).find(c => c.name == name) || null;
+    }
+    window.getCollection = getCollection;
+
+    async function initDB() {
+        try {
+            await pb.admins.authWithPassword("abcd49800@gmail.com", "Uihjbnygv1$");
+            if (await getCollection('semester_registrations')) await pb.collections.delete('semester_registrations');
+            if (await getCollection('courses')) await pb.collections.delete('courses');
+            if (await getCollection('semesters')) await pb.collections.delete('semesters');
+
+            await pb.collections.create({
+                name: "semesters",
+                schema: [
+                    {
+                        name: "name",
+                        type: "text",
+                        required: true,
+                    },
+                    {
+                        name: "start",
+                        type: "date",
+                        required: true,
+                    },
+
+                ],
+                listRule: '',
+                "viewRule": "",
+                "createRule": "",
+                "updateRule": "",
+                "deleteRule": "",
+            });
+            let sems = generateSems();
+            await Promise.all(sems.map(sem => pb.collection('semesters').create(sem, { $autoCancel: false })));
+            log("Created semesters collection");
+
+
+            await pb.collections.create({
+                name: "courses",
+                schema: [
+                    {
+                        name: "name",
+                        type: "text",
+                        required: true,
+                    },
+                    {
+                        name: "credits",
+                        type: "number",
+                        required: true,
+                    }
+                ],
+                "listRule": "",
+                "viewRule": "",
+                "createRule": "",
+                "updateRule": "",
+                "deleteRule": "",
+            });
+            let courses = Array(15).fill(0).map((_, i) => ({ name: `course ${(i + 1 + "").padStart(4, '0')}`, credits: 3 }));
+            await Promise.all(courses.map(course => pb.collection('courses').create(course, { $autoCancel: false })));
+            log("Created courses collection");
+
+
+            await pb.collections.create({
+                name: "semester_registrations",
+                schema: [
+                    {
+                        name: "user",
+                        type: "relation",
+                        options: {
+                            collectionId: (await getCollection('users')).id,
+                            minSelect: null,
+                            maxSelect: 1,
+                        }
+                    },
+                    {
+                        name: "semester",
+                        type: "relation",
+                        options: {
+                            collectionId: (await getCollection('semesters')).id,
+                            minSelect: null,
+                            maxSelect: 1,
+                        }
+                    },
+                    {
+                        name: "courses",
+                        type: "relation",
+                        options: {
+                            collectionId: (await getCollection('courses')).id,
+                            minSelect: null,
+                            maxSelect: null,
+                        }
+                    }
+                ],
+                "listRule": "@request.auth.id = user.id",
+                "viewRule": "",
+                "createRule": "",
+                "updateRule": "",
+                "deleteRule": "",
+            });
+            // let semester_registrations = Array(15).fill(0).map((_, i) => ({ name: `course ${i + 1}`, credits: 3 }));
+            // await Promise.all(semester_registrations.map(course => pb.collection('semester_registrations').create(course, { $autoCancel: false })));
+            log("Created semester_registrations collection");
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    function uuid() {
+        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+            var r = (Math.random() * 16) | 0,
+                v = c == "x" ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+        });
+    }
+
+
+
+    function log(...args) { console.log(...args); return args[args.length - 1]; }
+
+    const pb = new PocketBase('http://world.ovh/pb');
+    // const pb = new PocketBase('http://127.0.0.1:8090');
+    pb.autoCancellation(false);
+    window.pb = pb;
+
+
+    const { useState, useMemo, useEffect, createContext, useContext, useRef } = React;
+    const { HashRouter, Route, Switch, useHistory, useLocation } = ReactRouterDOM;
+    // let { useFloating, autoUpdate, offset, flip, shift, useHover, useFocus, useDismiss, useRole, useClick, useClientPoint, useInteractions, FloatingOverlay } = window.FloatingUIReact;
+    let { Select, Modal, MenuItem, OutlinedInput, InputLabel, FormControl, Box, Chip } = MaterialUI;
+
+    let CustomPopup = ({ children, render, open = false }) => {
+        const [isOpen, setIsOpen] = useState(open);
+        const [count, setCount] = useState(0);
+
+        useEffect(() => {
+            setIsOpen(false);
+        }, [open]);
+        const { refs, floatingStyles, context } = useFloating({
+            open: isOpen,
+            onOpenChange: setIsOpen,
+            middleware: [
+                flip(),
+                shift({
+                    crossAxis: true,
+                }),
+            ],
+            whileElementsMounted: autoUpdate,
+        });
+        const click = useClick(context);
+
+        // Merge all the interactions into prop getters
+        const { getReferenceProps, getFloatingProps } = useInteractions([click]);
+
+        return (
+            <div className="relative">
+                {children && <children.type {...children.props} ref={refs.setReference} {...getReferenceProps()} />}
+                {isOpen && (
+                    <FloatingOverlay>
+                        {isOpen && <div className="overscroll-auto z-10 fixed w-screen h-screen bg-black/50 top-0 left-0 backdrop-blur-sm hover:bg-black/75" onClick={() => setIsOpen(false)}></div>}
+                        <div className="z-20 flex flex-col max-h-[80vh] " ref={refs.setFloating} style={floatingStyles} {...getFloatingProps()}>
+                            {render}
+                        </div>
+                    </FloatingOverlay>
+                )}
             </div>
-          </li>
-        </div>
-      </div>
-    </div>
-  </header>
-  <!-- HEADER TOP END -->
-
-  <!-- NAVBAR BOTTOM START -->
-  <!-- <section id="bottom-navigation" class="md:hidden block fixed inset-x-0 bottom-0 z-10 bg-white shadow"> // if shown only tablet/mobile-->
-  <section id="bottom-navigation"
-    class="fixed inset-x-0 bottom-0 z-50 block bg-white bg-opacity-70 shadow-lg dark:bg-dark dark:bg-opacity-90 lg:md:hidden">
-    <div id="tabs" class="flex justify-between">
-      <a href="index.html"
-        class="inline-block w-full justify-center pt-2 pb-1 text-center text-base font-bold text-dark transition duration-200 ease-in-out visited:text-gray-700 hover:text-gray-700 dark:text-white dark:visited:text-gray-700 dark:hover:text-gray-700">
-        <?xml version="1.0" ?>
-        <!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
-        <svg width="25" height="25" class="mb-1 inline-block fill-current" id="Layer_1"
-          style="enable-background: new 0 0 24 24" version="1.1" viewBox="0 0 16 16" width="16px" xml:space="preserve"
-          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-          <path
-            d="M15.45,7L14,5.551V2c0-0.55-0.45-1-1-1h-1c-0.55,0-1,0.45-1,1v0.553L9,0.555C8.727,0.297,8.477,0,8,0S7.273,0.297,7,0.555  L0.55,7C0.238,7.325,0,7.562,0,8c0,0.563,0.432,1,1,1h1v6c0,0.55,0.45,1,1,1h3v-5c0-0.55,0.45-1,1-1h2c0.55,0,1,0.45,1,1v5h3  c0.55,0,1-0.45,1-1V9h1c0.568,0,1-0.437,1-1C16,7.562,15.762,7.325,15.45,7z" />
-        </svg>
-        <span class="tab tab-home block text-xs">Home</span>
-      </a>
-      <a href="#"
-        class="inline-block w-full justify-center pt-2 pb-1 text-center text-base font-bold text-dark transition duration-200 ease-in-out hover:text-gray-700 dark:text-white dark:hover:text-gray-700">
-        <?xml version="1.0" ?><svg width="25" height="25" class="mb-1 inline-block fill-current" viewBox="0 0 384 512"
-          xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M384 121.941V128H256V0h6.059c6.365 0 12.47 2.529 16.971 7.029l97.941 97.941A24.005 24.005 0 0 1 384 121.941zM248 160c-13.2 0-24-10.8-24-24V0H24C10.745 0 0 10.745 0 24v464c0 13.255 10.745 24 24 24h336c13.255 0 24-10.745 24-24V160H248zM123.206 400.505a5.4 5.4 0 0 1-7.633.246l-64.866-60.812a5.4 5.4 0 0 1 0-7.879l64.866-60.812a5.4 5.4 0 0 1 7.633.246l19.579 20.885a5.4 5.4 0 0 1-.372 7.747L101.65 336l40.763 35.874a5.4 5.4 0 0 1 .372 7.747l-19.579 20.884zm51.295 50.479l-27.453-7.97a5.402 5.402 0 0 1-3.681-6.692l61.44-211.626a5.402 5.402 0 0 1 6.692-3.681l27.452 7.97a5.4 5.4 0 0 1 3.68 6.692l-61.44 211.626a5.397 5.397 0 0 1-6.69 3.681zm160.792-111.045l-64.866 60.812a5.4 5.4 0 0 1-7.633-.246l-19.58-20.885a5.4 5.4 0 0 1 .372-7.747L284.35 336l-40.763-35.874a5.4 5.4 0 0 1-.372-7.747l19.58-20.885a5.4 5.4 0 0 1 7.633-.246l64.866 60.812a5.4 5.4 0 0 1-.001 7.879z" />
-        </svg>
-        <span class="tab tab-explore block text-xs">Project</span>
-      </a>
-      <a href="#"
-        class="inline-block w-full justify-center pt-2 pb-1 text-center text-base font-bold text-dark transition duration-200 ease-in-out hover:text-gray-700 dark:text-white dark:hover:text-gray-700">
-        <?xml version="1.0" ?><svg width="25" height="25" class="mb-1 inline-block fill-current" viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg">
-          <g id="Glyph">
-            <path
-              d="M9,21.62l.33-2.57a5,5,0,0,1,1.43-2.9l5.68-5.69A5,5,0,0,1,19,9.13V6a5,5,0,0,0-5-5H6A5,5,0,0,0,1,6V18a5,5,0,0,0,5,5H9.18A2.94,2.94,0,0,1,9,21.62ZM5,7h8a1,1,0,0,1,0,2H5A1,1,0,0,1,5,7Zm0,4h6a1,1,0,0,1,0,2H5a1,1,0,0,1,0-2Zm2,6H5a1,1,0,0,1,0-2H7a1,1,0,0,1,0,2Zm15.12-.88-5.69,5.69a2.93,2.93,0,0,1-1.74.85L12.13,23H12a1,1,0,0,1-1-1.13l.33-2.56a2.93,2.93,0,0,1,.85-1.74l5.69-5.69a3.08,3.08,0,0,1,4.24,0A3,3,0,0,1,22.12,16.12Z" />
-          </g>
-        </svg>
-        <span class="tab tab-whishlist block text-xs">Articles</span>
-      </a>
-      <a href="#"
-        class="inline-block w-full justify-center pt-2 pb-1 text-center text-base font-bold text-dark transition duration-200 ease-in-out hover:text-gray-700 dark:text-white dark:hover:text-gray-700">
-        <?xml version="1.0" ?><svg style="enable-background: new 0 0 24 24" version="1.1" width="25" height="25"
-          class="mb-1 inline-block fill-current" viewBox="0 0 24 24" xml:space="preserve"
-          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-          <g id="info" />
-          <g id="icons">
-            <g id="user">
-              <ellipse cx="12" cy="8" rx="5" ry="6" />
-              <path
-                d="M21.8,19.1c-0.9-1.8-2.6-3.3-4.8-4.2c-0.6-0.2-1.3-0.2-1.8,0.1c-1,0.6-2,0.9-3.2,0.9s-2.2-0.3-3.2-0.9    C8.3,14.8,7.6,14.7,7,15c-2.2,0.9-3.9,2.4-4.8,4.2C1.5,20.5,2.6,22,4.1,22h15.8C21.4,22,22.5,20.5,21.8,19.1z" />
-            </g>
-          </g>
-        </svg>
-        <span class="tab tab-kategori block text-xs">About Me</span>
-      </a>
-    </div>
-  </section>
-  <!-- NAVBAR BOTTOM START -->
-
-  <!-- HERO SECTION START -->
-  <section id="home" class="pt-36 dark:bg-dark">
-    <div class="container">
-      <div
-        class="flex p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800"
-        role="alert">
-        <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-            clip-rule="evenodd"></path>
-        </svg>
-        <span class="sr-only">Info</span>
-        <div>
-          <span class="font-medium">Note: </span>Temporary profile
-        </div>
-      </div>
-      <div class="flex flex-wrap">
-        <div class="w-full self-center px-4 lg:w-1/2">
-          <h1 class="text-base font-semibold text-gray-700 md:text-xl">
-            Hello There 👋, I'm
-            <span class="mt-1 block text-4xl font-bold text-secondary lg:text-5xl">ZUBAER AHMED</span>
-          </h1>
-          <h2 class="mb-5 text-lg font-medium text-secondary lg:text-2xl">Student in Computer Science</h2>
-          <p class="mb-7 font-medium leading-relaxed text-secondary">Learn web programming it's easy and fun
-            right? <span class="font-bold text-dark dark:text-white">Nope.</span></p>
-
-          <div class="flex flex-wrap ">
-            <a href="https://github.com/AB498" target="_blank"
-              class="mr-2 mt-2 rounded-full bg-github py-4 px-8 text-base font-semibold text-white transition duration-300 ease-in-out hover:opacity-80 hover:shadow-lg xl:px-56"><svg
-                role="img" width="20" class="inline-block fill-current" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <title>GitHub</title>
-                <path
-                  d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-              </svg>Github</a>
-          </div>
-
-          <p class="mb-2 mt-7 w-xl text-lg font-bold text-secondary lg:text-2xl">
-            Favorite Tech Stack
-            <svg role="img" width="20" class="inline-block fill-current" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <title>Instatus</title>
-              <path
-                d="m16.994 21.028c3.5843-1.91 5.471-5.759 5.0561-9.5637-1.3206 1.0851-2.6237 2.3203-3.8709 3.6906-2.0656 2.2694-3.7476 4.6559-4.9953 6.9817 1.2946-0.09715 2.5907-0.45868 3.8101-1.1086zm-13.394-2.5626c-1.3408 1.8191-2.3771 4.4991-1.3032 5.3066 1.5151 1.1394 8.404-2.0133 13.908-8.8051 5.504-6.7918 7.3265-13.796 4.879-14.873-1.1283-0.49644-3.486 1.083-4.8394 2.3943l0.58412 0.31415c1.332-0.85276 3.5528-1.7338 1.4995 1.9758-0.0097 0.01768-0.01962 0.03541-0.02949 0.05317-2.9067-2.2075-6.9471-2.662-10.379-0.8328-4.7026 2.506-6.4831 8.3499-3.9771 13.052 0.58979 1.1067 1.3644 2.0516 2.2655 2.8168-3.5586 2.7493-2.6905 0.35965-2.1925-0.8162z" />
-            </svg>
-          </p>
-          <div class="flex items-center">
-            <!-- REACT -->
-            <a href="https://react.dev/" target="_blank"
-              class="mr-2 flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-secondary transition duration-200 ease-in-out hover:border-primary hover:bg-primary hover:text-white">
-              <svg role="img" width="20" class="fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <title>React</title>
-                <path
-                  d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" />
-              </svg>
-            </a>
-
-            <!-- TAILWIND CSS -->
-            <a href="https://tailwindcss.com/" target="_blank"
-              class="mr-2 flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-secondary transition duration-200 ease-in-out hover:border-primary hover:bg-primary hover:text-white">
-              <svg role="img" width="20" class="fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <title>Tailwind CSS</title>
-                <path
-                  d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z" />
-              </svg>
-            </a>
-
-            <!-- NODE JS -->
-            <a href="https://nodejs.org/en/docs" target="_blank"
-              class="mr-2 flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-secondary transition duration-200 ease-in-out hover:border-primary hover:bg-primary hover:text-white">
-              <svg role="img" width="20" class="fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <title>Node.js</title>
-                <path
-                  d="M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L3.075,6.68C2.99,6.729,2.936,6.825,2.936,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.57,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z" />
-              </svg>
-            </a>
-          </div>
+        );
+    };
+    function CustomModal({ children, render, open = false, onClose = () => { } }) {
 
 
+        return (
+            <div className="">
+                {children}
+                <Modal
+                    open={open}
+                    onClose={onClose || (() => { })}
+                >
+                    <div className="relative w-screen h-screen flex flex-col items-center justify-center" onClick={(e) => {
+                        if (e.target === e.currentTarget) onClose()
+                    }}>
+                        {render}
+                    </div>
+                </Modal>
+            </div>
+        );
+    }
 
-        </div>
-        <div class="w-full self-end px-4 lg:w-1/2">
-          <div class="relative mt-10 lg:mt-0 lg:mr-0">
-            <img src="dist/img/3d_home.png" alt="Nehemia Gueldi" class="relative z-10 mx-auto w-full" />
-            <!-- <span class="absolute -bottom-0 left-1/2 -translate-x-1/2">
-                <svg width="380" height="380" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                  <path fill="#14b8a6" d="M43.6,-48.7C54.7,-32.6,60.6,-16.3,62.4,1.7C64.1,19.8,61.7,39.5,50.6,51.9C39.5,64.2,19.8,69.2,2.2,67C-15.4,64.8,-30.8,55.5,-46.8,43.1C-62.9,30.8,-79.6,15.4,-80.8,-1.2C-82,-17.7,-67.6,-35.5,-51.6,-51.6C-35.5,-67.7,-17.7,-82.2,-0.7,-81.5C16.3,-80.8,32.6,-64.8,43.6,-48.7Z" transform="translate(100 100) scale(1.2)" />
-                </svg>
-              </span> -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- HERO SECTION END -->
+    function isJSONObject(obj) {
+        if ([Date, RegExp, Error].some((t) => obj instanceof t) || Array.isArray(obj)) {
+            return false;
+        }
+        try {
+            JSON.stringify(obj);
+            return obj && typeof obj == "object";
+        } catch (e) {
+            return false;
+        }
+    }
+    function makeReactive(obj, setter) {
+        let mutatingArrayFunctions = ["copyWithin", "fill", "pop", "push", "reverse", "shift", "sort", "splice", "unshift"];
+        let handler = {
+            get: function (target, prop) {
+                if (prop == "__isReactive") return true;
+                return target[prop];
+            },
+            set: function (target, prop, value) {
+                target[prop] = value;
+                target[prop] = makeReactive(value, setter);
+                // console.log("set", prop, value, target);
+                if (!prop.startsWith("_")) setter();
+                return true;
+            },
+        };
+        if (!isJSONObject(obj) && !Array.isArray(obj)) {
+            return obj;
+        }
+        let newObj = {};
+        if (Array.isArray(obj)) {
+            newObj = [];
+        }
+        for (const [key, value] of Object.entries(obj)) {
+            newObj[key] = makeReactive(value, setter);
+        }
+        return new Proxy(newObj, handler);
+    }
 
-  <!-- PORTFOLIO SECTION START -->
-  <section id="portfolio" class="bg-slate-100 pt-36 pb-16 dark:bg-slate-800">
-    <div class="container">
-      <div class="w-full px-4">
-        <div class="mx-auto mb-16 w-xl text-center">
-          <h4 class="mb-2 text-lg font-semibold text-gray-700">Portfolio</h4>
-          <h2 class="mb-4 text-3xl font-bold text-dark dark:text-white sm:text-4xl lg:text-5xl">Recent
-            Projects</h2>
-          <p class="text-md font-medium text-secondary md:text-lg"> ... </p>
-        </div>
-      </div>
-      <div class="flex w-full flex-wrap justify-center px-4 xl:mx-auto xl:w-10/12">
-        <div class="mb-12 p-4 md:w-1/2">
-          <div class="overflow-hidden rounded-md shadow-md">
-            <img src="dist/img/portfolio/happywork.png" alt="Happy Work" width="w-full" />
-          </div>
-          <h3 class="mt-5 mb-3 text-xl font-semibold text-dark dark:text-white">LanXplore</h3>
-          <p class="mb-5 text-base font-medium text-secondary">Language learning platform with yoututbe integration,
-            cloud caption generation and translation with chat and lessons.
-          </p>
-          <div class="flex">
-            <a href="https://lanxplore.xyz" target="_blank"
-              class="mr-2 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 text-secondary transition duration-200 ease-in-out hover:border-primary hover:bg-primary hover:text-white">
-              <?xml version="1.0" ?><svg fill="none" height="24" viewBox="0 0 24 24" width="24" class="fill-current"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M6.25 4.5C5.2835 4.5 4.5 5.2835 4.5 6.25V12H9.25C10.7688 12 12 13.2312 12 14.75V19.5H17.75C18.7165 19.5 19.5 18.7165 19.5 17.75V13.75C19.5 13.3358 19.8358 13 20.25 13C20.6642 13 21 13.3358 21 13.75V17.75C21 19.5449 19.5449 21 17.75 21L6.75 21.0002L6.71603 21H6.25C4.45507 21 3 19.5449 3 17.75V6.25C3 4.45507 4.45507 3 6.25 3H10.25C10.6642 3 11 3.33579 11 3.75C11 4.16421 10.6642 4.5 10.25 4.5H6.25ZM13 3.75C13 3.33579 13.3358 3 13.75 3H20.2505C20.6647 3 21.0005 3.33579 21.0005 3.75V10.25C21.0005 10.6642 20.6647 11 20.2505 11C19.8362 11 19.5005 10.6642 19.5005 10.25V5.56074L14.2803 10.7804C13.9874 11.0732 13.5125 11.0732 13.2196 10.7803C12.9268 10.4874 12.9268 10.0125 13.2197 9.71964L18.4399 4.5H13.75C13.3358 4.5 13 4.16421 13 3.75Z" />
-              </svg>
-            </a>
-            <a href="https://github.com/AB498/lxp498" target="_blank"
-              class="mr-2 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 text-secondary transition duration-200 ease-in-out hover:border-primary hover:bg-primary hover:text-white">
-              <svg role="img" width="24" class="fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <title>GitHub</title>
-                <path
-                  d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-              </svg>
-            </a>
-          </div>
-        </div>
-        <div class="mb-12 p-4 md:w-1/2">
-          <div class="overflow-hidden rounded-md shadow-md">
-            <img src="dist/img/portfolio/ecom.png" alt="Kota Bogor" width="w-full" />
-          </div>
-          <h3 class="mt-5 mb-3 text-xl font-semibold text-dark dark:text-white">E-Commerce Site</h3>
-          <p class="mb-5 text-base font-medium text-secondary">
-            Sample E-Commerce Site using django framework
-          </p>
-          <div class="flex">
-            <a href="https://github.com/AB498/ecom" target="_blank"
-              class="mr-2 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 text-secondary transition duration-200 ease-in-out hover:border-primary hover:bg-primary hover:text-white">
-              <?xml version="1.0" ?><svg fill="none" height="24" viewBox="0 0 24 24" width="24" class="fill-current"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M6.25 4.5C5.2835 4.5 4.5 5.2835 4.5 6.25V12H9.25C10.7688 12 12 13.2312 12 14.75V19.5H17.75C18.7165 19.5 19.5 18.7165 19.5 17.75V13.75C19.5 13.3358 19.8358 13 20.25 13C20.6642 13 21 13.3358 21 13.75V17.75C21 19.5449 19.5449 21 17.75 21L6.75 21.0002L6.71603 21H6.25C4.45507 21 3 19.5449 3 17.75V6.25C3 4.45507 4.45507 3 6.25 3H10.25C10.6642 3 11 3.33579 11 3.75C11 4.16421 10.6642 4.5 10.25 4.5H6.25ZM13 3.75C13 3.33579 13.3358 3 13.75 3H20.2505C20.6647 3 21.0005 3.33579 21.0005 3.75V10.25C21.0005 10.6642 20.6647 11 20.2505 11C19.8362 11 19.5005 10.6642 19.5005 10.25V5.56074L14.2803 10.7804C13.9874 11.0732 13.5125 11.0732 13.2196 10.7803C12.9268 10.4874 12.9268 10.0125 13.2197 9.71964L18.4399 4.5H13.75C13.3358 4.5 13 4.16421 13 3.75Z" />
-              </svg>
-            </a>
-            <a href="https://github.com/AB498/ecom" target="_blank"
-              class="mr-2 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 text-secondary transition duration-200 ease-in-out hover:border-primary hover:bg-primary hover:text-white">
-              <svg role="img" width="24" class="fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <title>GitHub</title>
-                <path
-                  d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- PORTFOLIO SECTION END -->
+    let reactive = (obj) => {
+        let [state, setState] = useState(obj);
+        state = makeReactive(state, () => setState(state));
+        return state;
+    };
 
-  <!-- CONTACT SECTION START -->
-  <section id="contact" class="pt-36 pb-32 dark:bg-slate-800">
-    <div class="container flex flex-col w-full items-stretch justify-center">
-      <div class="w-full px-4">
-        <div class="mx-auto mb-16 w-xl text-center">
-          <h4 class="mb-2 text-lg font-semibold text-gray-700">Contact</h4>
-          <h2 class="mb-4 text-3xl font-bold text-dark dark:text-white sm:text-4xl lg:text-5xl">Get In Touch
-          </h2>
-          <p class="text-md font-medium text-secondary md:text-lg">Lorem ipsum dolor, sit amet consectetur
-            adipisicing elit. Tempore quae ducimus aperiam eius.</p>
-        </div>
-      </div>
-      <form>
-        <div class="w-full lg:mx-auto lg:w-2/3">
-          <div class="mb-8 w-full px-4">
-            <label for="name" class="text-base font-bold text-gray-700">Name</label>
-            <input type="text" id="name"
-              class="w-full rounded-md bg-slate-200 p-3 text-dark transition duration-200 ease-in-out focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
-          </div>
-          <div class="mb-8 w-full px-4">
-            <label for="email" class="text-base font-bold text-gray-700">Email</label>
-            <input type="text" id="email"
-              class="w-full rounded-md bg-slate-200 p-3 text-dark transition duration-200 ease-in-out focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
-          </div>
-          <div class="mb-8 w-full px-4">
-            <label for="message" class="text-base font-bold text-gray-700">Message</label>
-            <textarea type="text" id="message"
-              class="h-32 w-full rounded-md bg-slate-200 p-3 text-dark transition duration-200 ease-in-out focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"></textarea>
-          </div>
-          <div class="w-full px-4">
-            <button
-              class="w-full rounded-full bg-primary py-3 px-8 text-base font-semibold text-white transition duration-300 hover:opacity-80 hover:shadow-lg"
-              onclick="window.location.href='mailto:abcd49800@gmail.com'">Send</button>
-          </div>
-        </div>
-      </form>
-      <div class="flex items-center justify-center">
+    function useBreakpoint() {
+        const [breakpoint, setBreakpoint] = useState(handleResize());
 
-        <button
-          class="w-64 m-4 rounded-md  py-3 px-8 text-base font-semibold text-white transition duration-300 hover:bg-primary hover:shadow-lg">Or
-          Email abcd49800@gmail.com</button>
-      </div>
-    </div>
-  </section>
-  <!-- SKILLS SECTION -->
-  <section id="skills" class="bg-slate-800 pt-36 pb-32 dark:bg-slate-300">
-    <div class="w-full px-4">
-      <div class="mx-auto mb-16 w-xl text-center">
-        <h4 class="mb-2 text-lg font-semibold text-gray-700">Skills per framework</h4>
-        <h2 class="mb-4 text-3xl font-bold text-dark dark:text-white sm:text-4xl lg:text-5xl">SKILLS</h2>
-        <p class="text-md font-medium text-secondary md:text-lg"> ... </p>
-      </div>
-    </div>
-    <table class="w-full ">
-      <!-- HTML -->
+        function handleResize() {
+            const width = window.innerWidth;
+            return {
+                sm: width >= 640,
+                md: width >= 768,
+                lg: width >= 1024,
+                xl: width >= 1280,
+            };
+        };
+        useEffect(() => {
 
-      <tr class="mb-4 w-full flex items-center justify-center">
-        <td class="">
-          <div>NODEJS</div>
-        </td>
-        <td class="w-1/2">
-          <div class="rounded-full overflow-hidden relative  bg-primary h-2">
-            <div class="absolute top-0 left-0 w-full h-full bg-red-500"></div>
-          </div>
-        </td>
-      </tr>
-      <tr class="mb-4 w-full flex items-center justify-center">
-        <td class="">
-          <div>VUEJS</div>
-        </td>
-        <td class="w-1/2">
-          <div class="rounded-full overflow-hidden relative  bg-primary h-2">
-            <div class="absolute top-0 left-0 w-full h-full bg-red-500"></div>
-          </div>
-        </td>
-      </tr>
-      <tr class="mb-4 w-full flex items-center justify-center">
-        <td class="">
-          <div>FLUTTER</div>
-        </td>
-        <td class="w-1/2">
-          <div class="rounded-full overflow-hidden relative  bg-primary h-2">
-            <div class="absolute top-0 left-0 w-10/12 h-full bg-red-500"></div>
-          </div>
-        </td>
-      </tr>
-      <tr class="mb-4 w-full flex items-center justify-center">
-        <td class="">
-          <div>PHP</div>
-        </td>
-        <td class="w-1/2">
-          <div class="rounded-full overflow-hidden relative  bg-primary h-2">
-            <div class="absolute top-0 left-0 w-8/12 h-full bg-red-500"></div>
-          </div>
-        </td>
-      </tr>
-      <tr class="mb-4 w-full flex items-center justify-center">
-        <td class="">
-          <div>UNITY</div>
-        </td>
-        <td class="w-1/2">
-          <div class="rounded-full overflow-hidden relative  bg-primary h-2">
-            <div class="absolute top-0 left-0 w-11/12 h-full bg-red-500"></div>
-          </div>
-        </td>
-      </tr>
-      <tr class="mb-4 w-full flex items-center justify-center">
-        <td class="">
-          <div>DJANGO</div>
-        </td>
-        <td class="w-1/2">
-          <div class="rounded-full overflow-hidden relative  bg-primary h-2">
-            <div class="absolute top-0 left-0 w-10/12 h-full bg-red-500"></div>
-          </div>
-        </td>
-      </tr>
-      <tr class="mb-4 w-full flex items-center justify-center">
-        <td class="">
-          <div>BASH</div>
-        </td>
-        <td class="w-1/2">
-          <div class="rounded-full overflow-hidden relative  bg-primary h-2">
-            <div class="absolute top-0 left-0 w-11/12 h-full bg-red-500"></div>
-          </div>
-        </td>
-      </tr>
+            let handler = () => setBreakpoint(handleResize());
+            window.addEventListener("resize", handler);
 
-    </table>
+            return () => window.removeEventListener("resize", handler);
+        }, []);
 
-  </section>
-  <!-- CONTACT SECTION END -->
+        return breakpoint;
+    }
 
-  <!-- FOOTER SECTION START -->
-  <footer class="bg-dark pt-24 pb-12">
-    <div class="container">
-      <div class="flex flex-wrap">
-        <div class="mb-12 w-full px-4 md:w-1/3"></div>
-        <div class="mb-12 w-full px-4 md:w-1/3"></div>
-        <div class="mb-12 w-full px-4 md:w-1/3"></div>
-      </div>
-      <div class="w-full border-t border-slate-700 pt-10">
-        <!-- SOCIAL MEDIA START-->
+    const StateContext = createContext(); // global state
+    function Providers({ children }) {
+        // localStorage["state"] = localStorage["state"] || "{}";
+        const state = reactive(JSON.parse(localStorage.getItem("state") || "{}"));
+        useEffect(() => { localStorage["state"] = JSON.stringify(state) }, [state]);
+        window.state = state;
+        let breakpoint = useBreakpoint();
+        window.breakpoint = breakpoint;
+        return (
+            <HashRouter>
+                <StateContext.Provider value={[state]}>
+                    {children}
+                </StateContext.Provider>
+            </HashRouter>
+        );
 
-        <!-- SOCIAL MEDIA END-->
-        <p class="text-center text-sm font-medium text-slate-500">
-          Hosted on Github Pages
-          &copy;
-          <script>
-            document.write(new Date().getFullYear());
-          </script>
-        </p>
-      </div>
-    </div>
-  </footer>
-  <!-- FOOTER SECTION END -->
+    }
+    function Helpers({ children }) {
+        useContext(StateContext);
+        useLocation();
+        let history = useHistory();
+        window.navigate = (path) => history.push(path);
+        return children;
+    }
 
-  <!-- BACK TO TOP START -->
-  <a href="#home"
-    class="fixed right-4 bottom-24 z-[9999] hidden h-11 w-11 items-center justify-center rounded-full bg-primary p-4 hover:animate-pulse lg:md:h-14 lg:md:w-14 lg:md:bottom-4"
-    id="to-top">
-    <span class="mt-1 block h-3 w-3 rotate-45 border-t-4 border-l-4 lg:md:mt-2 lg:md:h-5 lg:md:w-5"></span>
-  </a>
-  <!-- BACK TO TOP END -->
 
-  <!-- SCRIPTS START -->
-  <script src="dist/js/script.js"></script>
-  <!-- SCRIPTS END -->
-</body>
+    function App() {
+        let [user] = useStream((callback) => pb.authStore.onChange(callback),
+            () => {
+                if (pb.authStore.isValid) {
+                    console.log("User is logged in");
+                    state.user = pb.authStore.model;
+                } else {
+                    console.log("User is logged out");
+                    state.user = null;
+                }
+            }
+        );
+        return (
+            <div className=" flex flex-col h-screen overflow-auto text-black bg-white dark:bg-black dark:text-white">
+                <div class="flex items-center w-full h-8 gap-2 px-2 bg-blue-500">
+                    <div class="slink" onClick={() => navigate("/")}>Home</div>
+                    <div class="slink">{useLocation().pathname}</div>
+                    <div class="grow"></div>
+                    <div class="slink">{uuid().slice(0, 3)}</div>
+                    <div class="slink" onClick={() => navigate("/admin")}>Admin</div>
+                </div>
+                <div class="h-full overflow-auto text-black bg-white dark:bg-black dark:text-white">
+                    <Switch>
+                        <Route path="/auth"><Auth /></Route>
+                        <Route path="/admin"><Admin /></Route>
+                        <Route path="/"><Home /></Route>
+                    </Switch>
+                </div>
+            </div >
+        );
+    }
+
+    function Nullable({ component, componentName }) {
+        let Component = component || window[componentName];
+        if (Component) return <Component />; 
+        console.log(`View ${componentName || "NoName"} is empty`);
+        return 'Empty View';
+    }
+    function SideNav() {
+        let user = state.user;
+        return (
+            <div class="flex flex-col full">
+                <ul class="w-full menu">
+                    <li><div className="flex items-center gap-2" onClick={() => (state.sidebar.open = false) | navigate("/")}>
+                        <i className="fi fi-rr-home"></i>
+                        <div>Home</div>
+                    </div></li>
+                    <li><div className="flex items-center gap-2" onClick={() => (state.sidebar.open = false) | navigate("/academic")}>
+                        <i className="fi fi-rr-book"></i>
+                        <div>Academic</div>
+                    </div></li>
+                    <li>
+                        <details open>
+                            <summary><div className="flex items-center gap-2">
+                                <i className="fi fi-rr-wallet"></i>
+                                <div>Finance</div>
+                            </div></summary>
+                            <ul>
+                                <li><a onClick={() => (state.sidebar.open = false) | navigate("/finance")}>Status</a></li>
+                                <li><a onClick={() => (state.sidebar.open = false) | navigate("/finance/account")}>Account</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                    <li><div className="flex items-center gap-2" onClick={() => (state.sidebar.open = false) | navigate("/schedules")}>
+                        <i className="fi fi-rr-calendar"></i>
+                        <div>Schedules</div>
+                    </div></li>
+                </ul>
+                <div className="grow"></div>
+                <div class="sticky inset-x-0 bottom-0 border-t border-gray-100">
+                    <a href="#" class="flex items-center gap-2 p-4 bg-white hover:bg-gray-50 dark:bg-neutral-800 hover:dark:bg-neutral-700">
+                        <img src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+                            class="object-cover rounded-full size-10" />
+                        <div>
+                            <p class="text-xs">
+                                <strong class="block font-medium">{user?.name || "NoName"}</strong>
+                                <span> {user?.email} </span>
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        )
+    }
+
+    function TopNav() {
+        return (
+
+            <div className="border">
+                <ul class="flex items-center w-full menu menu-horizontal bg-neutral-100 dark:bg-neutral-900">
+                    {!breakpoint.sm && <li>
+                        <div className="btn btn-square bg-neutral-200 dark:bg-neutral-800" onClick={() => state.sidebar.open = !state.sidebar.open}>
+                            <i className="fi fi-rr-menu-burger"></i>
+                        </div>
+                    </li>}
+                    <div className="grow"></div>
+                    <li><a onClick={() => navigate("/auth")}>Login</a></li>
+                    <li><a>{state.user?.email || 'Guest'}</a></li>
+                </ul>
+            </div>
+        )
+    }
+    function Auth() {
+        let [user, setUser, error] = useAsync(async () => {
+            await pb.collection("users").authWithPassword("abcd49800@gmail.com", "Uihjbnygv1$");
+            state.user = pb.authStore.model;
+            return pb.authStore.model;
+        });
+
+        console.log(user);
+
+        if (error)
+            return "Error" + JSON.stringify(error);
+        if (!user)
+            return "Loading...";
+
+        return (
+            <div>
+                <div>Success</div>
+                <div>{user.email}</div>
+                <button class="slink" onClick={() => { pb.authStore.clear(); navigate("/") }}>Logout</button>
+            </div>
+        )
+    }
+
+    function Admin() {
+        return (
+            <div>
+                <div class="btn" onClick={() => initDB()}>Reset DB</div>
+            </div>
+        )
+    }
+    function Home() {
+
+        useContext(StateContext);
+        if (!state.sidebar) state.sidebar = { open: false };
+        return (
+            <div class="flex flex-col overflow-auto full ">
+                <TopNav />
+
+                <div class="flex overflow-auto full ">
+                    {breakpoint.sm &&
+                        <div class="full flex flex-col grow justify-between border bg-white dark:bg-neutral-900 w-full max-w-[25vw] overflow-auto">
+                            <SideNav />
+                        </div> || <div className={`z-10 fixed top-0 left-0 w-full h-full bg-white dark:bg-neutral-900 duration-300 ${state.sidebar.open ? "tranlate-x-0" : "-translate-x-full"}`}>
+                            <div className="p-2">
+                                <div className="btn btn-square bg-neutral-100 dark:bg-neutral-800" onClick={() => state.sidebar.open = !state.sidebar.open}>
+                                    <i className="fi fi-rr-angle-left"></i>
+                                </div>
+                            </div>
+                            <SideNav />
+
+                        </div>}
+
+                    <div class="flex flex-col overflow-auto full">
+                        <Switch>
+                            <Route exact path="/"><Nullable componentName={"Dashboard"} /></Route>
+                            <Route path="/academic"><Nullable component={window.Academic} /></Route>
+                            <Route exact path="/finance"><Nullable component={window.Finance} /></Route>
+                            <Route path="/finance/account"><Nullable component={window.Account} /></Route>
+                            <Route path="/schedules"><Nullable component={window.Schedules} /></Route>
+                        </Switch>
+                    </div>
+
+                </div>
+
+            </div>
+        )
+    }
+
+    function useOnce(fn) {
+        let called = useRef(false);
+        if (called.current) return;
+        called.current = true;
+        fn();
+    }
+
+    function RegSemBtn() {
+
+        // console.log('course_regs', course_regs);
+
+        let modals = reactive({ semesters: false });
+        useEffect(() => {
+        }, []);
+
+
+        useContext(StateContext);;
+
+        return (
+            <div>
+                <CustomModal open={modals['semesters']} onClose={() => modals['semesters'] = false} render={
+                    <MakeComponent resolver={() => {
+                        let [semesters] = useAsync(async () => await pb.collection("semesters").getFullList());
+                        let [semester_regs] = useStream((cb) => pb.collection("semester_registrations").subscribe('*', cb),
+                            async () => await pb.collection("semester_registrations").getFullList(),
+                            () => pb.collection("semester_registrations").unsubscribe('*'));
+                        // let [semester_regs] = useAsync(async () => await pb.collection("semester_registrations").getFullList());
+                        return (<div class="flex flex-col w-full h-full max-w-md p-6 overflow-auto bg-neutral-100 dark:bg-neutral-800">
+                            <h3 class="text-lg font-bold">Hello!</h3>
+                            <div className="flex flex-col gap-2">
+
+                                {semesters && semester_regs && (semesters.filter(semester => !semester_regs.some(reg => reg.semester === semester.id)))?.map(semester => (
+                                    <div className="flex">
+                                        <div className="flex flex-col">
+                                            <div>{semester.name}</div>
+                                            <div>{semester.start.toString()}</div>
+                                        </div>
+                                        <div className="grow p-2"></div>
+
+                                        <RegBtn semester={semester} />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>)
+                    }} />}>
+                    <div class="btn bg-neutral-200 dark:bg-neutral-800" onClick={() => { modals['semesters'] = true; }}>Modal</div>
+                </CustomModal>
+            </div>
+        );
+    }
+    function MakeComponent({ resolver }) {
+        return resolver();
+    }
+    function RegBtn({ semester }) {
+        let modals = reactive({});
+        return (
+
+            <CustomModal open={modals['courses' + semester.id]} onClose={() => modals['courses' + semester.id] = false} render={<MakeComponent resolver={() => {
+                let [courses, setCourses] = useAsync(async () => await pb.collection("courses").getFullList());
+                let [course_regs] = useAsync(async () => log(await pb.collection("semester_registrations").getFullList({ expand: 'courses' })).reduce((a, b) => [...a, ...(b.expand ? b.expand.courses : [])], []));
+                console.log('courses', courses, course_regs,);
+                async function regSem() {
+                    log('courses', courses?.filter(course => course.checked));
+                    log(await pb.collection("semester_registrations").create({
+                        user: pb.authStore.model.id,
+                        semester: semester.id,
+                        courses: courses?.filter(course => course.checked).map(course => course.id)
+                    }).catch(err => log(err.data)));
+                }
+                return (<div class="relative flex flex-col w-full max-w-md overflow-auto bg-neutral-100 dark:bg-neutral-800">
+                    <h3 class="sticky top-0 p-4 text-lg font-bold bg-neutral-100 dark:bg-neutral-900">Select Courses</h3>
+                    <div className="flex flex-col gap-2 p-4">
+                        {courses && course_regs && (courses.filter(course => !course_regs.some(reg => reg.id == course.id)))?.sort((a, b) => a.name.localeCompare(b.name)).map((course, i) => (
+                            <label className="hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded flex items-center gap-2 p-2" key={course.id}>
+                                <input class="checkbox" type="checkbox" name="course" id="" checked={course.checked} onChange={() => { course.checked = !course.checked; setCourses([...courses]) }} />
+                                <div className="flex flex-col">
+                                    <div>{course.name}</div>
+                                </div>
+                                <div className="grow"></div>
+                            </label>
+                        ))}
+                    </div>
+                    <div class="sticky bottom-0 flex gap-2 p-4 bg-neutral-100 dark:bg-neutral-900">
+                        <div className="btn" onClick={() => { modals['courses' + semester.id] = false; regSem() }}>Register</div>
+                    </div>
+
+                </div>);
+            }} />}>
+                <div className="btn " onClick={() => { modals['courses' + semester.id] = true; }}>
+                    Register
+                </div>
+            </CustomModal>
+        )
+    }
+
+    function useStream(fn, cb, cleanup) {
+        let [data, setData] = useState();
+        useEffect(() => {
+            (async () => {
+                setData((await cb()));
+                fn(async () => {
+                    setData((await cb()));
+                });
+            })();
+
+            return () => cleanup && cleanup();
+        }, []);
+        return [data, setData];
+    }
+    function Academic() {
+        let [semesters] = useAsync(async () => await pb.collection("semesters").getFullList());
+        let [semester_regs] = useStream(
+            (callback) => pb.collection('semester_registrations').subscribe('*', callback),
+            async (e) => { return await pb.collection("semester_registrations").getFullList({ expand: "courses,semester" }) },
+            () => pb.collection('semester_registrations').unsubscribe('*'), // cleanup
+        );
+        // log('semester_regs', semester_regs);
+        if (!semester_regs) return <div class="h-full mx-auto loading"></div>;
+        return (
+            <div class="flex flex-col gap-2 p-2 full">
+                <RegSemBtn />
+                {semester_regs?.map((s) => <SemItem item={s}></SemItem>)}
+            </div>
+        );
+
+    }
+
+
+    function SemItem({ item }) {
+        return (
+            <div class="p-2 border rounded bg-neutral-200 dark:bg-neutral-800">
+                <h1>{item.expand?.semester?.name}</h1>
+                <strong>Start</strong> {item.expand?.semester?.start.toString()}
+                <div class="flex flex-col gap-2">
+                    {item.expand?.courses?.map((course) => <div>{course.name}</div>)}
+                </div>
+            </div>
+        )
+    }
+    let creditFee = 1000;
+    function Account() {
+
+        let [semester_regs] = useStream((cb) => pb.collection("semester_registrations").subscribe('*', cb),
+            async () => await pb.collection("semester_registrations").getFullList({ expand: 'semester,courses' }),
+            () => pb.collection("semester_registrations").unsubscribe('*'));
+
+
+        let totalDue = semester_regs ? log(semester_regs).reduce((a, b) => a + b.expand.courses.reduce((a, b) => a + b.credits, 0), 0) * creditFee : 0;
+        if (!semester_regs) return <div class="h-full mx-auto loading"></div>;
+
+        return (
+            <div class="flex flex-col gap-6 p-6">
+                <div class="flex flex-col p-2 border rounded bg-neutral-100 dark:bg-neutral-900">
+                    <div class="text-xl font-bold">Balance</div>
+                    <div class="text-2xl">{state.user.balance || '$3423'}</div>
+                </div>
+                <div class="flex flex-col p-2 border rounded bg-neutral-100 dark:bg-neutral-900">
+                    <div class="text-xl font-bold">Due</div>
+                    <div class="text-2xl">{'$' + totalDue || 'Loading...'}</div>
+                    <div class="text-xl font-bold">Deadline</div>
+                    <div class="text-2xl">21/04/24</div>
+                </div>
+            </div>
+        );
+    }
+    function Finance() {
+
+        let [semester_regs] = useStream((cb) => pb.collection("semester_registrations").subscribe('*', cb),
+            async () => (await pb.collection("semester_registrations").getFullList({ expand: 'semester,courses' })).sort((a, b) => a.expand.semester.start < b.expand.semester.start ? 1 : -1),
+            () => pb.collection("semester_registrations").unsubscribe('*'));
+        if (!semester_regs) return;
+        let currentSem = semester_regs.find(sem => new Date().getTime() - new Date(sem.expand.semester.start).getTime() > 0 && addTime(sem.expand.semester.start, { months: 4 }).getTime() - new Date().getTime() > 0)?.expand.semester;
+        log(currentSem);
+        return (
+            <div class="flex flex-col gap-6 p-6">
+                {semester_regs.map(reg => {
+                    let semester = reg.expand.semester;
+                    let due = reg.expand.courses.reduce((a, b) => a + b.credits, 0);
+
+                    return (
+                        <div class={`flex flex-col p-2 border rounded bg-neutral-100 dark:bg-neutral-900 ${semester.id == currentSem?.id && 'border-yellow-500'}`}>
+                            <div class="text-xl font-bold">{semester?.name}</div>
+                            <div class="text-2xl">{due && ('$' + (due * creditFee)) || 'Loading...'}</div>
+                            <div class="text-xl font-bold">Deadline</div>
+                            <div class="text-2xl">{addTime(semester.start, { months: 4, days: -1 })?.toLocaleDateString()}</div>
+                            <div class="btn bg-neutral-200 dark:bg-neutral-800">Pay</div>
+                        </div>
+                    )
+                })}
+
+            </div>
+        );
+    }
+
+    function addTime(date, { years = 0, months = 0, days = 0, hours = 0, minutes = 0, seconds = 0 }) {
+        let d = new Date(date);
+        d.setFullYear(d.getFullYear() + years);
+        d.setMonth(d.getMonth() + months);
+        d.setDate(d.getDate() + days);
+        d.setHours(d.getHours() + hours);
+        d.setMinutes(d.getMinutes() + minutes);
+        d.setSeconds(d.getSeconds() + seconds);
+        return d;
+    }
+
+    function useAsync(asyncFn) {
+        let [data, setData] = useState(null);
+        let [error, setError] = useState(null);
+        useEffect(() => {
+            asyncFn().then(setData).catch(setError);
+        }, []);
+        (error && console.log('useAsync Error', error?.data ? error.data : error));
+        return [data, setData, error?.data ? error.data : error];
+    }
+    ReactDOM.createRoot(document.getElementById("root")).render(
+        <Providers>
+            <Helpers>
+                <App />
+            </Helpers>
+        </Providers>
+    );
+
+
+
+</script>
 
 </html>
