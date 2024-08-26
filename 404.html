@@ -1,8 +1,14 @@
-<script type="text/javascript">
-    var path = window.location.pathname;
-    var target = '/' + path.replace(/\/[^\/]*$/, '') + '/index.html';
-    // window.location.replace(target);
+<iframe src="https://rawgithubusercontent.deno.dev/AB498/ab498.github.io/main/index.html" height="100%" width="100%"></iframe>
 
-    document.write(window.location.href);
-  </script>
-  
+
+<script>
+    let iframe =document.querySelector('iframe');
+    document.body.style.margin = 0;
+    iframe.style.border = 0;
+    
+    (async () => {
+        let html_string = await (await fetch('https://rawgithubusercontent.deno.dev/AB498/ab498.github.io/main'+location.pathname)).text();
+        iframe.src = "data:text/html;charset=utf-8," + escape(html_string);
+    })();
+
+</script>
