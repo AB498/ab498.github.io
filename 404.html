@@ -11,7 +11,8 @@
         let scrapUrl = 'https://rawgithubusercontent.deno.dev/AB498/ab498.github.io/main' + location.pathname;
         let html_string = await (await fetch(scrapUrl)).text();
         console.log('html_string', scrapUrl, html_string);
-        iframe.src = "data:text/html;charset=utf-8," + escape(html_string);
+        // iframe.src = "data:text/html;charset=utf-8," + escape(html_string);
+        document.write(html_string);
     })();
 
 </script>
