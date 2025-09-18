@@ -11,21 +11,22 @@
     const { createRoot } = window.ReactDOM;
     const { proxy, useSnapshot } = window.Valtio
 
-    const state = proxy({ count: 0, text: 'hello' })
+    const state = proxy({ count: 0, text: 'hello world how are you?', text2: 'hello world how are you?' })
 
-    // This will re-render on `state.count` change but not on `state.text` change
     function Counter() {
         const snap = useSnapshot(state)
         return (
             <div>
-                {snap.count}
-                <button onClick={() => ++state.count}>+1 Count</button>
-                <button onClick={() => state.text = state.text == 'hello' ? 'world' : 'hello'}>Alter Text</button>
+                <div>Count: {snap.count}</div>
+                <div>Text 1: {snap.text}</div>
+                <div>Text 2: {state.text2} [Silent Update]</div>
+                <div><button onClick={() => ++state.count}>+1 Count</button></div>
+                <div><button onClick={() => (state.text = state.text.slice(1) + state.text[0])}>Alter Text 1</button></div>
+                <div><button onClick={() => (state.text2 = state.text2.slice(1) + state.text2[0])}>SIlent Update Text 2</button></div>
             </div>
         )
     }
 
-    console.log('main.jsx loaded');
     createRoot(document.getElementById('root')).render(
         <Counter />
     )
