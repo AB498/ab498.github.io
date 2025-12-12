@@ -1,0 +1,60 @@
+<pre>
+from sam3.model_builder import build_sam3_image_model
+from sam3.model.sam3_image_processor import Sam3Processor
+from PIL import Image
+import matplotlib.pyplot as plt
+import torch
+import numpy as np
+
+sam_model = build_sam3_image_model(
+    checkpoint_path="/content/sam3.pt",
+    bpe_path="/content/vocab.txt.gz",
+    device="cuda"
+)
+sam_processor = Sam3Processor(sam_model, confidence_threshold=0.3, device="cuda")
+
+
+import os
+from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
+
+for idx in range(SAMPLE_SIZE):
+    path = f"/content/inputs/image_{idx+1}.jpg"
+
+    img = Image.open(path).convert("RGB")
+
+    state = sam_processor.set_image(img)
+    output = sam_processor.set_text_prompt(state=state, prompt=TOPIC)
+
+    boxes = output["boxes"].cpu().numpy()
+    scores = output["scores"].cpu().numpy()
+
+    os.makedirs("/content/outputs", exist_ok=True)
+    out_txt = f"/content/outputs/image_{idx+1}.txt"
+
+    fig, ax = plt.subplots()
+    ax.imshow(img)
+
+    with open(out_txt, "w") as f:
+        for i, (x1, y1, x2, y2) in enumerate(boxes):
+            if scores[i] < 0.5:
+                continue
+
+            # Draw
+            ax.add_patch(
+                plt.Rectangle((x1, y1), x2-x1, y2-y1,
+                              edgecolor='r', facecolor='none', linewidth=2)
+            )
+
+            # Normalized YOLO: cx, cy, w, h
+            cx = (x1 + x2) / 2 / TARGET_W
+            cy = (y1 + y2) / 2 / TARGET_H
+            bw = (x2 - x1) / TARGET_W
+            bh = (y2 - y1) / TARGET_H
+
+            f.write(f"0 {cx:.6f} {cy:.6f} {bw:.6f} {bh:.6f}\n")
+
+    plt.show()
+
+</pre>
